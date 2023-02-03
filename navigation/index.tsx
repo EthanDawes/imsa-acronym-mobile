@@ -35,28 +35,49 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function settingsButton(navigation: any) {  // TODO: any is bad
   const colorScheme = useColorScheme();
+  return (
+    <Pressable
+      onPress={() => navigation.navigate('Settings')}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.5 : 1,
+      })}>
+      <FontAwesome
+        name="gear"
+        size={25}
+        color={Colors[colorScheme].text}
+      />
+    </Pressable>
+  )
+}
 
+function searchButton(navigation: any) {  // TODO: any is bad
+  const colorScheme = useColorScheme();
+  return (
+    <Pressable
+      onPress={() => navigation.navigate('Search')}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.5 : 1,
+      })}>
+      <FontAwesome
+        name="search"
+        size={25}
+        color={Colors[colorScheme].text}
+      />
+    </Pressable>
+  )
+}
+
+function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={({ navigation }) => ({  // TODO: type : RootTabScreenProps<?>
         title: 'Feed',
-        //tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        headerRight: () => (
-          <Pressable
-            onPress={() => navigation.navigate('Settings')}
-            style={({ pressed }) => ({
-              opacity: pressed ? 0.5 : 1,
-            })}>
-            <FontAwesome
-              name="gear"
-              size={25}
-              color={Colors[colorScheme].text}
-              style={{ marginRight: 15 }}
-            />
-          </Pressable>
-        ),
+        headerTitleAlign: 'center',
+        tabBarIcon: ({ color }: {color: string}) => <TabBarIcon name="home" color={color} />,
+        headerRight: settingsButton.bind(null, navigation),
+        headerLeft: searchButton.bind(null, navigation),
       })} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
