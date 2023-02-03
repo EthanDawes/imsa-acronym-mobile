@@ -53,10 +53,11 @@ function RootNavigator() {
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
+import BottomTabProps from "@react-navigation/bottom-tabs";
 
 function BottomTabNavigator() {
-  function IconButton(navigation: any, icon: string, action: string) {  // TODO: I don't know the proper type of icon
-    // @ts-ignore
+  // 'any' isn't great, but I'm only using this twice so who cares?
+  function IconButton(navigation: RootTabScreenProps<keyof RootTabParamList>["navigation"], icon: MaterialIconName, action: any) {
     return (
       <Pressable
         onPress={() => navigation.navigate(action)}
@@ -81,7 +82,7 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
-      <BottomTab.Group screenOptions={({ navigation }: any) => ({  // TODO: any is bad
+      <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
         headerTitleAlign: 'center',
         headerRight: () => IconButton(navigation, "gear", "Settings"),
         headerLeft: () => IconButton(navigation, "search", "Search"),

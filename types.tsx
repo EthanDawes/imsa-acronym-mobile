@@ -11,6 +11,8 @@ declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
+  // Tried but no luck https://stackoverflow.com/a/72080205
+  type MaterialIconName = any;
 }
 
 export type RootStackParamList = {
