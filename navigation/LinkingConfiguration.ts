@@ -9,25 +9,31 @@ import * as Linking from 'expo-linking';
 
 import { RootStackParamList } from '../types';
 
+// TODO: this doesn't seem to update any UI, figure out what it actually does
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          FeedTab: {
             screens: {
               TabOneScreen: 'one',
             },
           },
-          TabTwo: {
+          SavedTab: {
             screens: {
               TabTwoScreen: 'two',
             },
           },
+          GamesTab: {
+            screens: {
+              TabThreeScreen: 'three',
+            },
+          },
         },
       },
-      Modal: 'modal',
+      Settings: 'modal',
       NotFound: '*',
     },
   },
