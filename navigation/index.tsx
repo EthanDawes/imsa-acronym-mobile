@@ -55,30 +55,22 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  function commonOptions(navigation: any) {  // TODO: any is bad
-    function iconButton(icon: string, action: string) {  // TODO: I don't know the proper type of icon
-      // @ts-ignore
-      return (
-        <Pressable
-          onPress={() => navigation.navigate(action)}
-          style={({pressed}) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}>
-          <FontAwesome
-            name={icon}
-            size={25}
-            color={Colors[colorScheme].text}
-            style={{marginRight: 15, marginLeft: 15}}
-          />
-        </Pressable>
-      )
-    }
-
-    return {
-      headerTitleAlign: 'center',
-      headerRight: () => iconButton("gear", "Settings"),
-      headerLeft: () => iconButton("search", "Search"),
-    } as const
+  function IconButton(navigation: any, icon: string, action: string) {  // TODO: I don't know the proper type of icon
+    // @ts-ignore
+    return (
+      <Pressable
+        onPress={() => navigation.navigate(action)}
+        style={({pressed}) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}>
+        <FontAwesome
+          name={icon}
+          size={25}
+          color={Colors[colorScheme].text}
+          style={{marginRight: 15, marginLeft: 15}}
+        />
+      </Pressable>
+    )
   }
 
   const colorScheme = useColorScheme();
@@ -89,33 +81,36 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
-      <BottomTab.Screen
-        name="FeedTab"
-        component={FeedScreen}
-        options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
-          title: 'Feed',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          ...commonOptions(navigation),
-        })}
-      />
-      <BottomTab.Screen
-        name="SavedTab"
-        component={SavedScreen}
-        options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
-          title: 'Saved',
-          tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
-          ...commonOptions(navigation),
-        })}
-      />
-      <BottomTab.Screen
-        name="GamesTab"
-        component={SavedScreen}
-        options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
-          title: 'Games',
-          tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
-          ...commonOptions(navigation),
-        })}
-      />
+      <BottomTab.Group screenOptions={({ navigation }: any) => ({  // TODO: any is bad
+        headerTitleAlign: 'center',
+        headerRight: () => IconButton(navigation, "gear", "Settings"),
+        headerLeft: () => IconButton(navigation, "search", "Search"),
+      })}>
+        <BottomTab.Screen
+          name="FeedTab"
+          component={FeedScreen}
+          options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
+            title: 'Feed',
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          })}
+        />
+        <BottomTab.Screen
+          name="SavedTab"
+          component={SavedScreen}
+          options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
+            title: 'Saved',
+            tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
+          })}
+        />
+        <BottomTab.Screen
+          name="GamesTab"
+          component={SavedScreen}
+          options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
+            title: 'Games',
+            tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
+          })}
+        />
+      </BottomTab.Group>
     </BottomTab.Navigator>
   );
 }
