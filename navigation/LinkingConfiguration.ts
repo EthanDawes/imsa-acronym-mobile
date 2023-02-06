@@ -33,7 +33,16 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      Settings: 'modal',
+      Settings: {
+        screens: {
+          SettingsScreen: 'settings',
+        },
+      },
+      Search: {
+        screens: {
+          SearchScreen: 'search',
+        },
+      },
       NotFound: '*',
     },
   },
