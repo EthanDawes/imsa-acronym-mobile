@@ -20,6 +20,7 @@ import SavedScreen from '../screens/SavedScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {IconProps} from "@expo/vector-icons/build/createIconSet";
+import IconButton from "../components/IconButton";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -55,24 +56,6 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  // 'any' isn't great, but I'm only using this twice so who cares?
-  function IconButton(navigation: RootTabScreenProps<keyof RootTabParamList>["navigation"], icon: MaterialIconName, action: any) {
-    return (
-      <Pressable
-        onPress={() => navigation.navigate(action)}
-        style={({pressed}) => ({
-          opacity: pressed ? 0.5 : 1,
-        })}>
-        <FontAwesome
-          name={icon}
-          size={25}
-          color={Colors[colorScheme].text}
-          style={{marginRight: 15, marginLeft: 15}}
-        />
-      </Pressable>
-    )
-  }
-
   const colorScheme = useColorScheme();
 
   return (
@@ -83,8 +66,8 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
         headerTitleAlign: 'center',
-        headerRight: () => IconButton(navigation, "gear", "Settings"),
-        headerLeft: () => IconButton(navigation, "search", "Search"),
+        headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
+        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
       })}>
         <BottomTab.Screen
           name="FeedTab"

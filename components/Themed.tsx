@@ -43,3 +43,16 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+// TODO: eh color & margin might need to be fixed
+export function Hr() {
+  return (<View style={{
+    marginVertical: 10,
+    height: 1,
+    width: '100%',
+  }} lightColor="#eee" darkColor="rgba(255,255,255,0.9)" />)
+}
+
+export function Title(props: TextProps) {
+  return (<Text style={{fontSize: 20}} {...props} />);
+}
