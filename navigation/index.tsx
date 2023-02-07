@@ -21,6 +21,7 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
+import GamesScreen from '../screens/GamesScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -87,7 +88,7 @@ function BottomTabNavigator() {
         />
         <BottomTab.Screen
           name="GamesTab"
-          component={SavedScreen}
+          component={GamesScreen}
           options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
             title: 'Games',
             tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,

@@ -56,3 +56,8 @@ export function Hr() {
 export function Title(props: TextProps) {
   return (<Text style={{fontSize: 20}} {...props} />);
 }
+
+export function androidRipple() {
+  const colorScheme = useColorScheme();
+  return {color: Colors[colorScheme].shadow, foreground: true};
+}
