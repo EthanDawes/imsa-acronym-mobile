@@ -1,14 +1,13 @@
-import {StyleSheet, Image, View, Button} from 'react-native';
+import {StyleSheet, Image, Pressable} from 'react-native';
 
-import {Text, Title} from '../Themed';
-import IconButton from "../IconButton";
+import {androidRipple, Title} from '../Themed';
 import {ArticleProps} from "./logic";
 import ArticleFooter from "./ArticleFooter";
 
 
 export default function LargeArticle({imgUrl, title, date}: ArticleProps) {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} android_ripple={androidRipple()}>
       <Image
         style={styles.bigImg}
         source={{
@@ -17,7 +16,7 @@ export default function LargeArticle({imgUrl, title, date}: ArticleProps) {
       />
       <Title>{title}</Title>
       <ArticleFooter date={date} />
-    </View>
+    </Pressable>
   );
 }
 
