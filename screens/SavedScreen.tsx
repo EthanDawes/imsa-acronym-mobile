@@ -1,15 +1,21 @@
-import { StyleSheet } from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import {Hr, Text, View} from '../components/Themed';
+import SmallArticle from "../components/Article/SmallArticle";
+import React from "react";
+import Layout from "../constants/Layout";
 
 export default function SavedScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    <ScrollView>
+      <View style={Layout.styles.scrollView}>
+        <SmallArticle imgUrl="https://reactnative.dev/img/tiny_logo.png" title={"Headline 1"} date={new Date()} />
+        <Hr />
+        <SmallArticle imgUrl="https://reactnative.dev/img/tiny_logo.png" title={"Headline 1"} date={new Date()} />
+        <Hr />
+      </View>
+    </ScrollView>
   );
 }
 
