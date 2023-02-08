@@ -8,12 +8,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {NavigationContainer, DefaultTheme, DarkTheme, CompositeScreenProps} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Image } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import NotificationsScreen from '../screens/NotificationsScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import FeedScreen from '../screens/FeedScreen';
 import SavedScreen from '../screens/SavedScreen';
@@ -46,6 +47,7 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 }
@@ -75,6 +77,10 @@ function BottomTabNavigator() {
           component={FeedScreen}
           options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
             title: 'Feed',
+            headerTitle: (props) => <Image
+              style={{ width: 250, height: "100%", resizeMode: "contain" }}
+              source={require('../assets/images/acronym_title.png')}
+            />,
             tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           })}
         />

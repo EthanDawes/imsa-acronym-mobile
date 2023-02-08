@@ -38,6 +38,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           SettingsScreen: 'settings',
         },
       },
+      Notifications: {
+        screens: {
+          NotificationsScreen: 'notifications',
+        },
+      },
       Search: {
         screens: {
           SearchScreen: 'search',

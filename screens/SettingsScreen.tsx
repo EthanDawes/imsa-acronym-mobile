@@ -1,35 +1,70 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Switch} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import {androidRipple, Hr, Text, Title, View} from '../components/Themed';
+import {useState} from "react";
+import Colors from "../constants/Colors";
+import {FontAwesome} from "@expo/vector-icons";
+import * as React from "react";
+import useColorScheme from "../hooks/useColorScheme";
+import {RootStackScreenProps} from "../types";
 
-export default function SettingsScreen() {
+export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
+  const colorScheme = useColorScheme();
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <Title>General</Title>
+      <View style={{flexDirection: "row"}}>
+        <Text style={{flexGrow: 100}}>Dark Theme</Text>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+      </View>
+      <View style={{flexDirection: "row"}}>
+        <Text style={{flexGrow: 100}}>Default Page</Text>
+      </View>
+      <Hr />
+      <Title>Notifications</Title>
+      <Pressable style={{flexDirection: "row"}}
+                 android_ripple={androidRipple()}
+                 onPress={() => navigation.navigate("Notifications", {category: "topics"})}
+      >
+        <Text style={{flexGrow: 100}}>Topics</Text>
+        <FontAwesome
+          name={"caret-right"}
+          size={25}
+          color={Colors[colorScheme].text}
+          style={{marginRight: 15, marginLeft: 15}}
+        />
+      </Pressable>
+      <Pressable style={{flexDirection: "row"}}
+                 android_ripple={androidRipple()}
+                 onPress={() => navigation.navigate("Notifications", {category: "authors"})}
+      >
+        <Text style={{flexGrow: 100}}>Authors</Text>
+        <FontAwesome
+          name={"caret-right"}
+          size={25}
+          color={Colors[colorScheme].text}
+          style={{marginRight: 15, marginLeft: 15}}
+        />
+      </Pressable>
+      <Hr />
+      <Title>Stats</Title>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    padding: 10,
+    paddingBottom: 0,
   },
 });

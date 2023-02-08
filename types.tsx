@@ -18,6 +18,7 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Settings: undefined;
+  Notifications: { category: "topics" | "authors" };
   Search: undefined;
   NotFound: undefined;
 };
