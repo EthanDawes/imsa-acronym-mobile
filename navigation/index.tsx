@@ -83,7 +83,7 @@ function BottomTabNavigator() {
             title: 'Feed',
             headerTitle: (props) => <Image
               style={{ width: 250, height: "100%", resizeMode: "contain" }}
-              source={require('../assets/images/acronym_title.png')}
+              source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
             />,
             tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           })}
