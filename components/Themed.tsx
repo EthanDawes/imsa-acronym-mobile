@@ -64,10 +64,14 @@ export function Title(props: TextProps) {
   return (<Text style={{fontSize: 20, fontWeight: 'bold'}} {...props} />);
 }
 
-// TODO: replace w/
+// TODO: replace w/ TouchableRipple Component for Android & iOS
 export function androidRipple() {
   const colorScheme = useColorScheme();
   return {color: Colors[colorScheme].shadow, foreground: true};
 }
 
-// TODO: ListItem
+export function ListItem(props: ViewProps) {
+  return (
+    <View style={{padding: 10, borderBottomWidth: 1}} {...props}>{props.children}<Hr /></View>
+  )
+}
