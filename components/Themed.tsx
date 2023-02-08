@@ -3,7 +3,7 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import { Text as DefaultText, View as DefaultView, TextInput as DefaultTextInput } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -16,7 +16,7 @@ export function useThemeColor(
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
-    return colorFromProps;
+    return ;
   } else {
     return Colors[theme][colorName];
   }
@@ -37,6 +37,13 @@ export function Text(props: TextProps) {
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
+export function TextInput(props: DefaultTextInput['props']) {
+  const { style, ...otherProps } = props;
+  const colors = Colors[useColorScheme()];
+
+  return <DefaultTextInput style={[{ color: colors.text }, style]} placeholderTextColor={colors.shadow} {...otherProps} />;
+}
+
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
@@ -54,10 +61,13 @@ export function Hr() {
 }
 
 export function Title(props: TextProps) {
-  return (<Text style={{fontSize: 20}} {...props} />);
+  return (<Text style={{fontSize: 20, fontWeight: 'bold'}} {...props} />);
 }
 
+// TODO: replace w/
 export function androidRipple() {
   const colorScheme = useColorScheme();
   return {color: Colors[colorScheme].shadow, foreground: true};
 }
+
+// TODO: ListItem

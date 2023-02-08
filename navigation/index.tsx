@@ -23,6 +23,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
 import GamesScreen from '../screens/GamesScreen';
+import SegmentedSearch from "../components/SegmentedSearch";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -46,7 +47,10 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="Search" component={SearchScreen} options={{
+        headerTitle: (props) =>
+          <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
+      }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
