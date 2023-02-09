@@ -5,6 +5,7 @@
 
 import WPAPI from 'wpapi';
 import * as WPTYPES from "wp-types";
+import {decode} from 'html-entities';
 
 // TODO: if I was feeling nice, I would contribute this to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wpapi/index.d.ts
 // Documentation http://wp-api.org/node-wpapi/collection-pagination/
@@ -41,11 +42,20 @@ export async function* getAllPosts() {
   while (nextPage) {
     // 100 is the max items
     const pageData = await nextPage.context("embed").perPage(50).get() as WPTYPES.WP_REST_API_Posts & WPResponse;
-    console.log(pageData._paging.links);
+    console.log("links", pageData._paging.links);
     // TODO: could I speed up page load by only loading 10 the first time? Takes only 700ms as opposed to 1000ms for 100
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
     nextPage = pageData._paging.next;
-    yield pageData;
+    yield Promise.all(pageData.map(async (i) => ({
+      /// Try to avoid using this
+      _raw: pageData,
+      id: "" + i.id,
+      /// Title with all HTML characters decoded
+      title: decode(i.title.rendered),
+      // @ts-ignore this is definitely defined TODO
+      img: i._links["wp:featuredmedia"].href,
+      date: new Date(i.date),
+    })));
   }
 }
 

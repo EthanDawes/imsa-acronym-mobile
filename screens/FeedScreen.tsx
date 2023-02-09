@@ -46,8 +46,8 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       data={articles}
-      renderItem={({item}) => <LargeArticle imgUrl={item._links["wp:featuredmedia"].href} title={item.title.rendered} date={new Date(item.date)} />}
-      keyExtractor={item => "" + item.id}
+      renderItem={({item}) => <LargeArticle imgUrl={item.img} title={item.title} date={item.date} />}
+      keyExtractor={item => item.id}
     />
   );
 }
