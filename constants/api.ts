@@ -46,16 +46,15 @@ export async function* getAllPosts() {
     // TODO: could I speed up page load by only loading 10 the first time? Takes only 700ms as opposed to 1000ms for 100
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
     nextPage = pageData._paging.next;
-    yield Promise.all(pageData.map(async (i) => ({
+    yield* pageData.map(async (i) => ({
       /// Try to avoid using this
       _raw: pageData,
       id: "" + i.id,
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
-      // @ts-ignore this is definitely defined TODO
-      img: i._links["wp:featuredmedia"].href,
+      img: i.featured_media ? (await wp.media().id(i.featured_media).get() as WPTYPES.WP_REST_API_Attachment).guid.rendered : "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
       date: new Date(i.date),
-    })));
+    }));
   }
 }
 

@@ -2,7 +2,7 @@ import {RefreshControl, ScrollView, StyleSheet, View, Animated} from 'react-nati
 
 import { Hr } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import React from "react";
+import React, {useEffect} from "react";
 import LargeArticle from "../components/Article/LargeArticle";
 import Layout from "../constants/Layout";
 import {useCollapsibleHeader} from "react-navigation-collapsible";
@@ -23,6 +23,10 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
   }, []);
 
   const [articles, next] = useAsyncIterator(getAllPosts());
+  // Load the first 10 articles b/c waiting for all images Promise.all is too long. Images get queued right away
+  useEffect(() => {
+    for (let i=0; i<10; i++) next();
+  }, []);
 
   const options = {
     navigationOptions: {
@@ -36,7 +40,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
   } = useCollapsibleHeader(options);
   // CollapsibleHeader docs: https://github.com/benevbright/react-navigation-collapsible
 
-  // TODO: I should probably use a FlatList b/c that doesn't render all elements at once
+  // TODO: You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. {"contentLength": 11827.4287109375, "dt": 831, "prevDt": 807}
   return (
     <Animated.FlatList
       onScroll={onScroll}
