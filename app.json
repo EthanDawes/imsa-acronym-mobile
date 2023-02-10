@@ -26,10 +26,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "edu.imsa.theacronym"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "61b6f88f-10eb-4914-b462-4d77f6ad0cea"
+      }
+    },
+    "owner": "funblaster22"
   }
 }

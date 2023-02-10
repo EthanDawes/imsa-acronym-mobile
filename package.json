@@ -35,7 +35,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.9",
     "react-navigation-collapsible": "^6.3.0",
-    "wpapi": "^1.2.2"
+    "wpapi": "^1.2.2",
+    "expo-dev-client": "~2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
