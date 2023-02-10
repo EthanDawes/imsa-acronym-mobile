@@ -1,13 +1,16 @@
 import {Text} from "../Themed";
 import IconButton from "../IconButton";
-import {addBookmark, share} from "./logic";
+import {ArticleFooterProps, share} from "./logic";
 import {StyleSheet, View} from "react-native";
 
-export default function ArticleFooter({date}: {date: Date}) {
+export default function ArticleFooter({id, date, useBookmarks}: ArticleFooterProps) {
+  const [bookmarks, toggleBookmark] = useBookmarks;
+  const isBookmarked = bookmarks[id];
+
   return (
     <View style={styles.footer}>
       <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
-      <IconButton icon={"bookmark"} action={addBookmark} />
+      <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, id)} />
       <IconButton icon={"share"} action={share} />
     </View>
   );

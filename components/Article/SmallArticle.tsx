@@ -5,7 +5,7 @@ import ArticleFooter from "./ArticleFooter";
 import {ArticleProps} from "./logic";
 
 
-export default function SmallArticle({imgUrl, title, date}: ArticleProps) {
+export default function SmallArticle({imgUrl, title, date, id, useBookmarks}: ArticleProps) {
   return (
     <Pressable style={styles.container} android_ripple={androidRipple()}>
       <View style={{flexDirection: "row"}}>
@@ -22,7 +22,7 @@ export default function SmallArticle({imgUrl, title, date}: ArticleProps) {
           />
         </View>
       </View>
-      <ArticleFooter date={date} />
+      <ArticleFooter date={date} id={id} useBookmarks={useBookmarks} />
     </Pressable>
   );
 }

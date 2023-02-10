@@ -5,7 +5,7 @@ import {ArticleProps} from "./logic";
 import ArticleFooter from "./ArticleFooter";
 
 
-export default function LargeArticle({imgUrl, title, date}: ArticleProps) {
+export default function LargeArticle({imgUrl, title, date, id, useBookmarks}: ArticleProps) {
   return (
     <Pressable style={styles.container} android_ripple={androidRipple()}>
       <Image
@@ -15,7 +15,7 @@ export default function LargeArticle({imgUrl, title, date}: ArticleProps) {
         }}
       />
       <Title>{title}</Title>
-      <ArticleFooter date={date} />
+      <ArticleFooter date={date} id={id} useBookmarks={useBookmarks} />
     </Pressable>
   );
 }

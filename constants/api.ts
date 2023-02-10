@@ -49,7 +49,7 @@ export async function* getAllPosts() {
     yield* pageData.map(async (i) => ({
       /// Try to avoid using this
       _raw: pageData,
-      id: "" + i.id,
+      id: i.id,
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
       img: i.featured_media ? (await wp.media().id(i.featured_media).get() as WPTYPES.WP_REST_API_Attachment).guid.rendered : "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",

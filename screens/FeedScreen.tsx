@@ -10,10 +10,12 @@ import {DefaultTheme, DarkTheme} from '@react-navigation/native';
 import useColorScheme from "../hooks/useColorScheme";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import {getAllPosts} from "../constants/api";
+import {useBookmarks} from "../components/Article/logic";
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const colorScheme = useColorScheme();
   const [refreshing, setRefreshing] = React.useState(false);
+  const usedBookmarks = useBookmarks();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -50,8 +52,8 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       data={articles}
-      renderItem={({item}) => <LargeArticle imgUrl={item.img} title={item.title} date={item.date} />}
-      keyExtractor={item => item.id}
+      renderItem={({item}) => <LargeArticle imgUrl={item.img} title={item.title} date={item.date} useBookmarks={usedBookmarks} id={item.id} />}
+      keyExtractor={item => "" + item.id}
     />
   );
 }
