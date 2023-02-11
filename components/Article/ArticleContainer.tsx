@@ -11,7 +11,7 @@ export default function ArticleContainer({data, useBookmarks, children}: PropsWi
   const isBookmarked = id in bookmarks;
 
   return (
-    <Pressable style={{ width: '100%' }} android_ripple={androidRipple()}>
+    <Pressable style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }} android_ripple={androidRipple()}>
       {children}
       <View style={styles.footer}>
         <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
