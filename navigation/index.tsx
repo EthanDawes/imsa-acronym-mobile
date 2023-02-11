@@ -24,6 +24,8 @@ import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
 import GamesScreen from '../screens/GamesScreen';
 import SegmentedSearch from "../components/SegmentedSearch";
+import {useBookmarks} from "../components/Article/logic";
+import { BookmarkContext } from '../constants/context';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -64,48 +66,51 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const usedBookmarks = useBookmarks();
 
   return (
-    <BottomTab.Navigator
-      initialRouteName="FeedTab"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
-      <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
-        headerTitleAlign: 'center',
-        headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
-        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
-      })}>
-        <BottomTab.Screen
-          name="FeedTab"
-          component={FeedScreen}
-          options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
-            title: 'Feed',
-            headerTitle: (props) => <Image
-              style={{ width: 250, height: "100%", resizeMode: "contain" }}
-              source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
-            />,
-            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          })}
-        />
-        <BottomTab.Screen
-          name="SavedTab"
-          component={SavedScreen}
-          options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
-            title: 'Saved',
-            tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
-          })}
-        />
-        <BottomTab.Screen
-          name="GamesTab"
-          component={GamesScreen}
-          options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
-            title: 'Games',
-            tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
-          })}
-        />
-      </BottomTab.Group>
-    </BottomTab.Navigator>
+    <BookmarkContext.Provider value={usedBookmarks}>
+      <BottomTab.Navigator
+        initialRouteName="FeedTab"
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme].tint,
+        }}>
+        <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
+          headerTitleAlign: 'center',
+          headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
+          headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
+        })}>
+          <BottomTab.Screen
+            name="FeedTab"
+            component={FeedScreen}
+            options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
+              title: 'Feed',
+              headerTitle: (props) => <Image
+                style={{ width: 250, height: "100%", resizeMode: "contain" }}
+                source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
+              />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+            })}
+          />
+          <BottomTab.Screen
+            name="SavedTab"
+            component={SavedScreen}
+            options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
+              title: 'Saved',
+              tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
+            })}
+          />
+          <BottomTab.Screen
+            name="GamesTab"
+            component={GamesScreen}
+            options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
+              title: 'Games',
+              tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
+            })}
+          />
+        </BottomTab.Group>
+      </BottomTab.Navigator>
+    </BookmarkContext.Provider>
   );
 }
 

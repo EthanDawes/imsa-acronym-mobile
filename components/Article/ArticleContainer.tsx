@@ -2,11 +2,12 @@ import {androidRipple, Text} from "../Themed";
 import IconButton from "../IconButton";
 import {ArticleProps, share} from "./logic";
 import {Pressable, StyleSheet, View} from "react-native";
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, useContext} from "react";
+import {BookmarkContext} from "../../constants/context";
 
 export default function ArticleContainer({data, useBookmarks, children}: PropsWithChildren<ArticleProps>) {
   const {id, date} = data;
-  const [bookmarks, toggleBookmark] = useBookmarks;
+  const [bookmarks, toggleBookmark] = useContext(BookmarkContext);
   const isBookmarked = id in bookmarks;
 
   return (
