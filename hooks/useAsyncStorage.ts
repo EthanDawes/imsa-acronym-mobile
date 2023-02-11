@@ -8,11 +8,13 @@ export default function useAsyncStorage<S>(key: string, initialState?: S) {
   const [state, setState] = useState(initialState);
 
   // Load from storage, if exists
-  useEffect(() => {
+  useEffect(getItem, []);
+
+  function getItem() {
     AsyncStorage.getItem(key).then(item => {
       if (item != null) setState(JSON.parse(item));
     });
-  }, []);
+  }
 
   function setItem(newState: SetStateAction<S | undefined>) {
     setState(oldState => {
@@ -31,9 +33,7 @@ export default function useAsyncStorage<S>(key: string, initialState?: S) {
     // `newState` is an object, not a function b/c I don't need to worry about the previous state b/c `mergeItem` is the source of truth. Therefore, it is OK to use state when calling this function
     AsyncStorage.mergeItem(key, JSON.stringify(newState)).then(() => {
       // Annoyingly, contrary to the docs, the promise value does NOT contain the new value
-      AsyncStorage.getItem(key).then(item => {
-        if (item != null) setState(JSON.parse(item));
-      });
+      getItem();
     });
   }
 
