@@ -42,7 +42,6 @@ export async function* getAllPosts(request = wp.posts()) {
   while (nextPage) {
     // 100 is the max items
     const pageData = await nextPage.get() as WPTYPES.WP_REST_API_Posts & WPResponse;
-    console.log("links", pageData._paging.links);
     // TODO: could I speed up page load by only loading 10 the first time? Takes only 700ms as opposed to 1000ms for 100
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
     nextPage = pageData._paging.next;

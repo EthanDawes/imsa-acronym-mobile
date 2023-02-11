@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Switch} from 'react-native';
+import {Button, Pressable, ScrollView, StyleSheet, Switch} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import {androidRipple, Hr, Text, Title, View} from '../components/Themed';
@@ -8,14 +8,19 @@ import {FontAwesome} from "@expo/vector-icons";
 import * as React from "react";
 import useColorScheme from "../hooks/useColorScheme";
 import {RootStackScreenProps} from "../types";
+import {useBookmarks} from "../components/Article/logic";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   const colorScheme = useColorScheme();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [bookmarks, toggleBookmarks] = useBookmarks();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <Text>{JSON.stringify(bookmarks, null, 2)}</Text>
+      <Button title={"Clear storage"} onPress={() => AsyncStorage.clear()} />
       <Title>General</Title>
       <View style={{flexDirection: "row"}}>
         <Text style={{flexGrow: 100}}>Dark Theme</Text>
@@ -58,7 +63,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       </Pressable>
       <Hr />
       <Title>Stats</Title>
-    </View>
+    </ScrollView>
   );
 }
 

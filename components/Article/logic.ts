@@ -1,18 +1,19 @@
 import useAsyncStorage from "../../hooks/useAsyncStorage";
 
-export interface ArticleFooterProps {
+export interface PreviewArticle {
   id: number,
   date: Date;
-  useBookmarks: ReturnType<typeof useBookmarks>,
-}
-
-export interface ArticleProps extends ArticleFooterProps {
   imgUrl: string;
   title: string;
 }
 
-export interface FullArticle extends ArticleProps {
+export interface FullArticle extends PreviewArticle {
   body: string,
+}
+
+export interface ArticleProps {
+  useBookmarks: ReturnType<typeof useBookmarks>,
+  data: PreviewArticle | FullArticle,
 }
 
 export function useBookmarks() {

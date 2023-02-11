@@ -2,12 +2,13 @@ import {StyleSheet, Image, Pressable} from 'react-native';
 
 import {androidRipple, Title} from '../Themed';
 import {ArticleProps} from "./logic";
-import ArticleFooter from "./ArticleFooter";
+import ArticleContainer from "./ArticleContainer";
 
 
-export default function LargeArticle({imgUrl, title, date, id, useBookmarks}: ArticleProps) {
+export default function LargeArticle(props: ArticleProps) {
+  const {imgUrl, title} = props.data;
   return (
-    <Pressable style={styles.container} android_ripple={androidRipple()}>
+    <ArticleContainer {...props}>
       <Image
         style={styles.bigImg}
         source={{
@@ -15,16 +16,12 @@ export default function LargeArticle({imgUrl, title, date, id, useBookmarks}: Ar
         }}
       />
       <Title>{title}</Title>
-      <ArticleFooter date={date} id={id} useBookmarks={useBookmarks} />
-    </Pressable>
+    </ArticleContainer>
   );
 }
 
 // TODO: more precise positioning besides "eyeballing it" (see tailwind?)
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
   bigImg: {
     width: '100%',
     height: 200,

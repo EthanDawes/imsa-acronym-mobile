@@ -1,13 +1,14 @@
 import {StyleSheet, Image, View, Pressable} from 'react-native';
 
-import {androidRipple, Text, Title} from '../Themed';
-import ArticleFooter from "./ArticleFooter";
+import {Text, Title} from '../Themed';
+import ArticleContainer from "./ArticleContainer";
 import {ArticleProps} from "./logic";
 
 
-export default function SmallArticle({imgUrl, title, date, id, useBookmarks}: ArticleProps) {
+export default function SmallArticle(props: ArticleProps) {
+  const {imgUrl, title} = props.data;
   return (
-    <Pressable style={styles.container} android_ripple={androidRipple()}>
+    <ArticleContainer {...props}>
       <View style={{flexDirection: "row"}}>
         <View style={{flexGrow: 100}}>
           <Text>Category</Text>
@@ -22,8 +23,7 @@ export default function SmallArticle({imgUrl, title, date, id, useBookmarks}: Ar
           />
         </View>
       </View>
-      <ArticleFooter date={date} id={id} useBookmarks={useBookmarks} />
-    </Pressable>
+    </ArticleContainer>
   );
 }
 

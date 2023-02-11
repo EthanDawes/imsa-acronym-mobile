@@ -1,18 +1,23 @@
-import {Text} from "../Themed";
+import {androidRipple, Text} from "../Themed";
 import IconButton from "../IconButton";
-import {ArticleFooterProps, share} from "./logic";
-import {StyleSheet, View} from "react-native";
+import {ArticleProps, share} from "./logic";
+import {Pressable, StyleSheet, View} from "react-native";
+import {PropsWithChildren} from "react";
 
-export default function ArticleFooter({id, date, useBookmarks}: ArticleFooterProps) {
+export default function ArticleContainer({data, useBookmarks, children}: PropsWithChildren<ArticleProps>) {
+  const {id, date} = data;
   const [bookmarks, toggleBookmark] = useBookmarks;
-  const isBookmarked = bookmarks[id];
+  const isBookmarked = id in bookmarks;
 
   return (
-    <View style={styles.footer}>
-      <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
-      <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, id)} />
-      <IconButton icon={"share"} action={share} />
-    </View>
+    <Pressable style={{ width: '100%' }} android_ripple={androidRipple()}>
+      {children}
+      <View style={styles.footer}>
+        <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
+        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, {...data, body: ""})} />
+        <IconButton icon={"share"} action={share} />
+      </View>
+    </Pressable>
   );
 }
 

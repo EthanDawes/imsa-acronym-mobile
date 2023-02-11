@@ -52,7 +52,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       data={articles}
-      renderItem={({item}) => <LargeArticle imgUrl={item.img} title={item.title} date={item.date} useBookmarks={usedBookmarks} id={item.id} />}
+      renderItem={({item}) => <LargeArticle data={{imgUrl: item.img, title: item.title, date: item.date, id: item.id}} useBookmarks={usedBookmarks} />}
       keyExtractor={item => "" + item.id}
     />
   );

@@ -29,7 +29,12 @@ export default function useAsyncStorage<S>(key: string, initialState?: S) {
     // This way I don't have to merge myself & behavior is consistent
     // Or, maybe I should make all my functions like this to ensure AsyncStorage & state are always in sync (slim chance of error though, low priority)
     // `newState` is an object, not a function b/c I don't need to worry about the previous state b/c `mergeItem` is the source of truth. Therefore, it is OK to use state when calling this function
-    AsyncStorage.mergeItem(key, JSON.stringify(newState), (err) => console.log("err", err)).then(console.log);
+    AsyncStorage.mergeItem(key, JSON.stringify(newState)).then(() => {
+      // Annoyingly, contrary to the docs, the promise value does NOT contain the new value
+      AsyncStorage.getItem(key).then(item => {
+        if (item != null) setState(JSON.parse(item));
+      });
+    });
   }
 
   function removeItem() {
