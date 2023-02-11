@@ -8,8 +8,6 @@ function cleanse<T>(valOrArray: T[] | T): T[] {
 export default function useAsyncIterator<T>(generator: AsyncIterator<T[] | T, void>) {
   const [response, setResponse] = useState<T[]>([]);
 
-  useEffect(next, []);  // Populate the array the first time
-
   function next() {
     generator.next().then(res => {
       // TODO: even though cleanse is supposed to remove null values, figure why I still need ?? []. Keyword: custom type guard

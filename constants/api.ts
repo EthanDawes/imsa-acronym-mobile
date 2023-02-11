@@ -9,7 +9,7 @@ import {decode} from 'html-entities';
 
 // TODO: if I was feeling nice, I would contribute this to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wpapi/index.d.ts
 // Documentation http://wp-api.org/node-wpapi/collection-pagination/
-interface WPResponse {
+export interface WPResponse {
   _paging: {
     // The total number of records matching the provided query
     total: number;
@@ -37,11 +37,11 @@ export async function getAllCategories() {
 }
 
 /// Will get embed info for 50 posts at a time
-export async function* getAllPosts() {
-  let nextPage: WPAPI.WPRequest | undefined = wp.posts();
+export async function* getAllPosts(request = wp.posts()) {
+  let nextPage: WPAPI.WPRequest | undefined = request;
   while (nextPage) {
     // 100 is the max items
-    const pageData = await nextPage.context("embed").perPage(50).get() as WPTYPES.WP_REST_API_Posts & WPResponse;
+    const pageData = await nextPage.get() as WPTYPES.WP_REST_API_Posts & WPResponse;
     console.log("links", pageData._paging.links);
     // TODO: could I speed up page load by only loading 10 the first time? Takes only 700ms as opposed to 1000ms for 100
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
@@ -58,6 +58,6 @@ export async function* getAllPosts() {
   }
 }
 
-export function getPost(id: number) {
-  return wp.posts().id(id).get() as Promise<WPTYPES.WP_REST_API_Post & WPResponse>;
+export function getPosts(...ids: number[]) {
+  return wp.posts().include(ids).get() as Promise<WPTYPES.WP_REST_API_Posts & WPResponse>;
 }

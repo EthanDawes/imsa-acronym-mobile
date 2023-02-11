@@ -11,14 +11,17 @@ export interface ArticleProps extends ArticleFooterProps {
   title: string;
 }
 
-export function useBookmarks() {
-  const [bookmarks, setBookmarks] = useAsyncStorage<Record<number, boolean>>("bookmarks", {});
+export interface FullArticle extends ArticleProps {
+  body: string,
+}
 
-  function toggleBookmark(articleId: number) {
-    setBookmarks((oldVal) => ({
-      ...oldVal,
-      [articleId]: !oldVal[articleId],
-    }));
+export function useBookmarks() {
+  const {item: bookmarks, mergeItem: mergeBookmark} = useAsyncStorage<Record<number, FullArticle | undefined>>("bookmarks", {});
+
+  function toggleBookmark(articleInfo: FullArticle) {
+    mergeBookmark({
+      [articleInfo.id]: articleInfo.id in bookmarks ? undefined : articleInfo
+    });
   }
 
   return [bookmarks, toggleBookmark] as const;
