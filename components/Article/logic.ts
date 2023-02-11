@@ -17,13 +17,18 @@ export interface ArticleProps {
 }
 
 export function useBookmarks() {
-  const {item: bookmarks, mergeItem: mergeBookmark} = useAsyncStorage<Record<number, FullArticle>>("bookmarks", {});
+  const {item: bookmarks, setItem: setBookmark} = useAsyncStorage<Record<number, FullArticle>>("bookmarks", {});
 
   function toggleBookmark(articleInfo: FullArticle) {
-    mergeBookmark({
-      [articleInfo.id]: articleInfo.id in bookmarks ? {} : articleInfo
-    } as Record<number, FullArticle>);
-    // Technically can also be undefined, but ignoring b/c after it's merged & JSONified, undefined keys are removed
+    // `mergeBookmark` does not work b/c undefined keys are removed during JSONification
+    // hopefully this doesn't cause race conditions
+    setBookmark(oldVal => {
+      if (articleInfo.id in oldVal) {
+        const {[articleInfo.id]: _, ...newVal} = oldVal;
+        return newVal;
+      } else
+        return {...oldVal, [articleInfo.id]: articleInfo};
+    })
   }
 
   return [bookmarks, toggleBookmark] as const;
