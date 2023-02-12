@@ -3,7 +3,7 @@
 // wp-types docs: https://www.npmjs.com/package/wp-types
 
 
-import WPAPI from 'wpapi';
+import WPAPI, {WPRequest} from 'wpapi';
 import * as WPTYPES from "wp-types";
 import {decode} from 'html-entities';
 
@@ -36,27 +36,26 @@ export async function getAllCategories() {
   return acc;
 }
 
-/// Will get embed info for 50 posts at a time
+/// Will get post info as prescribed by `request` parameter (100 items/page max, default 10)
 export async function* getAllPosts(request = wp.posts()) {
   let nextPage: WPAPI.WPRequest | undefined = request;
   while (nextPage) {
-    // 100 is the max items
+    // Using .embed is faster than subsequently getting the image. Tests using pagesize 50:
+    // context=embed, _embed=false: 800ms initial, 5s 3rd, 40s 50th
+    // context=embed, _embed=true: 1.5s all
+    // context=view, _embed=true: 2.5s all
     const pageData = await nextPage.get() as WPTYPES.WP_REST_API_Posts & WPResponse;
-    // TODO: could I speed up page load by only loading 10 the first time? Takes only 700ms as opposed to 1000ms for 100
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
     nextPage = pageData._paging.next;
-    yield* pageData.map(async (i) => ({
+    yield* pageData.map((i) => ({
       /// Try to avoid using this
       _raw: pageData,
       id: i.id,
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
-      img: i.featured_media ? (await wp.media().id(i.featured_media).get() as WPTYPES.WP_REST_API_Attachment).guid.rendered : "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
+      // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
+      img: i._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
       date: new Date(i.date),
     }));
   }
-}
-
-export function getPosts(...ids: number[]) {
-  return wp.posts().include(ids).get() as Promise<WPTYPES.WP_REST_API_Posts & WPResponse>;
 }

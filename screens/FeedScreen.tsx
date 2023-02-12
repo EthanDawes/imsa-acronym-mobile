@@ -24,7 +24,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
     }, 2000);
   }, []);
 
-  const [articles, next] = useAsyncIterator(getAllPosts(wp.posts().context("embed").perPage(50)));
+  const [articles, next] = useAsyncIterator(getAllPosts(wp.posts().context("view").embed().perPage(50)));
   // Load the first 10 articles b/c waiting for all images Promise.all is too long. Images get queued right away
   useEffect(() => {
     for (let i=0; i<10; i++) next();
