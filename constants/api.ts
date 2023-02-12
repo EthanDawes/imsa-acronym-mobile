@@ -56,6 +56,7 @@ export async function* getAllPosts(request = wp.posts()) {
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
       img: i._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
       date: new Date(i.date),
+      body: i.content?.rendered,
     }));
   }
 }

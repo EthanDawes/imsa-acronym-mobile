@@ -6,6 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {FullArticle} from "./components/Article/logic";
 
 declare global {
   namespace ReactNavigation {
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Notifications: { category: "topics" | "authors" };
   Search: undefined;
+  Article: { body: Promise<FullArticle> };
   NotFound: undefined;
 };
 

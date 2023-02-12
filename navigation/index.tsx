@@ -26,6 +26,7 @@ import GamesScreen from '../screens/GamesScreen';
 import SegmentedSearch from "../components/SegmentedSearch";
 import {useBookmarks} from "../components/Article/logic";
 import { BookmarkContext } from '../constants/context';
+import ArticleScreen from "../screens/ArticleScreen";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -54,6 +55,7 @@ function RootNavigator() {
           <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
       }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="Article" component={ArticleScreen} />
     </Stack.Navigator>
   );
 }

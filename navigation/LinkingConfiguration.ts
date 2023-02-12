@@ -48,6 +48,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           SearchScreen: 'search',
         },
       },
+      Article: {
+        screens: {
+          ArticleScreen: 'article',
+        },
+      },
       NotFound: '*',
     },
   },

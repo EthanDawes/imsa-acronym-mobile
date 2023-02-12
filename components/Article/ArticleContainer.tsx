@@ -1,21 +1,37 @@
 import {androidRipple, Text} from "../Themed";
 import IconButton from "../IconButton";
-import {ArticleProps, share} from "./logic";
+import {ArticleProps, FullArticle, share} from "./logic";
 import {Pressable, StyleSheet, View} from "react-native";
 import {PropsWithChildren, useContext} from "react";
 import {BookmarkContext} from "../../constants/context";
+import {useNavigation} from "@react-navigation/native";
+import wp, {getAllPosts} from "../../constants/api";
+import * as WPTYPES from "wp-types";
 
 export default function ArticleContainer({data, useBookmarks, children}: PropsWithChildren<ArticleProps>) {
   const {id, date} = data;
   const [bookmarks, toggleBookmark] = useContext(BookmarkContext);
   const isBookmarked = id in bookmarks;
+  const navigation = useNavigation();
+
+  const articleBody: Promise<WPTYPES.WP_REST_API_Post> = wp.posts().id(id).embed().get();
+  const fullArticle: FullArticle = {
+    ...data,
+    body: "",
+    //body: articleBody.then(res => res.content.rendered),
+    //comments: wp.comments().param({post: id}).get() as Promise<WPTYPES.WP_REST_API_Comments>,
+  };
 
   return (
-    <Pressable style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }} android_ripple={androidRipple()}>
+    <Pressable
+      style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}
+      android_ripple={androidRipple()}
+      onPress={() => navigation.navigate("Article", {body: fullArticle})}
+    >
       {children}
       <View style={styles.footer}>
         <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
-        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, {...data, body: ""})} />
+        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, fullArticle)} />
         <IconButton icon={"share"} action={share} />
       </View>
     </Pressable>
