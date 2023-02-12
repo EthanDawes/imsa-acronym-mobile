@@ -23,16 +23,6 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       <Button title={"Clear storage"} onPress={() => AsyncStorage.clear()} />
       <Title>General</Title>
       <View style={{flexDirection: "row"}}>
-        <Text style={{flexGrow: 100}}>Dark Theme</Text>
-        <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-      </View>
-      <View style={{flexDirection: "row"}}>
         <Text style={{flexGrow: 100}}>Default Page</Text>
       </View>
       <Hr />
