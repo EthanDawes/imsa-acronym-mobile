@@ -14,24 +14,16 @@ export default function ArticleContainer({data, useBookmarks, children}: PropsWi
   const isBookmarked = id in bookmarks;
   const navigation = useNavigation();
 
-  const articleBody: Promise<WPTYPES.WP_REST_API_Post> = wp.posts().id(id).embed().get();
-  const fullArticle: FullArticle = {
-    ...data,
-    body: "",
-    //body: articleBody.then(res => res.content.rendered),
-    //comments: wp.comments().param({post: id}).get() as Promise<WPTYPES.WP_REST_API_Comments>,
-  };
-
   return (
     <Pressable
       style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}
       android_ripple={androidRipple()}
-      onPress={() => navigation.navigate("Article", {body: fullArticle})}
+      onPress={() => navigation.navigate("Article", {body: data})}
     >
       {children}
       <View style={styles.footer}>
         <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
-        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, fullArticle)} />
+        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, data)} />
         <IconButton icon={"share"} action={share} />
       </View>
     </Pressable>

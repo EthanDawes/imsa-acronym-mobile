@@ -1,19 +1,18 @@
 import useAsyncStorage from "../../hooks/useAsyncStorage";
 
-export interface PreviewArticle {
+export interface FullArticle {
   id: number,
   date: Date;
   imgUrl: string;
   title: string;
-}
-
-export interface FullArticle extends PreviewArticle {
   body: string,
+  // If needed, I was thinking of implementing non-immediate values like:
+  // comments: Promise<WPTYPES.WP_REST_API_COMMENTS>
 }
 
 export interface ArticleProps {
   useBookmarks: ReturnType<typeof useBookmarks>,
-  data: PreviewArticle | FullArticle,
+  data: FullArticle,
 }
 
 export function useBookmarks() {

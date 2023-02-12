@@ -16,7 +16,7 @@ export default function SavedScreen() {
   return (
     <FlatList
       data={Object.values(bookmarks)}
-      renderItem={({item}) => <SmallArticle data={{imgUrl: item.imgUrl, title: item.title, date: item.date, id: item.id}} useBookmarks={[bookmarks, toggleBookmarks]} />}
+      renderItem={({item}) => <SmallArticle data={item} useBookmarks={[bookmarks, toggleBookmarks]} />}
       keyExtractor={item => "" + item.id}
     />
   );

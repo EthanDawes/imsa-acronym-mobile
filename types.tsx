@@ -21,7 +21,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Notifications: { category: "topics" | "authors" };
   Search: undefined;
-  Article: { body: Promise<FullArticle> };
+  Article: { body: FullArticle };
   NotFound: undefined;
 };
 
