@@ -55,7 +55,7 @@ function RootNavigator() {
           <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
       }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="Article" component={ArticleScreen} />
+      <Stack.Screen name="Article" component={ArticleScreen} options={{ title: "" }} />
     </Stack.Navigator>
   );
 }
