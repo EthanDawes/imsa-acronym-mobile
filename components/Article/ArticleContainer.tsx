@@ -7,11 +7,9 @@ import {BookmarkContext} from "../../constants/context";
 import {useNavigation} from "@react-navigation/native";
 import wp, {getAllPosts} from "../../constants/api";
 import * as WPTYPES from "wp-types";
+import BookmarkShare from "./BookmarkShare";
 
 export default function ArticleContainer({data, useBookmarks, children}: PropsWithChildren<ArticleProps>) {
-  const {id, date} = data;
-  const [bookmarks, toggleBookmark] = useContext(BookmarkContext);
-  const isBookmarked = id in bookmarks;
   const navigation = useNavigation();
 
   return (
@@ -22,11 +20,8 @@ export default function ArticleContainer({data, useBookmarks, children}: PropsWi
     >
       {children}
       <View style={styles.footer}>
-        <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
-        <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, data)} />
-        {/* TODO: I want to anchor to an element, but no types for that & I don't know the correct type
-         https://reactnative.dev/docs/share*/}
-        <IconButton icon={"share"} action={Share.share.bind(null, {message: data.url, url: data.url})} />
+        <Text style={{flexGrow: 10}}>{toRelativeDate(data.date)}</Text>
+        <BookmarkShare {...data} />
       </View>
     </Pressable>
   );

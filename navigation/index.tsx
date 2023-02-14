@@ -18,7 +18,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import FeedScreen from '../screens/FeedScreen';
 import SavedScreen from '../screens/SavedScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
@@ -27,6 +27,7 @@ import SegmentedSearch from "../components/SegmentedSearch";
 import {useBookmarks} from "../components/Article/logic";
 import { BookmarkContext } from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
+import BookmarkShare from "../components/Article/BookmarkShare";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -55,7 +56,10 @@ function RootNavigator() {
           <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
       }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="Article" component={ArticleScreen} options={{ title: "" }} />
+      <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+        title: "",
+        headerRight: BookmarkShare.bind(null, route.params.body),
+      })} />
     </Stack.Navigator>
   );
 }
