@@ -1,7 +1,7 @@
 import {androidRipple, Text} from "../Themed";
 import IconButton from "../IconButton";
-import {ArticleProps, FullArticle, share} from "./logic";
-import {Pressable, StyleSheet, View} from "react-native";
+import {ArticleProps} from "./logic";
+import {Pressable, Share, StyleSheet, View} from "react-native";
 import {PropsWithChildren, useContext} from "react";
 import {BookmarkContext} from "../../constants/context";
 import {useNavigation} from "@react-navigation/native";
@@ -24,7 +24,9 @@ export default function ArticleContainer({data, useBookmarks, children}: PropsWi
       <View style={styles.footer}>
         <Text style={{flexGrow: 10}}>{toRelativeDate(date)}</Text>
         <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, data)} />
-        <IconButton icon={"share"} action={share} />
+        {/* TODO: I want to anchor to an element, but no types for that & I don't know the correct type
+         https://reactnative.dev/docs/share*/}
+        <IconButton icon={"share"} action={Share.share.bind(null, {message: data.url, url: data.url})} />
       </View>
     </Pressable>
   );

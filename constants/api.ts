@@ -50,8 +50,9 @@ export async function* getAllPosts(request = wp.posts()) {
     nextPage = pageData._paging.next;
     yield* pageData.map<FullArticle>((i) => ({
       /// Try to avoid using this
-      _raw: pageData,
+      _raw: i,
       id: i.id,
+      url: i.link,
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}

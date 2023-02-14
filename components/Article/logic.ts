@@ -1,7 +1,10 @@
 import useAsyncStorage from "../../hooks/useAsyncStorage";
+import * as WPTYPES from "wp-types";
 
 export interface FullArticle {
+  _raw: WPTYPES.WP_REST_API_Post;
   id: number,
+  url: string,
   date: Date;
   imgUrl: string;
   title: string;
@@ -31,8 +34,4 @@ export function useBookmarks() {
   }
 
   return [bookmarks, toggleBookmark] as const;
-}
-
-export function share() {
-
 }
