@@ -7,6 +7,7 @@ function cleanse<T>(valOrArray: T[] | T): T[] {
 
 export default function useAsyncIterator<T>(generator: AsyncIterator<T[] | T, void>) {
   const [response, setResponse] = useState<T[]>([]);
+  generator = useState(generator)[0];
 
   function next() {
     generator.next().then(res => {
