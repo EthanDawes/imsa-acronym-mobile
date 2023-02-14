@@ -1,6 +1,5 @@
 import {ScrollView, StyleSheet} from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import SegmentedSearch from "../components/SegmentedSearch";
 import Layout from "../constants/Layout";

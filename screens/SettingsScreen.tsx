@@ -1,6 +1,5 @@
 import {Button, Pressable, ScrollView, StyleSheet, Switch} from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import {androidRipple, Hr, Text, Title, View} from '../components/Themed';
 import {useState} from "react";
 import Colors from "../constants/Colors";
