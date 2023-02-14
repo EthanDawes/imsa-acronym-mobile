@@ -1,4 +1,4 @@
-import {RefreshControl, ScrollView, StyleSheet, View, Animated} from 'react-native';
+import {RefreshControl, Animated, NativeSyntheticEvent, NativeScrollEvent} from 'react-native';
 
 import { Hr } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -36,10 +36,20 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
     },
   };
   const {
-    onScroll /* Event handler */,
+    onScrollWithListener /* Event handler creator */,
     containerPaddingTop /* number */,
     scrollIndicatorInsetTop /* number */,
   } = useCollapsibleHeader(options);
+
+  const listener = ({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollTop = nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
+    const scrollHeight = nativeEvent.contentSize.height;
+    const progress = scrollTop / scrollHeight * 100;
+    // TODO: only load as many as user is going to see in the next second
+    //const velocity = nativeEvent.velocity?.y;
+    if (progress > 70) next();
+  };
+  const onScroll = onScrollWithListener(listener);
   // CollapsibleHeader docs: https://github.com/benevbright/react-navigation-collapsible
 
   // TODO: You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. {"contentLength": 11827.4287109375, "dt": 831, "prevDt": 807}

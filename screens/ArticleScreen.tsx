@@ -6,6 +6,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import {ScrollView} from "react-native";
 import {useState} from "react";
+import {WebViewMessageEvent} from "react-native-webview/lib/WebViewTypes";
 
 export default function ArticleScreen({route}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
@@ -13,7 +14,7 @@ export default function ArticleScreen({route}: RootStackScreenProps<"Article">) 
 
   // Adapted from https://yelotofu.com/reactnative-why-your-webview-disappears-inside-scrollview-c6057c9ac6dd
   const [webViewHeight, setWebViewHeight] = useState(0);
-  const onMessage = (event) => {
+  const onMessage = (event: WebViewMessageEvent) => {
     setWebViewHeight(Number.parseInt(event.nativeEvent.data));
   }
   const injectedJavaScript=`
@@ -25,6 +26,7 @@ export default function ArticleScreen({route}: RootStackScreenProps<"Article">) 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, height: webViewHeight }}>
       <Title>{article.title}</Title>
+      <Text>{article.date.getTime()}</Text>
       <WebView
         originWhitelist={['*']}
         scrollEnabled={false}
