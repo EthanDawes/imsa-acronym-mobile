@@ -46,21 +46,25 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const usedBookmarks = useBookmarks();
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} options={{
-        headerTitle: (props) =>
-          <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
-      }} />
-      <Stack.Screen name="Notifications" component={NotificationsScreen} />
-      <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
-        title: "",
-        headerRight: BookmarkShare.bind(null, route.params.body),
-      })} />
-    </Stack.Navigator>
+    <BookmarkContext.Provider value={usedBookmarks}>
+      <Stack.Navigator>
+        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} options={{
+          headerTitle: (props) =>
+            <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
+        }} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+          title: "",
+          headerRight: () => BookmarkShare(route.params.body),
+        })} />
+      </Stack.Navigator>
+    </BookmarkContext.Provider>
   );
 }
 
@@ -72,51 +76,48 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const usedBookmarks = useBookmarks();
 
   return (
-    <BookmarkContext.Provider value={usedBookmarks}>
-      <BottomTab.Navigator
-        initialRouteName="FeedTab"
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme].tint,
-        }}>
-        <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
-          headerTitleAlign: 'center',
-          headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
-          headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
-        })}>
-          <BottomTab.Screen
-            name="FeedTab"
-            component={FeedScreen}
-            options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
-              title: 'Feed',
-              headerTitle: (props) => <Image
-                style={{ width: 250, height: "100%", resizeMode: "contain" }}
-                source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
-              />,
-              tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-            })}
-          />
-          <BottomTab.Screen
-            name="SavedTab"
-            component={SavedScreen}
-            options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
-              title: 'Saved',
-              tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
-            })}
-          />
-          <BottomTab.Screen
-            name="GamesTab"
-            component={GamesScreen}
-            options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
-              title: 'Games',
-              tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
-            })}
-          />
-        </BottomTab.Group>
-      </BottomTab.Navigator>
-    </BookmarkContext.Provider>
+    <BottomTab.Navigator
+      initialRouteName="FeedTab"
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme].tint,
+      }}>
+      <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
+        headerTitleAlign: 'center',
+        headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
+        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
+      })}>
+        <BottomTab.Screen
+          name="FeedTab"
+          component={FeedScreen}
+          options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
+            title: 'Feed',
+            headerTitle: (props) => <Image
+              style={{ width: 250, height: "100%", resizeMode: "contain" }}
+              source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
+            />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          })}
+        />
+        <BottomTab.Screen
+          name="SavedTab"
+          component={SavedScreen}
+          options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
+            title: 'Saved',
+            tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
+          })}
+        />
+        <BottomTab.Screen
+          name="GamesTab"
+          component={GamesScreen}
+          options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
+            title: 'Games',
+            tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
+          })}
+        />
+      </BottomTab.Group>
+    </BottomTab.Navigator>
   );
 }
 
