@@ -19,12 +19,11 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 
   return (
     <ScrollView style={styles.container}>
-      <Text>{JSON.stringify(bookmarks, null, 2)}</Text>
-      <Button title={"Clear storage"} onPress={() => AsyncStorage.clear()} />
       <Title>General</Title>
       <View style={{flexDirection: "row"}}>
         <Text style={{flexGrow: 100}}>Default Page</Text>
       </View>
+      <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()} />
       <Hr />
       <Title>Notifications</Title>
       <Pressable style={{flexDirection: "row"}}
