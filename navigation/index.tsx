@@ -28,6 +28,7 @@ import {useBookmarks} from "../components/Article/logic";
 import { BookmarkContext } from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
+import {search, SearchDomain, searchDomains} from "../constants/api";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -54,10 +55,9 @@ function RootNavigator() {
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} options={{
-          headerTitle: (props) =>
-            <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />,
-        }} />
+        <Stack.Screen name="Search" component={SearchScreen} options={({navigation}: RootStackScreenProps<"Search">) => ({
+          headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} placeholder={"Search everything"} />,
+        })} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
           title: "",
@@ -86,7 +86,7 @@ function BottomTabNavigator() {
       <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
         headerTitleAlign: 'center',
         headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
-        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search")}),
+        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search", {query: "", domain: "All"})}),
       })}>
         <BottomTab.Screen
           name="FeedTab"

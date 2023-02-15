@@ -5,20 +5,18 @@ import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from "./Themed";
 
-type callback = (dropdown: string, textbox: string) => void;
-
-interface Props {
-  dropdownItems: string[];
-  onInput: callback;
+interface Props<T extends readonly string[]> {
+  dropdownItems: T;
+  onInput: (textbox: string, dropdown: T[number]) => void;
   placeholder?: string;
 }
 
-export default function SegmentedSearch({dropdownItems, onInput, placeholder}: Props) {
+export default function SegmentedSearch<T extends readonly string[]>({dropdownItems, onInput, placeholder}: Props<T>) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(dropdownItems.map(i => ({label: i, value: i})));
   const [dropdownValue, setDropdownValue] = useState(dropdownItems[0]);
   const [inputValue, setInputValue] = useState("");
-  useEffect(onInput.bind(null, dropdownValue, inputValue),[dropdownValue, inputValue]);
+  useEffect(onInput.bind(null, inputValue, dropdownValue),[dropdownValue, inputValue]);
   const roundness = 25;
 
   // TODO: don't use listmode=modal (currently b/c it doesn't overflow header. Maybe implement my own?)

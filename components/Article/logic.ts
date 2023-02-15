@@ -14,7 +14,6 @@ export interface FullArticle {
 }
 
 export interface ArticleProps {
-  useBookmarks: ReturnType<typeof useBookmarks>,
   data: FullArticle,
 }
 

@@ -25,12 +25,29 @@ export interface WPResponse {
   }
 }
 
+// Creds to https://stackoverflow.com/a/59239690
+export type UnionType<T extends readonly any[]> = T[number];
+
+export const searchDomains = [
+  "All",
+  "Topics",
+  "Authors",
+  "Posts",
+  "Tags",
+] as const;
+
+export type SearchDomain = UnionType<typeof searchDomains>;
+
 const wp = new WPAPI({ endpoint: 'https://sites.imsa.edu/acronym/wp-json' });
 export default wp;
 
-export async function getAllCategories() {
+/**
+ * @return promise resolving to a mapping of category names to their ids
+ */
+export async function getAllCategories(request = wp.categories().perPage(100)) {
+  // TODO: if there are more than 100 categories, they won't show up
   // Even though it looks like .get has typing, it is for error responses. Be warned!
-  const categories = await wp.categories().get() as WPTYPES.WP_REST_API_Categories & WPResponse;
+  const categories = await request.get() as WPTYPES.WP_REST_API_Categories & WPResponse;
   const acc: Record<string, number> = {};
   for (const item of categories)
     acc[item.name] = item.id;
@@ -61,4 +78,22 @@ export async function* getAllPosts(request = wp.posts()) {
       body: i.content?.rendered,
     }));
   }
+}
+
+async function* noopAsyncGenerator() {}
+
+export function search(query: string, domain: SearchDomain = "All") {
+  const all = domain === "All";
+  const results = {
+    topics: Promise.resolve({} as Record<string, number>),
+    // This should be a legal cast b/c no properties will be accessed
+    posts: noopAsyncGenerator as unknown as ReturnType<typeof getAllPosts>,
+  };
+  if (all || domain === "Topics") {
+    results.topics = getAllCategories(wp.categories().perPage(all ? 1 : 100).search(query));
+  }
+  if (all || domain === "Posts") {
+    results.posts = getAllPosts(wp.posts().perPage(25).embed().search(query));
+  }
+  return results;
 }

@@ -1,20 +1,27 @@
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native';
+import {search} from "../constants/api";
+import useAsync from "../hooks/useAsync";
+import useAsyncIterator from "../hooks/useAsyncIterator";
+import {RootStackScreenProps} from "../types";
+import SmallArticle from "../components/Article/SmallArticle";
+import {useEffect} from "react";
 
-import { Text, View } from '../components/Themed';
-import SegmentedSearch from "../components/SegmentedSearch";
-import Layout from "../constants/Layout";
+export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
+  const {query, domain} = route.params;
+  const results = search(query, domain);
+  const topics = useAsync(results.topics);
+  const [pages, next] = useAsyncIterator(results.posts);
+  console.log(pages.length);
 
-export default function SavedScreen() {
+  useEffect(() => {
+    for (let i=0; i<10; i++) next();
+  }, []);
+
   return (
-    <View style={Layout.styles.scrollView}>
-      <SegmentedSearch dropdownItems={["All", "Topics", "Authors"]} onInput={() => {}} placeholder={"Search everything"} />
-    </View>
+    <ScrollView>
+      {pages.map(page => (
+        <SmallArticle data={page} key={page.id} />
+      ))}
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "pink"
-  },
-});

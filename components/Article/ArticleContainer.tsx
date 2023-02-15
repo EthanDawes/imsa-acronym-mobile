@@ -9,7 +9,7 @@ import wp, {getAllPosts} from "../../constants/api";
 import * as WPTYPES from "wp-types";
 import BookmarkShare from "./BookmarkShare";
 
-export default function ArticleContainer({data, useBookmarks, children}: PropsWithChildren<ArticleProps>) {
+export default function ArticleContainer({data, children}: PropsWithChildren<ArticleProps>) {
   const navigation = useNavigation();
 
   return (
