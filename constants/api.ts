@@ -50,7 +50,7 @@ export async function getAllCategories(request = wp.categories().perPage(100)) {
   const categories = await request.get() as WPTYPES.WP_REST_API_Categories & WPResponse;
   const acc: Record<string, number> = {};
   for (const item of categories)
-    acc[item.name] = item.id;
+    acc[decode(item.name)] = item.id;
   return acc;
 }
 
@@ -87,13 +87,13 @@ export function search(query: string, domain: SearchDomain = "All") {
   const results = {
     topics: Promise.resolve({} as Record<string, number>),
     // This should be a legal cast b/c no properties will be accessed
-    posts: noopAsyncGenerator as unknown as ReturnType<typeof getAllPosts>,
+    posts: noopAsyncGenerator() as unknown as ReturnType<typeof getAllPosts>,
   };
   if (all || domain === "Topics") {
-    results.topics = getAllCategories(wp.categories().perPage(all ? 1 : 100).search(query));
+    results.topics = getAllCategories(wp.categories().perPage(all ? 2 : 100).search(query));
   }
   if (all || domain === "Posts") {
-    results.posts = getAllPosts(wp.posts().perPage(25).embed().search(query));
+    results.posts = getAllPosts(wp.posts().perPage(11).embed().search(query));
   }
   return results;
 }
