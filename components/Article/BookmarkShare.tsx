@@ -10,7 +10,7 @@ export default function BookmarkShare(data: FullArticle) {
 
   return (
     <>
-      <IconButton icon={isBookmarked ? "star" : "bookmark"} action={toggleBookmark.bind(null, data)} />
+      <IconButton icon={isBookmarked ? "bookmark" : "bookmark-o"} action={toggleBookmark.bind(null, data)} />
       {/* TODO: I want to anchor to an element, but no types for that & I don't know the correct type
              https://reactnative.dev/docs/share*/}
       <IconButton icon={"share"} action={Share.share.bind(null, {message: data.url, url: data.url})} />

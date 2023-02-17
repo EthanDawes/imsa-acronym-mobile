@@ -8,6 +8,7 @@ import SmallArticle from "../components/Article/SmallArticle";
 import {useEffect, useState} from "react";
 import {FullArticle} from "../components/Article/logic";
 import useDebounce from "../hooks/useDebounce";
+import SearchItem from "../components/SearchItem";
 
 export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const {query, domain} = route.params;
@@ -42,13 +43,13 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   return (
     <ScrollView>
       {Object.keys(topics).map(topic => (
-        <Text key={topic}>{topic}</Text>
+        <SearchItem key={topic} title={topic} domain="Topics" />
       ))}
       {Object.keys(authors).map(author => (
-        <Text key={author}>{author}</Text>
+        <SearchItem key={author} title={author} domain="Authors" />
       ))}
       {Object.keys(tags).map(tag => (
-        <Text key={tag}>{tag}</Text>
+        <SearchItem key={tag} title={tag} domain="Tags" />
       ))}
       {pages.map(page => (
         <SmallArticle data={page} key={page.id} />
