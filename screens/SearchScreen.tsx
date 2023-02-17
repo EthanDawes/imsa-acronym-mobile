@@ -1,6 +1,6 @@
 import {ScrollView} from 'react-native';
 import {Text} from "../components/Themed";
-import {search} from "../constants/api";
+import {getAllAuthors, getAllTags, search} from "../constants/api";
 import useAsync from "../hooks/useAsync";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import {RootStackScreenProps} from "../types";
@@ -12,6 +12,8 @@ import useDebounce from "../hooks/useDebounce";
 export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const {query, domain} = route.params;
   const [topics, setTopics] = useState({} as Record<string, number>);
+  const [authors, setAuthors] = useState({} as Awaited<ReturnType<typeof getAllAuthors>>);
+  const [tags, setTags] = useState({} as Awaited<ReturnType<typeof getAllTags>>);
   const [pages, setPages] = useState([] as (FullArticle)[]);
   const debouncedQuery = useDebounce<string>(query, 500);
 
@@ -21,6 +23,8 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
     const results = search(query, domain);
 
     results.topics.then(setTopics);
+    results.authors.then(setAuthors);
+    results.tags.then(setTags);
 
     // I think it is safe to ignore promise rejection: next() is undefined
     const pages = (async () => {
@@ -39,6 +43,12 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
     <ScrollView>
       {Object.keys(topics).map(topic => (
         <Text key={topic}>{topic}</Text>
+      ))}
+      {Object.keys(authors).map(author => (
+        <Text key={author}>{author}</Text>
+      ))}
+      {Object.keys(tags).map(tag => (
+        <Text key={tag}>{tag}</Text>
       ))}
       {pages.map(page => (
         <SmallArticle data={page} key={page.id} />

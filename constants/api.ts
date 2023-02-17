@@ -54,6 +54,24 @@ export async function getAllCategories(request = wp.categories().perPage(100)) {
   return acc;
 }
 
+// TODO: this is pretty similar to getAllCategories & getAllTags, should they be combined?
+export async function getAllAuthors(request = wp.users().perPage(100)) {
+  const categories = await request.get() as WPTYPES.WP_REST_API_Users & WPResponse;
+  const acc: Record<string, WPTYPES.WP_REST_API_User> = {};
+  for (const item of categories)
+    acc[decode(item.name)] = item;
+  return acc;
+}
+
+export async function getAllTags(request = wp.tags().perPage(100)) {
+  const categories = await request.get() as WPTYPES.WP_REST_API_Tags & WPResponse;
+  const acc: Record<string, WPTYPES.WP_REST_API_Tag> = {};
+  for (const item of categories)
+    if (item.count > 0)
+      acc[decode(item.name)] = item;
+  return acc;
+}
+
 /// Will get post info as prescribed by `request` parameter (100 items/page max, default 10). Assumes you want to get embedded data too
 export async function* getAllPosts(request = wp.posts()) {
   let nextPage: WPAPI.WPRequest | undefined = request;
@@ -86,6 +104,8 @@ export function search(query: string, domain: SearchDomain = "All") {
   const all = domain === "All";
   const results = {
     topics: Promise.resolve({} as Record<string, number>),
+    authors: Promise.resolve({} as ReturnType<typeof getAllAuthors>),
+    tags: Promise.resolve({} as ReturnType<typeof getAllTags>),
     // This should be a legal cast b/c no properties will be accessed
     posts: noopAsyncGenerator() as unknown as ReturnType<typeof getAllPosts>,
   };
@@ -94,6 +114,12 @@ export function search(query: string, domain: SearchDomain = "All") {
   }
   if (all || domain === "Posts") {
     results.posts = getAllPosts(wp.posts().perPage(11).embed().search(query));
+  }
+  if (all || domain === "Authors") {
+    results.authors = getAllAuthors(wp.users().perPage(all ? 2 : 100).search(query));
+  }
+  if (all || domain === "Tags") {
+    results.tags = getAllTags(wp.tags().perPage(all ? 2 : 100).search(query));
   }
   return results;
 }
