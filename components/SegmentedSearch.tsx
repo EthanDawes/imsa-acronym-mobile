@@ -4,6 +4,8 @@ import { View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from "./Themed";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
 
 interface Props<T extends readonly string[]> {
   dropdownItems: T;
@@ -12,6 +14,7 @@ interface Props<T extends readonly string[]> {
 }
 
 export default function SegmentedSearch<T extends readonly string[]>({dropdownItems, onInput, placeholder}: Props<T>) {
+  const colorScheme = useColorScheme();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(dropdownItems.map(i => ({label: i, value: i})));
   const [dropdownValue, setDropdownValue] = useState(dropdownItems[0]);
@@ -30,7 +33,7 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
         setValue={setDropdownValue}
         setItems={setItems}
 
-        theme="DARK"
+        theme={colorScheme.toUpperCase() as any}
         listMode="MODAL"
         style={{
           borderRadius: 0,
@@ -47,7 +50,12 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
           borderRadius: 0,
           borderTopRightRadius: roundness,
           borderBottomRightRadius: roundness,
+          borderWidth: 1,
+          borderLeftWidth: 0,
+          borderStyle: "solid",
+          borderColor: colorScheme === "light" ? "black" : "#292d3e",
           width: 200,
+          paddingLeft: 5,
         }}
         onChangeText={setInputValue}
         value={inputValue}

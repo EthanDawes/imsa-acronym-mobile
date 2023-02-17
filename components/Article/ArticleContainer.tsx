@@ -8,9 +8,12 @@ import {useNavigation} from "@react-navigation/native";
 import wp, {getAllPosts} from "../../constants/api";
 import * as WPTYPES from "wp-types";
 import BookmarkShare from "./BookmarkShare";
+import useColorScheme from "../../hooks/useColorScheme";
+import Colors from "../../constants/Colors";
 
 export default function ArticleContainer({data, children}: PropsWithChildren<ArticleProps>) {
   const navigation = useNavigation();
+  const colorScheme = Colors[useColorScheme()];
 
   return (
     <Pressable
@@ -20,7 +23,7 @@ export default function ArticleContainer({data, children}: PropsWithChildren<Art
     >
       {children}
       <View style={styles.footer}>
-        <Text style={{flexGrow: 10}}>{toRelativeDate(data.date)}</Text>
+        <Text style={{flexGrow: 10, color: colorScheme.text}}>{toRelativeDate(data.date)}</Text>
         <BookmarkShare {...data} />
       </View>
     </Pressable>
@@ -47,5 +50,6 @@ const styles = StyleSheet.create({
   footer: {
     //flex: 1, Oddly, adding this makes container not show (only android, web works fine). Flex-grow works w/o this
     flexDirection: "row",
+    marginVertical: 5,
   }
 });

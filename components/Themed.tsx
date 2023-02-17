@@ -61,7 +61,8 @@ export function Hr() {
 }
 
 export function Title(props: TextProps) {
-  return (<Text style={{fontSize: 20, fontWeight: 'bold'}} {...props} />);
+  const { style, ...otherProps } = props;
+  return (<Text style={[{fontSize: 20, fontWeight: 'bold'}, style]} {...otherProps} />);
 }
 
 // TODO: replace w/ TouchableRipple Component for Android & iOS

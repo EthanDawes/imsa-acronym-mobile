@@ -14,7 +14,7 @@ export default function GameListing({imgUrl, href, title, description}: {imgUrl:
           }}
         />
       </View>
-      <View style={{flexGrow: 100}}>
+      <View style={{flexShrink: 1}}>
         <Title>{title}</Title>
         <Text>{description}</Text>
       </View>
@@ -26,10 +26,13 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
   },
   smallImg: {
     width: 80,
     height: 80,
     borderRadius: 20,
+    marginRight: 10,
   },
 });
