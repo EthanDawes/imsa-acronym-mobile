@@ -11,6 +11,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import wp, {getAllPosts} from "../constants/api";
 import {useBookmarks} from "../components/Article/logic";
+import constructInfiniteScrollHandler from "../components/constructInfiniteScrollHandler";
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const colorScheme = useColorScheme();
@@ -40,15 +41,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
     scrollIndicatorInsetTop /* number */,
   } = useCollapsibleHeader(options);
 
-  const listener = ({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const scrollTop = nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
-    const scrollHeight = nativeEvent.contentSize.height;
-    const progress = scrollTop / scrollHeight * 100;
-    // TODO: only load as many as user is going to see in the next second
-    //const velocity = nativeEvent.velocity?.y;
-    if (progress > 70) next();
-  };
-  const onScroll = onScrollWithListener(listener);
+  const onScroll = onScrollWithListener(constructInfiniteScrollHandler(next));
   // CollapsibleHeader docs: https://github.com/benevbright/react-navigation-collapsible
 
   // TODO: You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. {"contentLength": 11827.4287109375, "dt": 831, "prevDt": 807}
