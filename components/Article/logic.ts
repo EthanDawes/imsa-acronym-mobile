@@ -9,6 +9,9 @@ export interface FullArticle {
   imgUrl: string;
   title: string;
   body: string,
+  author: WPTYPES.WP_REST_API_User,
+  categories: Record<string, number>,
+  tags: Record<string, number>,
   // If needed, I was thinking of implementing non-immediate values like:
   // comments: Promise<WPTYPES.WP_REST_API_COMMENTS>
 }

@@ -72,6 +72,17 @@ export async function getAllTags(request = wp.tags().perPage(100)) {
   return acc;
 }
 
+// Consider using Object.assign? https://stackoverflow.com/a/43626263
+// Converts an array of identical objects to a single object where the keys are `key` and the value is the rest of the object or `val`
+function arrayToObject<Array extends any[], Key extends keyof Array[number], Val extends keyof Array[number]>(array: Array, key: Key, val?: Val) {
+  const acc: Record<string, Val extends undefined ? Array[number] : Array[number][Val]> = {};
+  for (const item of array)
+    // TODO: in a perfect world, I would ensure in signature that item[key] is a string, but that's too complicated
+    acc[decode(item[key] as string)] = val ? item[val] : item;
+  return acc;
+}
+
+
 /// Will get post info as prescribed by `request` parameter (100 items/page max, default 10). Assumes you want to get embedded data too
 export async function* getAllPosts(request = wp.posts()) {
   let nextPage: WPAPI.WPRequest | undefined = request;
@@ -91,9 +102,12 @@ export async function* getAllPosts(request = wp.posts()) {
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
-      imgUrl: i._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
+      imgUrl: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
       date: new Date(i.date),
       body: i.content?.rendered,
+      author: (i._embedded?.author[0] as WPTYPES.WP_REST_API_User),
+      categories: arrayToObject(i._embedded?.["wp:term"]?.[0] as WPTYPES.WP_REST_API_Categories, "name", "id"),
+      tags: arrayToObject(i._embedded?.["wp:term"]?.[1] as WPTYPES.WP_REST_API_Tags, "name", "id"),
     }));
   }
 }
