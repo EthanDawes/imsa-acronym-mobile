@@ -16,8 +16,9 @@ export default function ArticleScreen({route}: RootStackScreenProps<"Article">) 
   const androidRipple = useAndroidRipple();
 
   const pronouns = article.author.description.toLowerCase();
-  const isMale = pronouns.includes("he ") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
-  const isFemale = pronouns.includes("she ") || pronouns.includes("girl") || pronouns.includes("02") || pronouns.includes("06");
+  const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
+  const isFemale = hasWord(pronouns, "she") || hasWord(pronouns, "hers") || hasWord(pronouns, "her") || pronouns.includes("girl") || pronouns.includes("02") || pronouns.includes("06");
+  console.log(isFemale, isMale);
   const [img, setImg] = useState(() => {
     /* Unfortunately, React Native doesn't support URLSearchParams.set so I must use janky RegEx solution :/
     const url = new URL(article.author.avatar_urls?.["96"]);
@@ -97,4 +98,11 @@ function getFakeFace(isFemale: boolean) {
   return fetch(`https://fakeface.rest/face/json?gender=${isFemale ? "female" : "male"}&minimum_age=17&maximum_age=21`)
     .then(res => res.json().catch(() => res.text().then(console.log)))
     .then(res => res.image_url as string)
+}
+
+/**
+ * Check if a sentence contains a word, applying extra logic to ensure that the search term isn't part of a larger word
+ */
+function hasWord(sentence: string, word: string) {
+  return new RegExp(`(?<!\\w)${word}(?!\\w)`).test(sentence);
 }
