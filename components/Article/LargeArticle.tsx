@@ -1,6 +1,6 @@
 import {StyleSheet, Image, Pressable} from 'react-native';
 
-import {androidRipple, Title} from '../Themed';
+import {useAndroidRipple, Title} from '../Themed';
 import {ArticleProps} from "./logic";
 import ArticleContainer from "./ArticleContainer";
 

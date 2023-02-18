@@ -66,7 +66,7 @@ export function Title(props: TextProps) {
 }
 
 // TODO: replace w/ TouchableRipple Component for Android & iOS
-export function androidRipple() {
+export function useAndroidRipple() {
   const colorScheme = useColorScheme();
   return {color: Colors[colorScheme].shadow, foreground: true};
 }

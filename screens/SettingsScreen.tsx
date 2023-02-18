@@ -1,6 +1,6 @@
 import {Button, Pressable, ScrollView, StyleSheet, Switch} from 'react-native';
 
-import {androidRipple, Hr, Text, Title, View} from '../components/Themed';
+import {useAndroidRipple, Hr, Text, Title, View} from '../components/Themed';
 import {useState} from "react";
 import Colors from "../constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
@@ -26,7 +26,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       <Hr />
       <Title>Notifications</Title>
       <Pressable style={{flexDirection: "row"}}
-                 android_ripple={androidRipple()}
+                 android_ripple={useAndroidRipple()}
                  onPress={() => navigation.navigate("Notifications", {category: "topics"})}
       >
         <Text style={{flexGrow: 100}}>Topics</Text>
@@ -38,7 +38,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
         />
       </Pressable>
       <Pressable style={{flexDirection: "row"}}
-                 android_ripple={androidRipple()}
+                 android_ripple={useAndroidRipple()}
                  onPress={() => navigation.navigate("Notifications", {category: "authors"})}
       >
         <Text style={{flexGrow: 100}}>Authors</Text>

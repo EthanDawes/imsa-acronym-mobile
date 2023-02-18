@@ -1,4 +1,4 @@
-import {androidRipple, Text} from "../Themed";
+import {useAndroidRipple, Text} from "../Themed";
 import IconButton from "../IconButton";
 import {ArticleProps} from "./logic";
 import {Pressable, Share, StyleSheet, View} from "react-native";
@@ -18,7 +18,7 @@ export default function ArticleContainer({data, children}: PropsWithChildren<Art
   return (
     <Pressable
       style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}
-      android_ripple={androidRipple()}
+      android_ripple={useAndroidRipple()}
       onPress={() => navigation.navigate("Article", {body: data})}
     >
       {children}

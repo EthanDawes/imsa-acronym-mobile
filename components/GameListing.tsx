@@ -1,11 +1,11 @@
 import {StyleSheet, Image, View, Pressable} from 'react-native';
 
-import {androidRipple, Text, Title} from './Themed';
+import {useAndroidRipple, Text, Title} from './Themed';
 
 
 export default function GameListing({imgUrl, href, title, description}: {imgUrl: string, href: string, title: string, description: string}) {
   return (
-    <Pressable style={styles.container} android_ripple={androidRipple()}>
+    <Pressable style={styles.container} android_ripple={useAndroidRipple()}>
       <View>
         <Image
           style={styles.smallImg}

@@ -1,5 +1,5 @@
 import {Image, Pressable, View} from "react-native";
-import {androidRipple, Text, Title} from "./Themed";
+import {useAndroidRipple, Text, Title} from "./Themed";
 import {SearchDomain} from "../constants/api";
 import {useNavigation} from "@react-navigation/native";
 import Colors from "../constants/Colors";
@@ -14,7 +14,7 @@ export default function SearchItem({domain, title}: {domain: SearchDomain, title
   return (
     <Pressable
       style={{ width: '100%', padding: 10, marginTop: 10 }}
-      android_ripple={androidRipple()}
+      android_ripple={useAndroidRipple()}
       //onPress={() => navigation.navigate("SearchDetails", {body: data})}
     >
       <View style={{flexDirection: "row"}}>
