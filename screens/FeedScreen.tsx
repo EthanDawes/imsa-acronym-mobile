@@ -15,7 +15,6 @@ import {useBookmarks} from "../components/Article/logic";
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const colorScheme = useColorScheme();
   const [refreshing, setRefreshing] = React.useState(false);
-  const usedBookmarks = useBookmarks();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

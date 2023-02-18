@@ -42,14 +42,14 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
 
   return (
     <ScrollView>
-      {Object.keys(topics).map(topic => (
-        <SearchItem key={topic} title={topic} domain="Topics" />
+      {Object.entries(topics).map(([topic, id]) => (
+        <SearchItem key={topic} title={topic} id={id} domain="Topics" />
       ))}
-      {Object.keys(authors).map(author => (
-        <SearchItem key={author} title={author} domain="Authors" />
+      {Object.entries(authors).map(([author, deets]) => (
+        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" />
       ))}
-      {Object.keys(tags).map(tag => (
-        <SearchItem key={tag} title={tag} domain="Tags" />
+      {Object.entries(tags).map(([tag, deets]) => (
+        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" />
       ))}
       {pages.map(page => (
         <SmallArticle data={page} key={page.id} />

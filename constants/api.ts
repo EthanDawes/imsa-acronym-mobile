@@ -37,6 +37,7 @@ export const searchDomains = [
 ] as const;
 
 export type SearchDomain = UnionType<typeof searchDomains>;
+export type ArticleFilter = Exclude<SearchDomain, "All" | "Posts">
 
 const wp = new WPAPI({ endpoint: 'https://sites.imsa.edu/acronym/wp-json' });
 export default wp;

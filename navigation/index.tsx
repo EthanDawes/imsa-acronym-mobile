@@ -3,12 +3,12 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import {FontAwesome, MaterialIcons} from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {NavigationContainer, DefaultTheme, DarkTheme, CompositeScreenProps} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Image } from 'react-native';
+import {ColorSchemeName, Image, View} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -29,6 +29,9 @@ import { BookmarkContext } from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {search, SearchDomain, searchDomains} from "../constants/api";
+import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
+import {Title} from "../components/Themed";
+import {getDomainIcon} from "../components/SearchItem";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -47,16 +50,36 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const usedBookmarks = useBookmarks();
+  const colorScheme = Colors[useColorScheme()];
 
   return (
-    <BookmarkContext.Provider value={usedBookmarks}>
+    <BookmarkContext.Provider value={useBookmarks()}>
       <Stack.Navigator>
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Search" component={SearchScreen} options={({navigation}: RootStackScreenProps<"Search">) => ({
           headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} placeholder={"Search everything"} />,
+        })} />
+        <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
+          headerTitleAlign: 'center',
+          headerTitle: props => (
+            <View style={{alignItems: "center"}}>
+              <View style={{width: 96, height: 96, borderRadius: 1000, backgroundColor: colorScheme.tabIconDefault, alignItems: "center", justifyContent: "center"}}>
+                {route.params.img &&
+                  <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: route.params.img }} />
+                }
+                {!route.params.img &&
+                  <MaterialIcons
+                    name={getDomainIcon(route.params.domain)}
+                    size={80}
+                    color={colorScheme.text}
+                  />
+                }
+              </View>
+              <Title>{route.params.title}</Title>
+            </View>
+          ),
         })} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
