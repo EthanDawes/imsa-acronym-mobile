@@ -22,7 +22,7 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
   useEffect(onInput.bind(null, inputValue, dropdownValue),[dropdownValue, inputValue]);
   const roundness = 25;
 
-  // TODO: don't use listmode=modal (currently b/c it doesn't overflow header. Maybe implement my own?)
+  // Native StackNavigator causes dropdown to be cut off
   return (
     <View style={{flexDirection: "row"}}>
       <DropDownPicker
@@ -34,7 +34,6 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
         setItems={setItems}
 
         theme={colorScheme.toUpperCase() as any}
-        listMode="MODAL"
         style={{
           borderRadius: 0,
           borderTopLeftRadius: roundness,

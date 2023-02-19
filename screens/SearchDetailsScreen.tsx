@@ -27,32 +27,18 @@ export function SearchDetailsScreen({route}: RootStackScreenProps<"SearchDetails
 
   const options: UseCollapsibleOptions = {
     navigationOptions: {
-      // headerTitle: () => <SearchDetailsHeader {...route.params} />,
-      // title: "Thing",
-      headerStyle: { backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card },
+      headerTitle: () => <SearchDetailsHeader {...route.params} />,
+      headerStyle: { backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card, height: 170 },
     } as NativeStackNavigationOptions,
-    config: {
-      // collapsedColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card,
-      // disableOpacity: true,
-    }
   };
   const {
-    onScroll,
     onScrollWithListener /* Event handler creator */,
     containerPaddingTop /* number */,
     scrollIndicatorInsetTop /* number */,
   } = useCollapsibleHeader(options);
 
-  const handler = ({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const scrollTop = nativeEvent.contentOffset.y + nativeEvent.layoutMeasurement.height;
-    const scrollHeight = nativeEvent.contentSize.height;
-    const progress = scrollTop / scrollHeight * 100;
-    // TODO: only load as many as user is going to see in the next second
-    //const velocity = nativeEvent.velocity?.y;
-    if (progress > 70) next();
-  };
-
-  //const onScroll = onScrollWithListener(handler);
+  // Native StackNavigator prevents header from collapsing
+  const onScroll = onScrollWithListener(constructInfiniteScrollHandler(next));
 
   return (
     <Animated.FlatList
