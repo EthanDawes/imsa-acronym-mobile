@@ -1,14 +1,12 @@
 import {Title, View, Text, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
-import useAsync from "../hooks/useAsync";
-import WebView from "react-native-webview";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import {Image, Pressable, ScrollView} from "react-native";
 import {useState} from "react";
-import {WebViewMessageEvent} from "react-native-webview/lib/WebViewTypes";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
+import AutoHeightWebView from "react-native-autoheight-webview";
 
 export default function ArticleScreen({route, navigation}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
@@ -32,19 +30,9 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
     return img?.replace(/(?:d|default)=[^&]+/, "d=404");
   });
 
-  // Adapted from https://yelotofu.com/reactnative-why-your-webview-disappears-inside-scrollview-c6057c9ac6dd
-  const [webViewHeight, setWebViewHeight] = useState(0);
-  const onMessage = (event: WebViewMessageEvent) => {
-    setWebViewHeight(Number.parseInt(event.nativeEvent.data));
-  }
-  const injectedJavaScript=`
-  window.ReactNativeWebView.postMessage(
-    Math.max(document.body.offsetHeight, document.body.scrollHeight)
-  );`;
-
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, height: webViewHeight }}>
+    <ScrollView>
       <View style={{flexDirection: "row"}}>
         {Object.entries(article.categories).map(([category, id]) => (
           <Pressable
@@ -64,25 +52,19 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
       </Pressable>
       <ArticleImage src={article.imgUrl} />
       <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
-      <WebView
+      <AutoHeightWebView
         originWhitelist={['*']}
-        scrollEnabled={false}
-        onMessage={onMessage}
-        injectedJavaScript={injectedJavaScript}
-        source={{html:
-`<style>
-* {
- color: ${colorScheme.text};
- background-color: ${colorScheme.background};
-}
-a {
-  color: ${colorScheme.tint};
-}
-</style>
-`
-          + '<meta name="viewport" content="width=device-width, initial-scale=1" />'
-          + article.body
-        }}
+        viewportContent="width=device-width, initial-scale=1, user-scalable=no"
+        customStyle={`
+          * {
+           color: ${colorScheme.text};
+           background-color: ${colorScheme.background};
+          }
+          a {
+            color: ${colorScheme.tint};
+          }
+        `}
+        source={{html: article.body }}
       />
       {article.author.description &&
         <Pressable
