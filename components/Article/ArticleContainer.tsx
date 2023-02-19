@@ -30,7 +30,7 @@ export default function ArticleContainer({data, children}: PropsWithChildren<Art
   );
 }
 
-function toRelativeDate(date: Date | number): string {
+function toRelativeDate(date: Date | number | string): string {
   date = new Date(date);
   const now = new Date();
   const hoursAgo = (now.getTime() - date.getTime()) / 3.6e+6;  // Convert from ms

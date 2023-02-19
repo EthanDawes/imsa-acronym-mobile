@@ -5,7 +5,7 @@ export interface FullArticle {
   _raw: WPTYPES.WP_REST_API_Post;
   id: number,
   url: string,
-  date: Date;
+  date: string;  // This should be string, not Date type b/c 1: it can't be serialized for bookmark storage 2: react navigation linking complains
   imgUrl: string;
   title: string;
   body: string,

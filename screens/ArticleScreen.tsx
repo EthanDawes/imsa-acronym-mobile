@@ -55,7 +55,7 @@ export default function ArticleScreen({route}: RootStackScreenProps<"Article">) 
       <Title>{article.title}</Title>
       <Text>{article.author.name}</Text>
       <ArticleImage src={article.imgUrl} />
-      <Text>{article.date.toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
+      <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       <WebView
         originWhitelist={['*']}
         scrollEnabled={false}
