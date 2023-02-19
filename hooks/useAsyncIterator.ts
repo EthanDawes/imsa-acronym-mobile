@@ -10,7 +10,7 @@ export default function useAsyncIterator<T>(generator: AsyncIterator<T[] | T, vo
   generator = useState(generator)[0];
 
   function next() {
-    generator.next().then(res => {
+    return generator.next().then(res => {
       // TODO: even though cleanse is supposed to remove null values, figure why I still need ?? []. Keyword: custom type guard
       setResponse(old => [...cleanse(old), ...cleanse(res.value ?? [])]);
     });

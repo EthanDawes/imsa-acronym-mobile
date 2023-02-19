@@ -15,19 +15,12 @@ import constructInfiniteScrollHandler from "../components/constructInfiniteScrol
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const colorScheme = useColorScheme();
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  const [refreshing, setRefreshing] = React.useState(true);
 
   const [articles, next] = useAsyncIterator(getAllPosts(wp.posts().perPage(50)));
   // Load the first 10 articles b/c waiting for all images Promise.all is too long. Images get queued right away
   useEffect(() => {
-    for (let i=0; i<10; i++) next();
+    for (let i=0; i<10; i++) next().then(() => setRefreshing(false));
   }, []);
 
   const options = {
@@ -51,7 +44,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
       contentContainerStyle={{ paddingTop: containerPaddingTop }}
       scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl refreshing={refreshing} enabled={false} progressViewOffset={containerPaddingTop} />
       }
       data={articles}
       renderItem={({item}) => <LargeArticle data={item} />}
