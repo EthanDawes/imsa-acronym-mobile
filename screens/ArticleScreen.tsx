@@ -10,7 +10,7 @@ import {WebViewMessageEvent} from "react-native-webview/lib/WebViewTypes";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 
-export default function ArticleScreen({route}: RootStackScreenProps<"Article">) {
+export default function ArticleScreen({route, navigation}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
@@ -47,13 +47,21 @@ export default function ArticleScreen({route}: RootStackScreenProps<"Article">) 
     <ScrollView contentContainerStyle={{ flexGrow: 1, height: webViewHeight }}>
       <View style={{flexDirection: "row"}}>
         {Object.entries(article.categories).map(([category, id]) => (
-          <Pressable android_ripple={androidRipple}>
+          <Pressable
+            android_ripple={androidRipple}
+            onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
+          >
             <Text>{category}</Text>
           </Pressable>
         ))}
       </View>
       <Title>{article.title}</Title>
-      <Text>{article.author.name}</Text>
+      <Pressable
+        android_ripple={androidRipple}
+        onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
+      >
+        <Text>{article.author.name}</Text>
+      </Pressable>
       <ArticleImage src={article.imgUrl} />
       <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       <WebView
@@ -80,6 +88,7 @@ a {
         <Pressable
           style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
           android_ripple={androidRipple}
+          onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
         >
           <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
                  onError={() => getFakeFace(isFemale).then(setImg)}
