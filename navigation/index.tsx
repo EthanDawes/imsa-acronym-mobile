@@ -50,8 +50,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const colorScheme = Colors[useColorScheme()];
-
   return (
     <BookmarkContext.Provider value={useBookmarks()}>
       <Stack.Navigator>
@@ -63,23 +61,7 @@ function RootNavigator() {
         })} />
         <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
           headerTitleAlign: 'center',
-          headerTitle: props => (
-            <View style={{alignItems: "center"}}>
-              <View style={{width: 96, height: 96, borderRadius: 1000, backgroundColor: colorScheme.tabIconDefault, alignItems: "center", justifyContent: "center"}}>
-                {route.params.img &&
-                  <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: route.params.img }} />
-                }
-                {!route.params.img &&
-                  <MaterialIcons
-                    name={getDomainIcon(route.params.domain)}
-                    size={80}
-                    color={colorScheme.text}
-                  />
-                }
-              </View>
-              <Title>{route.params.title}</Title>
-            </View>
-          ),
+          // header: () => <SearchDetailsHeader {...route.params} />,
         })} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
