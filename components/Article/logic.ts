@@ -1,5 +1,7 @@
 import useAsyncStorage from "../../hooks/useAsyncStorage";
 import * as WPTYPES from "wp-types";
+import {ArticleFilter} from "../../constants/api";
+import {RootStackScreenProps} from "../../types";
 
 export interface FullArticle {
   _raw: WPTYPES.WP_REST_API_Post;
@@ -36,4 +38,22 @@ export function useBookmarks() {
   }
 
   return [bookmarks, toggleBookmark] as const;
+}
+
+type Subscription = RootStackScreenProps<"SearchDetails">["route"]["params"];
+//type Subscriptions = {[P in ArticleFilter]: Subscription};
+export function useSubscriptions() {
+  const {item: subscriptions, setItem: setSubscriptions} = useAsyncStorage<Record<number, Subscription>>("subscriptions", {});
+
+  function toggleSubscription(subscriptionInfo: Subscription) {
+    setSubscriptions(oldVal => {
+      if (subscriptionInfo.id in oldVal) {  // Remove
+        const {[subscriptionInfo.id]: _, ...newVal} = oldVal;
+        return newVal;
+      } else  // Add
+        return {...oldVal, [subscriptionInfo.id]: subscriptionInfo};
+    })
+  }
+
+  return [subscriptions, toggleSubscription] as const;
 }

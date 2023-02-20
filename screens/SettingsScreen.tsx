@@ -9,6 +9,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import {RootStackScreenProps} from "../types";
 import {useBookmarks} from "../components/Article/logic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {ArticleFilter} from "../constants/api";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   const colorScheme = useColorScheme();
@@ -25,30 +26,9 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()} />
       <Hr />
       <Title>Notifications</Title>
-      <Pressable style={{flexDirection: "row"}}
-                 android_ripple={useAndroidRipple()}
-                 onPress={() => navigation.navigate("Notifications", {category: "topics"})}
-      >
-        <Text style={{flexGrow: 100}}>Topics</Text>
-        <FontAwesome
-          name={"caret-right"}
-          size={25}
-          color={Colors[colorScheme].text}
-          style={{marginRight: 15, marginLeft: 15}}
-        />
-      </Pressable>
-      <Pressable style={{flexDirection: "row"}}
-                 android_ripple={useAndroidRipple()}
-                 onPress={() => navigation.navigate("Notifications", {category: "authors"})}
-      >
-        <Text style={{flexGrow: 100}}>Authors</Text>
-        <FontAwesome
-          name={"caret-right"}
-          size={25}
-          color={Colors[colorScheme].text}
-          style={{marginRight: 15, marginLeft: 15}}
-        />
-      </Pressable>
+      <NotificationsSubmenu domain="Topics" navigation={navigation} />
+      <NotificationsSubmenu domain="Authors" navigation={navigation} />
+      <NotificationsSubmenu domain="Tags" navigation={navigation} />
       <Hr />
       <Title>Stats</Title>
     </ScrollView>
@@ -61,3 +41,20 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
 });
+
+function NotificationsSubmenu({domain, navigation}: {domain: ArticleFilter} & Pick<RootStackScreenProps<"Settings">, "navigation">) {
+  return (
+    <Pressable style={{flexDirection: "row", paddingVertical: 10}}
+               android_ripple={useAndroidRipple()}
+               onPress={() => navigation.navigate("Notifications", {category: domain})}
+    >
+      <Text style={{flexGrow: 100}}>{domain}</Text>
+      <FontAwesome
+        name={"caret-right"}
+        size={25}
+        color={Colors[useColorScheme()].text}
+        style={{marginRight: 15, marginLeft: 15}}
+      />
+    </Pressable>
+  );
+}

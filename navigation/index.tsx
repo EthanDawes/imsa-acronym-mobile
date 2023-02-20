@@ -24,8 +24,8 @@ import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
 import GamesScreen from '../screens/GamesScreen';
 import SegmentedSearch from "../components/SegmentedSearch";
-import {useBookmarks} from "../components/Article/logic";
-import { BookmarkContext } from '../constants/context';
+import {useBookmarks, useSubscriptions} from "../components/Article/logic";
+import { BookmarkContext, SubscriptionsContext } from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {search, SearchDomain, searchDomains} from "../constants/api";
@@ -52,23 +52,25 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <BookmarkContext.Provider value={useBookmarks()}>
-      <Stack.Navigator>
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} options={({navigation}: RootStackScreenProps<"Search">) => ({
-          headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} placeholder={"Search everything"} />,
-        })} />
-        <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
-          headerTitleAlign: 'center',
-          // header: () => <SearchDetailsHeader {...route.params} />,
-        })} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
-        <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
-          title: "",
-          headerRight: () => BookmarkShare(route.params.body),
-        })} />
-      </Stack.Navigator>
+      <SubscriptionsContext.Provider value={useSubscriptions()}>
+        <Stack.Navigator>
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} options={({navigation}: RootStackScreenProps<"Search">) => ({
+            headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} placeholder={"Search everything"} />,
+          })} />
+          <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
+            headerTitleAlign: 'center',
+            // header: () => <SearchDetailsHeader {...route.params} />,
+          })} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
+          <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+            title: "",
+            headerRight: () => BookmarkShare(route.params.body),
+          })} />
+        </Stack.Navigator>
+      </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>
   );
 }

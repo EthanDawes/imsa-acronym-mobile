@@ -2,7 +2,7 @@ import {RootStackScreenProps} from "../types";
 import {Animated, FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, RefreshControl, View} from "react-native";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import wp, {ArticleFilter, getAllPosts} from "../constants/api";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import LargeArticle from "../components/Article/LargeArticle";
 import SmallArticle from "../components/Article/SmallArticle";
 import {DarkTheme, DefaultTheme} from "@react-navigation/native";
@@ -14,6 +14,9 @@ import {MaterialIcons} from "@expo/vector-icons";
 import {getDomainIcon} from "../components/SearchItem";
 import {Title} from "../components/Themed";
 import {NativeStackNavigationOptions} from "@react-navigation/native-stack";
+import IconButton from "../components/IconButton";
+import {useSubscriptions} from "../components/Article/logic";
+import {SubscriptionsContext} from "../constants/context";
 
 export function SearchDetailsScreen({route}: RootStackScreenProps<"SearchDetails">) {
   const {domain, id} = route.params;
@@ -66,8 +69,10 @@ function getDomainSearchParam(domain: ArticleFilter) {
   }
 }
 
-function SearchDetailsHeader({img, domain, title}: RootStackScreenProps<"SearchDetails">["route"]["params"]) {
+function SearchDetailsHeader(props: RootStackScreenProps<"SearchDetails">["route"]["params"]) {
+  const {img, domain, title, id} = props;
   const colorScheme = Colors[useColorScheme()];
+  const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
 
   return(
     <View style={{alignItems: "center"}}>
@@ -90,7 +95,11 @@ function SearchDetailsHeader({img, domain, title}: RootStackScreenProps<"SearchD
           />
         }
       </View>
-      <Title>{title}</Title>
+      <View style={{flexDirection: "row"}}>
+        <IconButton icon={id in subscriptions ? "bell" : "bell-o"} action={toggleSubscriptions.bind(null, props)} />
+        {/* for the text to be perfectly centered, padding should be 55, but I think this looks better*/}
+        <Title style={{paddingRight: 45}}>{title}</Title>
+      </View>
     </View>
   );
 }
