@@ -10,6 +10,7 @@ import {RootStackScreenProps} from "../types";
 import {useBookmarks} from "../components/Article/logic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ArticleFilter} from "../constants/api";
+import * as Notifications from 'expo-notifications';
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   const colorScheme = useColorScheme();
@@ -24,6 +25,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
         <Text style={{flexGrow: 100}}>Default Page</Text>
       </View>
       <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()} />
+      <Button title={"Test notifications"} onPress={notify} />
       <Hr />
       <Title>Notifications</Title>
       <NotificationsSubmenu domain="Topics" navigation={navigation} />
@@ -57,4 +59,15 @@ function NotificationsSubmenu({domain, navigation}: {domain: ArticleFilter} & Pi
       />
     </Pressable>
   );
+}
+
+// https://docs.expo.dev/versions/latest/sdk/notifications/#presentnotificationasynccontent-notificationcontentinput-identifier-string-promisestring
+function notify() {
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'Look at that notification',
+      body: "I'm so proud of myself!",
+    },
+    trigger: null,
+  });
 }
