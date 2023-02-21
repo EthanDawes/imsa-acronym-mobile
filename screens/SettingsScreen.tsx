@@ -1,7 +1,6 @@
-import {Button, Pressable, ScrollView, StyleSheet, Switch} from 'react-native';
+import {Button, Pressable, ScrollView, StyleSheet, Switch, View} from 'react-native';
 
-import {useAndroidRipple, Hr, Text, Title, View} from '../components/Themed';
-import {useState} from "react";
+import {useAndroidRipple, Hr, Text, Title} from '../components/Themed';
 import Colors from "../constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
 import * as React from "react";
@@ -12,11 +11,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ArticleFilter} from "../constants/api";
 import * as Notifications from 'expo-notifications';
 import {notifyTest} from "../Notify";
+import useAsyncStorage from "../hooks/useAsyncStorage";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   const colorScheme = useColorScheme();
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const {item: allNotifs, setItem: setAllNotifs} = useAsyncStorage("allNotifs", false);
+  const toggleAllNotifs = () => setAllNotifs(previousState => !previousState);
   const [bookmarks, toggleBookmarks] = useBookmarks();
 
   return (
@@ -29,9 +29,24 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       <Button title={"Test notifications"} onPress={notifyTest} />
       <Hr />
       <Title>Notifications</Title>
-      <NotificationsSubmenu domain="Topics" navigation={navigation} />
-      <NotificationsSubmenu domain="Authors" navigation={navigation} />
-      <NotificationsSubmenu domain="Tags" navigation={navigation} />
+      <View style={{flexDirection: "row", alignItems: "center"}}>
+        <Text style={{flexGrow: 100}}>All Notifications</Text>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          // thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleAllNotifs}
+          value={allNotifs}
+        />
+      </View>
+
+      {!allNotifs &&
+        <>
+          <NotificationsSubmenu domain="Topics" navigation={navigation}/>
+          <NotificationsSubmenu domain="Authors" navigation={navigation} />
+          <NotificationsSubmenu domain="Tags" navigation={navigation} />
+        </>
+      }
       <Hr />
       <Title>Stats</Title>
     </ScrollView>
