@@ -5,14 +5,11 @@ import * as Notifications from 'expo-notifications';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import {initBackgroundSync} from "./Sync";
+import {initNotifications} from "./Notify";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+initNotifications();
+initBackgroundSync();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

@@ -18,6 +18,8 @@ export interface FullArticle {
   // comments: Promise<WPTYPES.WP_REST_API_COMMENTS>
 }
 
+export interface Subscription { id: number, title: string, img?: string, domain: ArticleFilter }
+
 export interface ArticleProps {
   data: FullArticle,
 }
@@ -40,8 +42,6 @@ export function useBookmarks() {
   return [bookmarks, toggleBookmark] as const;
 }
 
-type Subscription = RootStackScreenProps<"SearchDetails">["route"]["params"];
-//type Subscriptions = {[P in ArticleFilter]: Subscription};
 export function useSubscriptions() {
   const {item: subscriptions, setItem: setSubscriptions} = useAsyncStorage<Record<number, Subscription>>("subscriptions", {});
 

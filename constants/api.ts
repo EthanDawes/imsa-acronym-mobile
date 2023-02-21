@@ -94,7 +94,7 @@ export async function* getAllPosts(request = wp.posts()) {
     // context=view, _embed=true: 2.5s all
     const pageData = await nextPage.embed().get() as WPTYPES.WP_REST_API_Posts & WPResponse;
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
-    nextPage = pageData._paging.next;
+    nextPage = pageData._paging?.next;
     yield* pageData.map<FullArticle>((i) => ({
       /// Try to avoid using this
       _raw: i,

@@ -6,7 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {FullArticle} from "./components/Article/logic";
+import {FullArticle, Subscription} from "./components/Article/logic";
 import {ArticleFilter, SearchDomain} from "./constants/api";
 
 declare global {
@@ -22,7 +22,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Notifications: { category: ArticleFilter };
   Search: { query: string, domain: SearchDomain };
-  SearchDetails: { id: number, title: string, img?: string, domain: ArticleFilter }
+  SearchDetails: Subscription,
   Article: { body: FullArticle };
   NotFound: undefined;
 };

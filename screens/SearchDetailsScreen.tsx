@@ -15,7 +15,7 @@ import {getDomainIcon} from "../components/SearchItem";
 import {Title} from "../components/Themed";
 import {NativeStackNavigationOptions} from "@react-navigation/native-stack";
 import IconButton from "../components/IconButton";
-import {useSubscriptions} from "../components/Article/logic";
+import {Subscription, useSubscriptions} from "../components/Article/logic";
 import {SubscriptionsContext} from "../constants/context";
 
 export function SearchDetailsScreen({route}: RootStackScreenProps<"SearchDetails">) {
@@ -69,7 +69,7 @@ function getDomainSearchParam(domain: ArticleFilter) {
   }
 }
 
-function SearchDetailsHeader(props: RootStackScreenProps<"SearchDetails">["route"]["params"]) {
+function SearchDetailsHeader(props: Subscription) {
   const {img, domain, title, id} = props;
   const colorScheme = Colors[useColorScheme()];
   const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
