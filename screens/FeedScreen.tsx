@@ -4,7 +4,7 @@ import { RootTabScreenProps } from '../types';
 import React from "react";
 import LargeArticle from "../components/Article/LargeArticle";
 import wp, {getAllPosts} from "../constants/api";
-import InfiniteScroll from "../components/InfinateScroll";
+import InfiniteScroll from "../components/InfiniteScroll";
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const iterator = getAllPosts(wp.posts().perPage(50));

@@ -1,15 +1,20 @@
-import {useCollapsibleHeader} from "react-navigation-collapsible";
+import {useCollapsibleHeader, UseCollapsibleOptions} from "react-navigation-collapsible";
 import useColorScheme from "../hooks/useColorScheme";
 import {DarkTheme, DefaultTheme} from "@react-navigation/native";
 import {NativeScrollEvent, NativeSyntheticEvent} from "react-native";
 
-export default function useCollapsibleHeaderMixin(scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void = () => {}) {
+export default function useCollapsibleHeaderMixin(scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void = () => {}, collapsibleOptions: Partial<UseCollapsibleOptions> = {}) {
   const colorScheme = useColorScheme();
 
-  const options = {
+  const options: UseCollapsibleOptions = {
     navigationOptions: {
-      headerStyle: { backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card },
+      ...collapsibleOptions.navigationOptions,
+      headerStyle: {
+        backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card,
+        ...collapsibleOptions.navigationOptions?.headerStyle
+      },
     },
+    config: collapsibleOptions.config,
   };
   const {
     onScrollWithListener /* Event handler creator */,

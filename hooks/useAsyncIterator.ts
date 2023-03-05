@@ -5,9 +5,13 @@ function cleanse<T>(valOrArray: T[] | T): T[] {
   return valOrArray instanceof Array ? valOrArray ?? [] : [valOrArray];
 }
 
-export default function useAsyncIterator<T>(generator: AsyncIterator<T[] | T, void>) {
+export default function useAsyncIterator<T>(newGenerator: AsyncIterator<T[] | T, void>) {
   const [response, setResponse] = useState<T[]>([]);
-  generator = useState(generator)[0];
+  const [generator, setGenerator] = useState(newGenerator);
+  if (newGenerator != generator) {
+    console.log("GENERATOR EQUIVALENCY", newGenerator == generator, "(resetting async iterator state with new generator)");
+    setGenerator(newGenerator);
+  }
 
   function next() {
     return generator.next().then(res => {

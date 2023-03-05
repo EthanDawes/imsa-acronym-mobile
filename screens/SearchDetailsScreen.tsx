@@ -17,43 +17,26 @@ import {NativeStackNavigationOptions} from "@react-navigation/native-stack";
 import IconButton from "../components/IconButton";
 import {Subscription, useSubscriptions} from "../components/Article/logic";
 import {SubscriptionsContext} from "../constants/context";
+import InfiniteScroll from "../components/InfiniteScroll";
 
 export function SearchDetailsScreen({route}: RootStackScreenProps<"SearchDetails">) {
   const {domain, id} = route.params;
-  const colorScheme = useColorScheme();
-  const [refreshing, setRefreshing] = useState(true);
-  const [articles, next] = useAsyncIterator(getAllPosts(wp.posts().param({[getDomainSearchParam(domain)]: id}).perPage(50)));
-  // TODO: consolidate duplicated code into InfinateScroll component
-  useEffect(() => {
-    for (let i=0; i<10; i++) next().then(() => setRefreshing(false));
-  }, []);
+  const articles = getAllPosts(wp.posts().param({[getDomainSearchParam(domain)]: id}).perPage(50));
 
   const options: UseCollapsibleOptions = {
     navigationOptions: {
       headerTitle: () => <SearchDetailsHeader {...route.params} />,
-      headerStyle: { backgroundColor: colorScheme === 'dark' ? DarkTheme.colors.card : DefaultTheme.colors.card, height: 170 },
+      headerStyle: { height: 170 },
     } as NativeStackNavigationOptions,
   };
-  const {
-    onScrollWithListener /* Event handler creator */,
-    containerPaddingTop /* number */,
-    scrollIndicatorInsetTop /* number */,
-  } = useCollapsibleHeader(options);
-
-  // Native StackNavigator prevents header from collapsing
-  const onScroll = onScrollWithListener(constructInfiniteScrollHandler(next));
 
   return (
-    <Animated.FlatList
-      onScroll={onScroll}
-      contentContainerStyle={{ paddingTop: containerPaddingTop }}
-      scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
-      data={articles}
+    <InfiniteScroll
+      collapsibleHeader={true}
+      collapsibleOptions={options}
+      iterator={articles}
       renderItem={({item}) => <SmallArticle data={item} />}
       keyExtractor={item => "" + item.id}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} enabled={false} progressViewOffset={containerPaddingTop} />
-      }
     />
   );
 }

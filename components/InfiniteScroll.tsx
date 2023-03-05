@@ -1,18 +1,15 @@
 import React, {PropsWithChildren, useEffect} from "react";
 import {FlatList, Animated, RefreshControl, FlatListProps} from "react-native";
 import useAsyncIterator from "../hooks/useAsyncIterator";
-import {DarkTheme, DefaultTheme} from "@react-navigation/native";
-import {useCollapsibleHeader} from "react-navigation-collapsible";
+import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import constructInfiniteScrollHandler from "./constructInfiniteScrollHandler";
-import LargeArticle from "./Article/LargeArticle";
-import useColorScheme from "../hooks/useColorScheme";
 import WithAnimatedValue = Animated.WithAnimatedValue;
 import useCollapsibleHeaderMixin from "../mixins/useCollapsibleHeaderMixin";
 
-// I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists
-// TODO: should I allow passing AnimatedProps<FlatListProps<ItemT>>
-export default function InfiniteScroll<ItemT>(props: PropsWithChildren<{collapsibleHeader: true, iterator: AsyncIterator<ItemT>}> & Pick<FlatListProps<ItemT>, "keyExtractor" | "renderItem">) {
-  const {collapsibleHeader, iterator, children, ...flatListProps} = props;
+// I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists (for now)
+// TODO: should I allow passing the full AnimatedProps<FlatListProps<ItemT>>?
+export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsibleOptions={}, iterator, children, ...flatListProps}:
+                                              PropsWithChildren<{collapsibleHeader?: boolean, collapsibleOptions?: Partial<UseCollapsibleOptions>, iterator: AsyncIterator<ItemT>}> & Pick<FlatListProps<ItemT>, "keyExtractor" | "renderItem">) {
   const ListImplementation = collapsibleHeader ? Animated.FlatList : FlatList;
   const [refreshing, setRefreshing] = React.useState(true);
 
@@ -27,7 +24,7 @@ export default function InfiniteScroll<ItemT>(props: PropsWithChildren<{collapsi
   let containerPaddingTop = 0;
 
   if (collapsibleHeader) {
-    const mixin = useCollapsibleHeaderMixin(onScroll);
+    const mixin = useCollapsibleHeaderMixin(onScroll, collapsibleOptions);
     usedCollapsibleHeaderMixin = mixin;  // Redundant for type checking
     containerPaddingTop = mixin.contentContainerStyle.paddingTop;
   }

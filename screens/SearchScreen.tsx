@@ -9,6 +9,7 @@ import React, {useEffect, useState} from "react";
 import {FullArticle} from "../components/Article/logic";
 import useDebounce from "../hooks/useDebounce";
 import SearchItem from "../components/SearchItem";
+import InfiniteScroll from "../components/InfiniteScroll";
 
 export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const {query, domain} = route.params;
@@ -19,11 +20,27 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const [refreshing, setRefreshing] = useState(false);
   const debouncedQuery = useDebounce<string>(query, 500);
 
+  const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noop);
+
   useEffect(() => {
     if (query.length === 0) return;
     console.log("Searching");
-    setRefreshing(true);
     const results = search(query, domain);
+
+    setResults((async function*() {
+      yield* Object.entries(await results.topics).map(([topic, id]) => (
+        <SearchItem key={topic} title={topic} id={id} domain="Topics" />
+      ));
+      yield* Object.entries(await results.authors).map(([author, deets]) => (
+        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" />
+      ));
+      yield* Object.entries(await results.tags).map(([tag, deets]) => (
+        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" />
+      ));
+      for await (const page of results.posts)
+        yield <SmallArticle data={page} key={page.id} />;
+    })());
+    return;
 
     results.topics.then(setTopics);
     results.authors.then(setAuthors);
@@ -42,25 +59,16 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
 
     pages.then(setPages);
   }, [debouncedQuery, domain]);
+  console.log("rerendering search screen");
+  results.next().then(result => console.log(result.value));
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} enabled={false} />
-      }
-    >
-      {Object.entries(topics).map(([topic, id]) => (
-        <SearchItem key={topic} title={topic} id={id} domain="Topics" />
-      ))}
-      {Object.entries(authors).map(([author, deets]) => (
-        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" />
-      ))}
-      {Object.entries(tags).map(([tag, deets]) => (
-        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" />
-      ))}
-      {pages.map(page => (
-        <SmallArticle data={page} key={page.id} />
-      ))}
-    </ScrollView>
+    <InfiniteScroll
+      iterator={results}
+      renderItem={thing => <>{thing}</>}
+    />
   );
+}
+
+async function* noop() {
 }
