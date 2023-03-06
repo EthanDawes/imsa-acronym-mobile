@@ -1,5 +1,5 @@
-import React, {PropsWithChildren, useEffect} from "react";
-import {FlatList, Animated, RefreshControl, FlatListProps} from "react-native";
+import React, {PropsWithChildren, useEffect, useState} from "react";
+import {FlatList, Animated, RefreshControl, FlatListProps, Button} from "react-native";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import constructInfiniteScrollHandler from "./constructInfiniteScrollHandler";
@@ -14,10 +14,18 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
   const [refreshing, setRefreshing] = React.useState(true);
 
   const [articles, next] = useAsyncIterator(iterator);
+  const [iterState, setIterState] = useState(iterator);
+  if (iterState != iterator) {
+    setIterState(iterator);
+    setRefreshing(true);
+  }
   // Load the first 10 articles b/c waiting for all images Promise.all is too long. Images get queued right away
   useEffect(() => {
-    for (let i=0; i<10; i++) next().then(() => setRefreshing(false));
-  }, []);
+    if (articles.length === 0) {
+      console.log("I should fetch new stuff!");
+      for (let i=0; i<10; i++) next().then(() => setRefreshing(false));
+      }
+  }, [articles]);
 
   let onScroll = constructInfiniteScrollHandler(next);
   let usedCollapsibleHeaderMixin: {} | ReturnType<typeof useCollapsibleHeaderMixin> = {};
