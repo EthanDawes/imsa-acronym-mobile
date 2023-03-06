@@ -1,4 +1,4 @@
-import {RefreshControl, ScrollView} from 'react-native';
+import {Button, RefreshControl, ScrollView} from 'react-native';
 import {Text} from "../components/Themed";
 import {getAllAuthors, getAllTags, search} from "../constants/api";
 import useAsync from "../hooks/useAsync";
@@ -16,7 +16,7 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const [topics, setTopics] = useState({} as Record<string, number>);
   const [authors, setAuthors] = useState({} as Awaited<ReturnType<typeof getAllAuthors>>);
   const [tags, setTags] = useState({} as Awaited<ReturnType<typeof getAllTags>>);
-  const [pages, setPages] = useState([] as (FullArticle)[]);
+  const [pages, setPages] = useState<AsyncIterator<FullArticle>>(noop);
   const [refreshing, setRefreshing] = useState(false);
   const debouncedQuery = useDebounce<string>(query, 500);
 
@@ -27,6 +27,7 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
     console.log("Searching");
     const results = search(query, domain);
 
+    /*
     setResults((async function*() {
       yield* Object.entries(await results.topics).map(([topic, id]) => (
         <SearchItem key={topic} title={topic} id={id} domain="Topics" />
@@ -41,10 +42,13 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
         yield <SmallArticle data={page} key={page.id} />;
     })());
     return;
+    */
 
     results.topics.then(setTopics);
     results.authors.then(setAuthors);
     results.tags.then(setTags);
+    setPages(results.posts);
+    return;
     Promise.all(Object.values(results)).then(() => setRefreshing(false));
 
     // I think it is safe to ignore promise rejection: next() is undefined
@@ -60,13 +64,23 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
     pages.then(setPages);
   }, [debouncedQuery, domain]);
   console.log("rerendering search screen");
-  results.next().then(result => console.log(result.value));
+  pages.next().then(result => console.log("Has results?", !result.done));
 
   return (
     <InfiniteScroll
-      iterator={results}
-      renderItem={thing => <>{thing}</>}
-    />
+      iterator={pages}
+      renderItem={({item: page}) => <SmallArticle data={page} key={page.id} />}
+    >
+      {Object.entries(topics).map(([topic, id]) => (
+        <SearchItem key={topic} title={topic} id={id} domain="Topics" />
+      ))}
+      {Object.entries(authors).map(([author, deets]) => (
+        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" />
+      ))}
+      {Object.entries(tags).map(([tag, deets]) => (
+        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" />
+      ))}
+    </InfiniteScroll>
   );
 }
 
