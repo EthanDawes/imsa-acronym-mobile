@@ -23,7 +23,9 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
   useEffect(() => {
     if (articles.length === 0) {
       console.log("I should fetch new stuff!");
-      for (let i=0; i<10; i++) next().then(() => setRefreshing(false));
+      for (let i=0; i<9; i++) next();
+      // don't hide loading until all are loaded (particularly an issue for SearchScreen, where category info appears before posts)
+      next().then(() => setRefreshing(false));
       }
   }, [articles]);
 
