@@ -13,13 +13,7 @@ import InfiniteScroll from "../components/InfiniteScroll";
 
 export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
   const {query, domain} = route.params;
-  const [topics, setTopics] = useState({} as Record<string, number>);
-  const [authors, setAuthors] = useState({} as Awaited<ReturnType<typeof getAllAuthors>>);
-  const [tags, setTags] = useState({} as Awaited<ReturnType<typeof getAllTags>>);
-  const [pages, setPages] = useState([] as (FullArticle)[]);
-  const [refreshing, setRefreshing] = useState(false);
   const debouncedQuery = useDebounce<string>(query, 500);
-
   const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noop);
 
   useEffect(() => {
@@ -40,32 +34,12 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
       for await (const page of results.posts)
         yield <SmallArticle data={page} key={page.id} />;
     })());
-    return;
-
-    results.topics.then(setTopics);
-    results.authors.then(setAuthors);
-    results.tags.then(setTags);
-    Promise.all(Object.values(results)).then(() => setRefreshing(false));
-
-    // I think it is safe to ignore promise rejection: next() is undefined
-    const pages = (async () => {
-      const pages: FullArticle[] = [];
-      for await (const page of results.posts) {
-        if (pages.length > 9) break;
-        pages.push(page);
-      }
-      return pages;
-    })();
-
-    pages.then(setPages);
   }, [debouncedQuery, domain]);
-  console.log("rerendering search screen");
-  results.next().then(result => console.log(result.value));
 
   return (
     <InfiniteScroll
       iterator={results}
-      renderItem={thing => <>{thing}</>}
+      renderItem={({item}) => item}
     />
   );
 }
