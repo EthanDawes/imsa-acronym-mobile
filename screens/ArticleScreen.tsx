@@ -7,11 +7,22 @@ import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
+import InfiniteScroll from "../components/InfiniteScroll";
+import useAsyncIterator from "../hooks/useAsyncIterator";
+import wp, {getAllPosts} from "../constants/api";
+import SmallArticle from "../components/Article/SmallArticle";
 
 export default function ArticleScreen({route, navigation}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
+  // TODO: when this re-renders, posts will be fetched again. Convert to bound function & pass? (UseAsyncIterator will only call once, on init)
+  const relatedPosts = useState(getAllPosts(wp.posts().embed().param({
+    exclude: article.id,
+    tax_relation: "OR",
+    categories: Object.values(article.categories),
+    tags: Object.values(article.tags),
+  })))[0];
 
   const pronouns = article.author.description.toLowerCase();
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
@@ -32,7 +43,11 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
 
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
-    <ScrollView>
+    <InfiniteScroll
+      iterator={relatedPosts}
+      renderItem={({item}) => <SmallArticle data={item} />}
+      keyExtractor={item => "" + item.id}
+    >
       <View style={{flexDirection: "row"}}>
         {Object.entries(article.categories).map(([category, id]) => (
           <Pressable
@@ -78,7 +93,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
         </Pressable>
       }
-    </ScrollView>
+    </InfiniteScroll>
   );
 }
 
