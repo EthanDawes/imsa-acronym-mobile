@@ -1,11 +1,16 @@
-import {StyleSheet, Image, View, Pressable} from 'react-native';
+import {StyleSheet, Image, View, Pressable, Linking} from 'react-native';
 
 import {useAndroidRipple, Text, Title} from './Themed';
+import {useNavigation} from "@react-navigation/native";
 
 
 export default function GameListing({imgUrl, href, title, description}: {imgUrl: string, href: string, title: string, description: string}) {
+  const navigator = useNavigation();
+
   return (
-    <Pressable style={styles.container} android_ripple={useAndroidRipple()}>
+    <Pressable style={styles.container} android_ripple={useAndroidRipple()}
+               onPress={() => navigator.navigate("WebBrowser", {title, url: href})}
+    >
       <View>
         <Image
           style={styles.smallImg}

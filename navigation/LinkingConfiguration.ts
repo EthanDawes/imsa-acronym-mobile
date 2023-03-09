@@ -58,6 +58,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           ArticleScreen: 'article',
         },
       },
+      WebBrowser: {
+        screens: {
+          WebBrowser: 'webBrowser',
+        },
+      },
       NotFound: '*',
     },
   },

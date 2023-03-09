@@ -32,6 +32,7 @@ import {search, SearchDomain, searchDomains} from "../constants/api";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
 import {Title} from "../components/Themed";
 import {getDomainIcon} from "../components/SearchItem";
+import WebBrowser from "../screens/WebBrowser";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -69,6 +70,7 @@ function RootNavigator() {
             title: "",
             headerRight: () => BookmarkShare(route.params.body),
           })} />
+          <Stack.Screen name="WebBrowser" component={WebBrowser} />
         </Stack.Navigator>
       </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>

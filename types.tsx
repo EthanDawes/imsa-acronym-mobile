@@ -24,6 +24,7 @@ export type RootStackParamList = {
   Search: { query: string, domain: SearchDomain };
   SearchDetails: Subscription,
   Article: { body: FullArticle };
+  WebBrowser: {url: string, title: string};
   NotFound: undefined;
 };
 
