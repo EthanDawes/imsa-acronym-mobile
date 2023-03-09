@@ -7,10 +7,10 @@ import ArticleImage from "./ArticleImage";
 
 
 export default function LargeArticle(props: ArticleProps) {
-  const {imgUrl, title, id} = props.data;
+  const {imgUrl, title} = props.data;
   return (
     <ArticleContainer {...props}>
-      <ArticleImage src={imgUrl} id={id} />
+      <ArticleImage src={imgUrl} />
       <Title>{title}</Title>
     </ArticleContainer>
   );

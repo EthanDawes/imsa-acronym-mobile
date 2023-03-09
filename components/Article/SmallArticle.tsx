@@ -5,11 +5,10 @@ import ArticleContainer from "./ArticleContainer";
 import {ArticleProps} from "./logic";
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
-import {SharedElement} from "react-navigation-shared-element";
 
 
 export default function SmallArticle(props: ArticleProps) {
-  const {imgUrl, title, id} = props.data;
+  const {imgUrl, title} = props.data;
   const colorScheme = Colors[useColorScheme()];
 
   return (
@@ -19,14 +18,12 @@ export default function SmallArticle(props: ArticleProps) {
           <Text style={{color: colorScheme.text}}>Category</Text>
           <Title style={{flexShrink: 1}}>{title}</Title>
         </View>
-        <SharedElement id={`article.${id}.photo`}>
-          <Image
-            style={styles.smallImg}
-            source={{
-              uri: imgUrl,
-            }}
-          />
-        </SharedElement>
+        <Image
+          style={styles.smallImg}
+          source={{
+            uri: imgUrl,
+          }}
+        />
       </View>
     </ArticleContainer>
   );

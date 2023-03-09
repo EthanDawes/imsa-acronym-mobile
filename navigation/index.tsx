@@ -32,7 +32,6 @@ import {search, SearchDomain, searchDomains} from "../constants/api";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
 import {Title} from "../components/Themed";
 import {getDomainIcon} from "../components/SearchItem";
-import {createSharedElementStackNavigator} from "react-navigation-shared-element";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -47,9 +46,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
- * https://github.com/IjzerenHein/react-navigation-shared-element/blob/main/docs/API.md
  */
-const Stack = createSharedElementStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
@@ -67,18 +65,10 @@ function RootNavigator() {
             // header: () => <SearchDetailsHeader {...route.params} />,
           })} />
           <Stack.Screen name="Notifications" component={NotificationsScreen} />
-          <Stack.Screen
-            name="Article"
-            component={ArticleScreen}
-            options={({route}: RootStackScreenProps<"Article">) => ({
-              title: "",
-              headerRight: () => BookmarkShare(route.params.body),
-            })}
-            sharedElements={(route, otherRoute, showing) => {
-              const { body } = route.params as RootStackScreenProps<"Article">["route"]["params"];
-              return [`article.${body.id}.photo`];
-            }}
-          />
+          <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+            title: "",
+            headerRight: () => BookmarkShare(route.params.body),
+          })} />
         </Stack.Navigator>
       </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>
