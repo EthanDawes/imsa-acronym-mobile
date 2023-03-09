@@ -65,7 +65,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
       >
         <Text>{article.author.name}</Text>
       </Pressable>
-      <ArticleImage src={article.imgUrl} />
+      <ArticleImage src={article.imgUrl} id={article.id} />
       <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       <AutoHeightWebView
         originWhitelist={['*']}
