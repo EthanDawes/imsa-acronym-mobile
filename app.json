@@ -1,7 +1,7 @@
 {
   "expo": {
     "jsEngine": "hermes",
-    "name": "the-acronym",
+    "name": "The Acronym",
     "slug": "the-acronym",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#a90003"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -26,7 +26,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ae0400"
       },
       "package": "edu.imsa.theacronym"
     },
