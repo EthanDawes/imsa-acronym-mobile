@@ -21,13 +21,13 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 
   return (
     <ScrollView style={styles.container}>
-      <Title>General</Title>
+      {/*<Title>General</Title>
       <View style={{flexDirection: "row"}}>
         <Text style={{flexGrow: 100}}>Default Page</Text>
       </View>
       <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()} />
       <Button title={"Test notifications"} onPress={notifyTest} />
-      <Hr />
+      <Hr />*/}
       <Title>Notifications</Title>
       <View style={{flexDirection: "row", alignItems: "center"}}>
         <Text style={{flexGrow: 100}}>All Notifications</Text>
@@ -47,8 +47,8 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
           <NotificationsSubmenu domain="Tags" navigation={navigation} />
         </>
       }
-      <Hr />
-      <Title>Stats</Title>
+      {/*<Hr />
+      <Title>Stats</Title>*/}
     </ScrollView>
   );
 }
