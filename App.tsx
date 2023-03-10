@@ -10,6 +10,8 @@ import {initNotifications} from "./Notify";
 
 initNotifications();
 initBackgroundSync();
+// @ts-ignore This has to exist so the collapsable header doesn't clip (see react-navigation-collapsable/lib/src/utils.js)
+global.Expo = true;
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

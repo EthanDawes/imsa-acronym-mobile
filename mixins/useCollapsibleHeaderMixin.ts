@@ -5,6 +5,7 @@ import {NativeScrollEvent, NativeSyntheticEvent} from "react-native";
 
 export default function useCollapsibleHeaderMixin(scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void = () => {}, collapsibleOptions: Partial<UseCollapsibleOptions> = {}) {
   const colorScheme = useColorScheme();
+  // disableExpoTranslucentStatusBar();  // At least now it's the wrong behavior consistently (Expo go & dev build)
 
   const options: UseCollapsibleOptions = {
     navigationOptions: {

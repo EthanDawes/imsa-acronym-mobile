@@ -43,6 +43,7 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
   return (
     <ListImplementation
       onScroll={onScroll}
+      showsVerticalScrollIndicator={false}
       {...usedCollapsibleHeaderMixin}
       refreshControl={
         <RefreshControl refreshing={refreshing} enabled={false} progressViewOffset={containerPaddingTop} />
