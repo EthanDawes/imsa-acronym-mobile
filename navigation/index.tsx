@@ -29,7 +29,6 @@ import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {searchDomains} from "../constants/api";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
-import WebBrowser from "../screens/WebBrowser";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -69,7 +68,6 @@ function RootNavigator() {
             title: "",
             headerRight: () => BookmarkShare(route.params.body),
           })} />
-          <Stack.Screen name="WebBrowser" component={WebBrowser} />
         </Stack.Navigator>
       </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>
