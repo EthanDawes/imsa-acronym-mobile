@@ -12,6 +12,8 @@ import useAsyncIterator from "../hooks/useAsyncIterator";
 import wp, {getAllPosts} from "../constants/api";
 import SmallArticle from "../components/Article/SmallArticle";
 
+const padding = 10;
+
 export default function ArticleScreen({route, navigation}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
   const colorScheme = Colors[useColorScheme()];
@@ -44,29 +46,35 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
     <ScrollView>
-      <View style={{flexDirection: "row"}}>
-        {Object.entries(article.categories).map(([category, id]) => (
-          <Pressable
-            android_ripple={androidRipple}
-            onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
-          >
-            <Text>{category}</Text>
-          </Pressable>
-        ))}
+      <View style={{paddingHorizontal: padding}}>
+        <View style={{flexDirection: "row"}}>
+          {Object.entries(article.categories).map(([category, id]) => (
+            <Pressable
+              android_ripple={androidRipple}
+              onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
+            >
+              <Text>{category}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <Title>{article.title}</Title>
+        <Pressable
+          android_ripple={androidRipple}
+          onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
+        >
+          <Text>{article.author.name}</Text>
+        </Pressable>
+        <ArticleImage src={article.imgUrl} />
+        <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       </View>
-      <Title>{article.title}</Title>
-      <Pressable
-        android_ripple={androidRipple}
-        onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
-      >
-        <Text>{article.author.name}</Text>
-      </Pressable>
-      <ArticleImage src={article.imgUrl} />
-      <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       <AutoHeightWebView
         originWhitelist={['*']}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
+        // style={{marginLeft: -10}}
         customStyle={`
+          p {
+            padding: 0 ${padding}px;
+          }
           * {
            color: ${colorScheme.text};
            background-color: ${colorScheme.background};
@@ -77,18 +85,20 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         `}
         source={{html: article.body }}
       />
-      {article.author.description &&
-        <Pressable
-          style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
-          android_ripple={androidRipple}
-          onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
-        >
-          <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
-                 onError={() => getFakeFace(isFemale).then(setImg)}
-          />
-          <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
-        </Pressable>
-      }
+      <View style={{paddingHorizontal: padding}}>
+        {article.author.description &&
+          <Pressable
+            style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
+            android_ripple={androidRipple}
+            onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
+          >
+            <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
+                   onError={() => getFakeFace(isFemale).then(setImg)}
+            />
+            <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
+          </Pressable>
+        }
+      </View>
     </ScrollView>
   );
 }
