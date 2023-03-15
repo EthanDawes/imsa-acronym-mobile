@@ -6,16 +6,14 @@ import {FontAwesome} from "@expo/vector-icons";
 import * as React from "react";
 import useColorScheme from "../hooks/useColorScheme";
 import {RootStackScreenProps} from "../types";
-import {useBookmarks} from "../components/Article/logic";
-import {ArticleFilter} from "../constants/api";
 import * as Notifications from 'expo-notifications';
 import useAsyncStorage from "../hooks/useAsyncStorage";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   const colorScheme = useColorScheme();
+  const androidRipple = useAndroidRipple();
   const {item: allNotifs, setItem: setAllNotifs} = useAsyncStorage("allNotifs", false);
   const toggleAllNotifs = () => setAllNotifs(previousState => !previousState);
-  const [bookmarks, toggleBookmarks] = useBookmarks();
 
   return (
     <ScrollView style={styles.container}>
@@ -40,14 +38,14 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 
       {!allNotifs &&
         <Pressable style={{flexDirection: "row", paddingVertical: 10}}
-                   android_ripple={useAndroidRipple()}
+                   android_ripple={androidRipple}
                    onPress={() => navigation.navigate("Notifications")}
         >
           <Text style={{flexGrow: 100}}>Configure</Text>
           <FontAwesome
             name={"caret-right"}
             size={25}
-            color={Colors[useColorScheme()].text}
+            color={Colors[colorScheme].text}
             style={{marginRight: 15, marginLeft: 15}}
           />
         </Pressable>

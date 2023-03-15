@@ -10,7 +10,7 @@ import {useContext} from "react";
 import {SubscriptionsContext} from "../constants/context";
 
 export default function SearchItem(props: {domain: ArticleFilter, title: string, id: number, img?: string, addNotifications?: boolean}) {
-  const {domain, title, addNotifications} = props;
+  const {domain, title, addNotifications, id} = props;
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
@@ -28,7 +28,12 @@ export default function SearchItem(props: {domain: ArticleFilter, title: string,
           color={Colors[colorScheme].text}
           style={{marginRight: 15}}
         />
-        <Text>{title}</Text>
+        <Text style={{flexGrow: 1}}>{title}</Text>
+        <MaterialIcons
+          name={id in subscriptions ? "notifications" : "notifications-none"}
+          size={25}
+          color={Colors[colorScheme].text}
+        />
       </View>
     </Pressable>
   )
