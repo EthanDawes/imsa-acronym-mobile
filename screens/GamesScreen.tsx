@@ -1,7 +1,6 @@
 import {ScrollView, StyleSheet} from 'react-native';
 
-import {Hr, Text, View} from '../components/Themed';
-import SmallArticle from "../components/Article/SmallArticle";
+import {View} from '../components/Themed';
 import React from "react";
 import Layout from "../constants/Layout";
 import GameListing from "../components/GameListing";

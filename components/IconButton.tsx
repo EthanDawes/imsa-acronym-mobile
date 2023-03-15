@@ -1,5 +1,4 @@
 // 'any' isn't great, but I'm only using this twice so who cares?
-import {RootTabParamList, RootTabScreenProps} from "../types";
 import {Pressable} from "react-native";
 import {FontAwesome} from "@expo/vector-icons";
 import Colors from "../constants/Colors";

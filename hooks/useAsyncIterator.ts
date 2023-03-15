@@ -1,5 +1,4 @@
-import useAsync from "./useAsync";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 function cleanse<T>(valOrArray: T[] | T): T[] {
   return valOrArray instanceof Array ? valOrArray ?? [] : [valOrArray];

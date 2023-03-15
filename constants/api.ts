@@ -3,7 +3,7 @@
 // wp-types docs: https://www.npmjs.com/package/wp-types
 
 
-import WPAPI, {WPRequest} from 'wpapi';
+import WPAPI from 'wpapi';
 import * as WPTYPES from "wp-types";
 import {decode} from 'html-entities';
 import {FullArticle} from "../components/Article/logic";

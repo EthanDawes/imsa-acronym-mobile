@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 
-import { View } from 'react-native';
+import {View} from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from "./Themed";
-import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 
 interface Props<T extends readonly string[]> {

@@ -1,12 +1,8 @@
-import {useAndroidRipple, Text} from "../Themed";
-import IconButton from "../IconButton";
+import {Text, useAndroidRipple} from "../Themed";
 import {ArticleProps} from "./logic";
-import {Pressable, Share, StyleSheet, View} from "react-native";
-import {PropsWithChildren, useContext} from "react";
-import {BookmarkContext} from "../../constants/context";
+import {Pressable, StyleSheet, View} from "react-native";
+import {PropsWithChildren} from "react";
 import {useNavigation} from "@react-navigation/native";
-import wp, {getAllPosts} from "../../constants/api";
-import * as WPTYPES from "wp-types";
 import BookmarkShare from "./BookmarkShare";
 import useColorScheme from "../../hooks/useColorScheme";
 import Colors from "../../constants/Colors";

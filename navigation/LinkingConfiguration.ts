@@ -4,10 +4,10 @@
  * https://reactnavigation.org/docs/configuring-links
  */
 
-import { LinkingOptions } from '@react-navigation/native';
+import {LinkingOptions} from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { RootStackParamList } from '../types';
+import {RootStackParamList} from '../types';
 
 // TODO: this doesn't seem to update any UI, figure out what it actually does
 const linking: LinkingOptions<RootStackParamList> = {

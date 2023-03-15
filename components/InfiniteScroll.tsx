@@ -1,10 +1,10 @@
 import React, {PropsWithChildren, useEffect, useState} from "react";
-import {FlatList, Animated, RefreshControl, FlatListProps, Button} from "react-native";
+import {Animated, FlatList, FlatListProps, RefreshControl} from "react-native";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import constructInfiniteScrollHandler from "./constructInfiniteScrollHandler";
-import WithAnimatedValue = Animated.WithAnimatedValue;
 import useCollapsibleHeaderMixin from "../mixins/useCollapsibleHeaderMixin";
+import WithAnimatedValue = Animated.WithAnimatedValue;
 
 // I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists (for now)
 // TODO: should I allow passing the full AnimatedProps<FlatListProps<ItemT>>?

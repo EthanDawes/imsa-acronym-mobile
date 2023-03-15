@@ -1,16 +1,14 @@
-import {Button, Pressable, ScrollView, StyleSheet, Switch, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Switch, View} from 'react-native';
 
-import {useAndroidRipple, Hr, Text, Title} from '../components/Themed';
+import {Text, Title, useAndroidRipple} from '../components/Themed';
 import Colors from "../constants/Colors";
 import {FontAwesome} from "@expo/vector-icons";
 import * as React from "react";
 import useColorScheme from "../hooks/useColorScheme";
 import {RootStackScreenProps} from "../types";
 import {useBookmarks} from "../components/Article/logic";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ArticleFilter} from "../constants/api";
 import * as Notifications from 'expo-notifications';
-import {notifyTest} from "../Notify";
 import useAsyncStorage from "../hooks/useAsyncStorage";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {

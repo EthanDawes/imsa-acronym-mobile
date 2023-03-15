@@ -1,4 +1,4 @@
-import {View, Text} from "../components/Themed";
+import {Text, View} from "../components/Themed";
 import {FlatList} from "react-native";
 import React, {useContext} from "react";
 import {RootStackScreenProps} from "../types";

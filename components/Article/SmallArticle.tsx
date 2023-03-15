@@ -1,4 +1,4 @@
-import {StyleSheet, Image, View, Pressable} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 
 import {Text, Title} from '../Themed';
 import ArticleContainer from "./ArticleContainer";

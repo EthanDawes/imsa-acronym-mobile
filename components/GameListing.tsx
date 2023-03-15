@@ -1,6 +1,6 @@
-import {StyleSheet, Image, View, Pressable, Linking} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 
-import {useAndroidRipple, Text, Title} from './Themed';
+import {Text, Title, useAndroidRipple} from './Themed';
 import {useNavigation} from "@react-navigation/native";
 import * as WebBrowser from 'expo-web-browser';
 

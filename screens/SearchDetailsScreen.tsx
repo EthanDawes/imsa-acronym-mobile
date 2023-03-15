@@ -1,13 +1,9 @@
 import {RootStackScreenProps} from "../types";
-import {Animated, FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, RefreshControl, View} from "react-native";
-import useAsyncIterator from "../hooks/useAsyncIterator";
+import {Image, View} from "react-native";
 import wp, {ArticleFilter, getAllPosts} from "../constants/api";
-import React, {useContext, useEffect, useState} from "react";
-import LargeArticle from "../components/Article/LargeArticle";
+import React, {useContext} from "react";
 import SmallArticle from "../components/Article/SmallArticle";
-import {DarkTheme, DefaultTheme} from "@react-navigation/native";
-import { useCollapsibleHeader, UseCollapsibleOptions} from "react-navigation-collapsible";
-import constructInfiniteScrollHandler from "../components/constructInfiniteScrollHandler";
+import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import {MaterialIcons} from "@expo/vector-icons";
@@ -15,7 +11,7 @@ import {getDomainIcon} from "../components/SearchItem";
 import {Title} from "../components/Themed";
 import {NativeStackNavigationOptions} from "@react-navigation/native-stack";
 import IconButton from "../components/IconButton";
-import {Subscription, useSubscriptions} from "../components/Article/logic";
+import {Subscription} from "../components/Article/logic";
 import {SubscriptionsContext} from "../constants/context";
 import InfiniteScroll from "../components/InfiniteScroll";
 

@@ -1,6 +1,6 @@
-import {Image, Pressable, View} from "react-native";
-import {useAndroidRipple, Text, Title} from "./Themed";
-import {ArticleFilter, SearchDomain} from "../constants/api";
+import {Pressable, View} from "react-native";
+import {Text, useAndroidRipple} from "./Themed";
+import {ArticleFilter} from "../constants/api";
 import {useNavigation} from "@react-navigation/native";
 import Colors from "../constants/Colors";
 import {MaterialIcons} from "@expo/vector-icons";

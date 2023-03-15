@@ -1,7 +1,6 @@
 import useAsyncStorage from "../../hooks/useAsyncStorage";
 import * as WPTYPES from "wp-types";
 import {ArticleFilter} from "../../constants/api";
-import {RootStackScreenProps} from "../../types";
 
 export interface FullArticle {
   _raw: WPTYPES.WP_REST_API_Post;

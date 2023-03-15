@@ -1,12 +1,7 @@
-import {RefreshControl, ScrollView} from 'react-native';
-import {Text} from "../components/Themed";
-import {getAllAuthors, getAllTags, search} from "../constants/api";
-import useAsync from "../hooks/useAsync";
-import useAsyncIterator from "../hooks/useAsyncIterator";
+import {search} from "../constants/api";
 import {RootStackScreenProps} from "../types";
 import SmallArticle from "../components/Article/SmallArticle";
 import React, {useEffect, useState} from "react";
-import {FullArticle} from "../components/Article/logic";
 import useDebounce from "../hooks/useDebounce";
 import SearchItem from "../components/SearchItem";
 import InfiniteScroll from "../components/InfiniteScroll";

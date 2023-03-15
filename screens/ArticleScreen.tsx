@@ -1,4 +1,4 @@
-import {Title, Text, useAndroidRipple, View} from "../components/Themed";
+import {Text, Title, useAndroidRipple, View} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
@@ -7,10 +7,7 @@ import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
-import InfiniteScroll from "../components/InfiniteScroll";
-import useAsyncIterator from "../hooks/useAsyncIterator";
 import wp, {getAllPosts} from "../constants/api";
-import SmallArticle from "../components/Article/SmallArticle";
 
 const padding = 10;
 
@@ -70,7 +67,6 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
       <AutoHeightWebView
         originWhitelist={['*']}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
-        // style={{marginLeft: -10}}
         customStyle={`
           p {
             padding: 0 ${padding}px;

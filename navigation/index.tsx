@@ -3,12 +3,12 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import {FontAwesome, MaterialIcons} from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {NavigationContainer, DefaultTheme, DarkTheme, CompositeScreenProps} from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {FontAwesome} from '@expo/vector-icons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {ColorSchemeName, Image, View} from 'react-native';
+import {ColorSchemeName, Image} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -20,18 +20,15 @@ import FeedScreen from '../screens/FeedScreen';
 import SavedScreen from '../screens/SavedScreen';
 import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
-import {IconProps} from "@expo/vector-icons/build/createIconSet";
 import IconButton from "../components/IconButton";
 import GamesScreen from '../screens/GamesScreen';
 import SegmentedSearch from "../components/SegmentedSearch";
 import {useBookmarks, useSubscriptions} from "../components/Article/logic";
-import { BookmarkContext, SubscriptionsContext } from '../constants/context';
+import {BookmarkContext, SubscriptionsContext} from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
-import {search, SearchDomain, searchDomains} from "../constants/api";
+import {searchDomains} from "../constants/api";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
-import {Title} from "../components/Themed";
-import {getDomainIcon} from "../components/SearchItem";
 import WebBrowser from "../screens/WebBrowser";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {

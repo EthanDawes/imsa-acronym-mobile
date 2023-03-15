@@ -1,12 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {StatusBar} from 'expo-status-bar';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import "react-native-gesture-handler";
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import {initBackgroundSync} from "./Sync";
-import {initNotifications} from "./Notify";
 import * as NavigationBar from "expo-navigation-bar";
 import Colors from "./constants/Colors";
 
