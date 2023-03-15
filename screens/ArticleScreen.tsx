@@ -43,11 +43,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
 
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
-    <InfiniteScroll
-      iterator={relatedPosts}
-      renderItem={({item}) => <SmallArticle data={item} />}
-      keyExtractor={item => "" + item.id}
-    >
+    <ScrollView>
       <View style={{flexDirection: "row"}}>
         {Object.entries(article.categories).map(([category, id]) => (
           <Pressable
@@ -93,7 +89,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
         </Pressable>
       }
-    </InfiniteScroll>
+    </ScrollView>
   );
 }
 
