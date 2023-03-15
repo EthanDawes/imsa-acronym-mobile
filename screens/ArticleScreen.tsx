@@ -1,8 +1,8 @@
-import {Text, Title, useAndroidRipple, View} from "../components/Themed";
+import {Text, Title, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
-import {Image, Platform, Pressable, ScrollView} from "react-native";
+import {Image, Platform, Pressable, ScrollView, View} from "react-native";
 import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
@@ -84,7 +84,6 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           }
           * {
            color: ${colorScheme.text};
-           background-color: ${colorScheme.background};
           }
           a {
             color: ${colorScheme.tint};
