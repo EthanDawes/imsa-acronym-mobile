@@ -1,5 +1,5 @@
-import {Text, View} from "../components/Themed";
-import {FlatList} from "react-native";
+import {Text} from "../components/Themed";
+import {FlatList, View} from "react-native";
 import React, {useContext} from "react";
 import {RootStackScreenProps} from "../types";
 import {SubscriptionsContext} from "../constants/context";

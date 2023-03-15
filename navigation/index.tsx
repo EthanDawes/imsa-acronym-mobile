@@ -51,7 +51,9 @@ function RootNavigator() {
   return (
     <BookmarkContext.Provider value={useBookmarks()}>
       <SubscriptionsContext.Provider value={useSubscriptions()}>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
+        }}>
           <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
