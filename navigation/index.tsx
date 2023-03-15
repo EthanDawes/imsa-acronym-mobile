@@ -21,7 +21,6 @@ import SavedScreen from '../screens/SavedScreen';
 import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import IconButton from "../components/IconButton";
-import GamesScreen from '../screens/GamesScreen';
 import SegmentedSearch from "../components/SegmentedSearch";
 import {useBookmarks, useSubscriptions} from "../components/Article/logic";
 import {BookmarkContext, SubscriptionsContext} from '../constants/context';
@@ -112,14 +111,6 @@ function BottomTabNavigator() {
           options={({ navigation }: RootTabScreenProps<'SavedTab'>) => ({
             title: 'Saved',
             tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
-          })}
-        />
-        <BottomTab.Screen
-          name="GamesTab"
-          component={GamesScreen}
-          options={({ navigation }: RootTabScreenProps<'GamesTab'>) => ({
-            title: 'Games',
-            tabBarIcon: ({ color }) => <TabBarIcon name="puzzle-piece" color={color} />,
           })}
         />
       </BottomTab.Group>
