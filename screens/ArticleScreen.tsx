@@ -2,7 +2,7 @@ import {Text, Title, useAndroidRipple, View} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
-import {Image, Pressable, ScrollView} from "react-native";
+import {Image, Platform, Pressable, ScrollView} from "react-native";
 import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
@@ -40,6 +40,12 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
     return img?.replace(/(?:d|default)=[^&]+/, "d=404");
   });
 
+  // Adapted from https://stackoverflow.com/a/67409099 TODO: I don't think it's working
+  const fontUrl = Platform.select({
+    ios: "helvetica.ttf",
+    android: "file:///android_asset/fonts/helvetica.ttf",
+  });
+
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
     <ScrollView>
@@ -68,8 +74,13 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         originWhitelist={['*']}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
         customStyle={`
+          @font-face {
+            font-family: 'helvetica'; 
+            src: local('helvetica') url('${fontUrl}') format('truetype');
+          }
           p {
             padding: 0 ${padding}px;
+            font-family: helvetica;
           }
           * {
            color: ${colorScheme.text};
@@ -79,7 +90,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
             color: ${colorScheme.tint};
           }
         `}
-        source={{html: article.body }}
+        source={{html: article.body, baseUrl: '' }}
       />
       <View style={{paddingHorizontal: padding}}>
         {article.author.description &&
