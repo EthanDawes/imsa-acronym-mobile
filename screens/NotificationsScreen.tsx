@@ -1,23 +1,30 @@
-import {Text} from "../components/Themed";
-import {FlatList, View} from "react-native";
+import {Text, Title} from "../components/Themed";
+import {SectionList, View} from "react-native";
 import React, {useContext} from "react";
 import {RootStackScreenProps} from "../types";
 import {SubscriptionsContext} from "../constants/context";
 import IconButton from "../components/IconButton";
+import {ArticleFilter} from "../constants/api";
 
 export default function NotificationsScreen({route, navigation}: RootStackScreenProps<"Notifications">) {
-  const {category} = route.params;
-  // .slice removes the 's' to make more sense
-  navigation.setOptions({ title: category.slice(0, -1) + ' notifications' });
   const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
+  const sections = (["Authors", "Tags", "Topics"] as ArticleFilter[]).map(articleFilter => ({
+    title: articleFilter,
+    data: Object.entries(subscriptions).filter(([id, sub]) => sub.domain === articleFilter),
+  }));
+
   return (
-    <FlatList
-      data={Object.entries(subscriptions).filter(([id, sub]) => sub.domain === category)}
-      renderItem={({item}) => (
+    <SectionList
+      sections={sections}
+      keyExtractor={([id, _]) => id}
+      renderItem={({item: [id, subscription]}) => (
         <View style={{flexDirection: "row", paddingVertical: 10}}>
-          <Text style={{flexGrow: 100}}>{item[1].title}</Text>
-          <IconButton icon={item[0] in subscriptions ? "bell" : "bell-o"} action={() => toggleSubscriptions(item[1])} />
+          <Text style={{flexGrow: 100}}>{subscription.title}</Text>
+          <IconButton icon={id in subscriptions ? "bell" : "bell-o"} action={() => toggleSubscriptions(subscription)} />
         </View>
+      )}
+      renderSectionHeader={({section: {title}}) => (
+        <Title>{title}<IconButton icon="plus" action={() => {}} /></Title>
       )}
     />
   )

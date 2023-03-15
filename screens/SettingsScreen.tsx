@@ -39,11 +39,18 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
       </View>
 
       {!allNotifs &&
-        <>
-          <NotificationsSubmenu domain="Topics" navigation={navigation}/>
-          <NotificationsSubmenu domain="Authors" navigation={navigation} />
-          <NotificationsSubmenu domain="Tags" navigation={navigation} />
-        </>
+        <Pressable style={{flexDirection: "row", paddingVertical: 10}}
+                   android_ripple={useAndroidRipple()}
+                   onPress={() => navigation.navigate("Notifications")}
+        >
+          <Text style={{flexGrow: 100}}>Configure</Text>
+          <FontAwesome
+            name={"caret-right"}
+            size={25}
+            color={Colors[useColorScheme()].text}
+            style={{marginRight: 15, marginLeft: 15}}
+          />
+        </Pressable>
       }
       {/*<Hr />
       <Title>Stats</Title>*/}
@@ -57,20 +64,3 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
 });
-
-function NotificationsSubmenu({domain, navigation}: {domain: ArticleFilter} & Pick<RootStackScreenProps<"Settings">, "navigation">) {
-  return (
-    <Pressable style={{flexDirection: "row", paddingVertical: 10}}
-               android_ripple={useAndroidRipple()}
-               onPress={() => navigation.navigate("Notifications", {category: domain})}
-    >
-      <Text style={{flexGrow: 100}}>{domain}</Text>
-      <FontAwesome
-        name={"caret-right"}
-        size={25}
-        color={Colors[useColorScheme()].text}
-        style={{marginRight: 15, marginLeft: 15}}
-      />
-    </Pressable>
-  );
-}

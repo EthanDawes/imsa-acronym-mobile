@@ -62,7 +62,7 @@ function RootNavigator() {
             headerTitleAlign: 'center',
             // header: () => <SearchDetailsHeader {...route.params} />,
           })} />
-          <Stack.Screen name="Notifications" component={NotificationsScreen} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
           <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
             title: "",
             headerRight: () => BookmarkShare(route.params.body),

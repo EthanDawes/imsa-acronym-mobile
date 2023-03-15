@@ -20,7 +20,7 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Settings: undefined;
-  Notifications: { category: ArticleFilter };
+  Notifications: undefined;
   Search: { query: string, domain: SearchDomain };
   SearchDetails: Subscription,
   Article: { body: FullArticle };
