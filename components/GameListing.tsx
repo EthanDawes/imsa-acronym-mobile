@@ -2,7 +2,6 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 
 import {Text, Title, useAndroidRipple} from './Themed';
 import {useNavigation} from "@react-navigation/native";
-import * as WebBrowser from 'expo-web-browser';
 
 
 export default function GameListing({imgUrl, href, title, description}: {imgUrl: string, href: string, title: string, description: string}) {
@@ -10,7 +9,7 @@ export default function GameListing({imgUrl, href, title, description}: {imgUrl:
 
   return (
     <Pressable style={styles.container} android_ripple={useAndroidRipple()}
-               onPress={() => WebBrowser.openBrowserAsync(href)}
+               onPress={() => navigator.navigate("WebBrowser", {title, url: href})}
     >
       <View>
         <Image
