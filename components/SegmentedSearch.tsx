@@ -5,18 +5,19 @@ import {View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from "./Themed";
 import useColorScheme from "../hooks/useColorScheme";
+import * as domain from "domain";
 
 interface Props<T extends readonly string[]> {
   dropdownItems: T;
   onInput: (textbox: string, dropdown: T[number]) => void;
-  placeholder?: string;
+  initialDropdown?: T[number];
 }
 
-export default function SegmentedSearch<T extends readonly string[]>({dropdownItems, onInput, placeholder}: Props<T>) {
+export default function SegmentedSearch<T extends readonly string[]>({dropdownItems, onInput, initialDropdown}: Props<T>) {
   const colorScheme = useColorScheme();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(dropdownItems.map(i => ({label: i, value: i})));
-  const [dropdownValue, setDropdownValue] = useState(dropdownItems[0]);
+  const [dropdownValue, setDropdownValue] = useState(initialDropdown ?? dropdownItems[0]);
   const [inputValue, setInputValue] = useState("");
   useEffect(onInput.bind(null, inputValue, dropdownValue),[dropdownValue, inputValue]);
   const roundness = 25;
@@ -57,7 +58,7 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
         }}
         onChangeText={setInputValue}
         value={inputValue}
-        placeholder={placeholder}
+        placeholder={"Search " + dropdownValue.toLowerCase()}
       />
     </View>
   );

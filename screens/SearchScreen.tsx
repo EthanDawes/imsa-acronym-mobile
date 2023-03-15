@@ -7,7 +7,7 @@ import SearchItem from "../components/SearchItem";
 import InfiniteScroll from "../components/InfiniteScroll";
 
 export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
-  const {query, domain} = route.params;
+  const {query, domain, addNotifications} = route.params;
   const debouncedQuery = useDebounce<string>(query, 500);
   const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noop);
 
@@ -18,13 +18,13 @@ export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
 
     setResults((async function*() {
       yield* Object.entries(await results.topics).map(([topic, id]) => (
-        <SearchItem key={topic} title={topic} id={id} domain="Topics" />
+        <SearchItem key={topic} title={topic} id={id} domain="Topics" addNotifications={addNotifications} />
       ));
       yield* Object.entries(await results.authors).map(([author, deets]) => (
-        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" />
+        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" addNotifications={addNotifications} />
       ));
       yield* Object.entries(await results.tags).map(([tag, deets]) => (
-        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" />
+        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" addNotifications={addNotifications} />
       ));
       for await (const page of results.posts)
         yield <SmallArticle data={page} key={page.id} />;

@@ -21,7 +21,12 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Settings: undefined;
   Notifications: undefined;
-  Search: { query: string, domain: SearchDomain };
+  Search: {
+    query: string,
+    domain: SearchDomain,
+    // Defaults to false. When enabled, clicking on a result will add it to your notifications (subscriptions) instead of opening the page
+    addNotifications?: boolean,
+  };
   SearchDetails: Subscription,
   Article: { body: FullArticle };
   NotFound: undefined;

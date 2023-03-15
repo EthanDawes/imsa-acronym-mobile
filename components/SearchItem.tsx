@@ -6,17 +6,20 @@ import Colors from "../constants/Colors";
 import {MaterialIcons} from "@expo/vector-icons";
 import * as React from "react";
 import useColorScheme from "../hooks/useColorScheme";
+import {useContext} from "react";
+import {SubscriptionsContext} from "../constants/context";
 
-export default function SearchItem(props: {domain: ArticleFilter, title: string, id: number, img?: string}) {
-  const {domain, title} = props;
+export default function SearchItem(props: {domain: ArticleFilter, title: string, id: number, img?: string, addNotifications?: boolean}) {
+  const {domain, title, addNotifications} = props;
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
+  const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
 
   return (
     <Pressable
       style={{ width: '100%', padding: 10, marginTop: 10 }}
       android_ripple={useAndroidRipple()}
-      onPress={() => navigation.navigate("SearchDetails", props)}
+      onPress={() => addNotifications ? toggleSubscriptions(props) : navigation.navigate("SearchDetails", props)}
     >
       <View style={{flexDirection: "row"}}>
         <MaterialIcons

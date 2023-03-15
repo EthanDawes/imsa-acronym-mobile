@@ -55,8 +55,8 @@ function RootNavigator() {
           <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} options={({navigation}: RootStackScreenProps<"Search">) => ({
-            headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} placeholder={"Search everything"} />,
+          <Stack.Screen name="Search" component={SearchScreen} options={({navigation, route: {params}}: RootStackScreenProps<"Search">) => ({
+            headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} initialDropdown={params.domain} />,
           })} />
           <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
             headerTitleAlign: 'center',

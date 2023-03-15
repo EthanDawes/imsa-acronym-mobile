@@ -24,8 +24,10 @@ export default function NotificationsScreen({route, navigation}: RootStackScreen
         </View>
       )}
       renderSectionHeader={({section: {title}}) => (
-        <Title>{title}<IconButton icon="plus" action={() => {}} /></Title>
+        // TODO: center the button with the text
+        <Title style={{marginBottom: 5}}>{title}<IconButton icon="plus" action={() => navigation.navigate("Search", {domain: title, query: "", addNotifications: true})} /></Title>
       )}
+      style={{paddingHorizontal: 10}}
     />
   )
 }
