@@ -1,8 +1,8 @@
-import {Title, Text, useAndroidRipple} from "../components/Themed";
+import {Title, Text, useAndroidRipple, View} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
-import {Image, Pressable, ScrollView, View} from "react-native";
+import {Image, Pressable, ScrollView} from "react-native";
 import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
