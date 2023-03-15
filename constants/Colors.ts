@@ -1,3 +1,5 @@
+import {DarkTheme, DefaultTheme} from "@react-navigation/native";
+
 const tintColorLight = '#a90003';
 const tintColorDark = '#fff';
 
@@ -9,6 +11,7 @@ export default {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
     shadow: 'rgba(0,0,0,0.4)',
+    header: DefaultTheme.colors.card,
   },
   dark: {
     text: '#fff',
@@ -17,5 +20,6 @@ export default {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
     shadow: 'rgba(255,255,255,0.4)',
+    header: DarkTheme.colors.card,
   },
 };

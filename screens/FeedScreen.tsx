@@ -5,6 +5,7 @@ import React from "react";
 import LargeArticle from "../components/Article/LargeArticle";
 import wp, {getAllPosts} from "../constants/api";
 import InfiniteScroll from "../components/InfiniteScroll";
+import * as NavigationBar from 'expo-navigation-bar';
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>) {
   const iterator = getAllPosts(wp.posts().perPage(50));
