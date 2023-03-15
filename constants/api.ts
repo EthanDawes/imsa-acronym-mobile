@@ -109,6 +109,8 @@ export async function* getAllPosts(request = wp.posts()) {
       author: (i._embedded?.author[0] as WPTYPES.WP_REST_API_User),
       categories: arrayToObject(i._embedded?.["wp:term"]?.[0] as WPTYPES.WP_REST_API_Categories, "name", "id"),
       tags: arrayToObject(i._embedded?.["wp:term"]?.[1] as WPTYPES.WP_REST_API_Tags, "name", "id"),
+      // Regex can miss some cases, but I'm trusting WordPress to format HTML correctly, and worse case scenario, the user sees some wierd HTML tags. If insufficient, try `sanitize-html`
+      excerpt: decode(i.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")),
     }));
   }
 }

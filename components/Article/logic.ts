@@ -14,6 +14,7 @@ export interface FullArticle {
   author: WPTYPES.WP_REST_API_User,
   categories: Record<string, number>,
   tags: Record<string, number>,
+  excerpt: string,
   // If needed, I was thinking of implementing non-immediate values like:
   // comments: Promise<WPTYPES.WP_REST_API_COMMENTS>
 }
