@@ -1,6 +1,6 @@
 import {Image, StyleSheet, View} from 'react-native';
 
-import {Text, Title} from '../Themed';
+import {CategoryLabel, Text, Title} from '../Themed';
 import ArticleContainer from "./ArticleContainer";
 import {ArticleProps} from "./logic";
 import Colors from "../../constants/Colors";
@@ -8,14 +8,14 @@ import useColorScheme from "../../hooks/useColorScheme";
 
 
 export default function SmallArticle(props: ArticleProps) {
-  const {imgUrl, title} = props.data;
+  const {imgUrl, title, categories} = props.data;
   const colorScheme = Colors[useColorScheme()];
 
   return (
     <ArticleContainer {...props}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={{flexShrink: 1}}>
-          <Text style={{color: colorScheme.text}}>Category</Text>
+          <CategoryLabel>{Object.keys(categories).join(", ")}</CategoryLabel>
           <Title style={{flexShrink: 1}}>{title}</Title>
         </View>
         <Image

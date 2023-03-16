@@ -16,7 +16,7 @@ export default function ArticleImage({src}: {src: string}) {
 const styles = StyleSheet.create({
   bigImg: {
     width: '100%',
-    height: 200,
+    height: 300,
     borderRadius: 30,
   },
 });

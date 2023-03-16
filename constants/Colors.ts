@@ -1,7 +1,7 @@
 import {DarkTheme, DefaultTheme} from "@react-navigation/native";
 
 const tintColorLight = '#a90003';
-const tintColorDark = '#fff';
+const tintColorDark = '#ff3336';
 
 export default {
   light: {

@@ -28,7 +28,7 @@ type ThemeProps = {
 };
 
 export type TextProps = ThemeProps & DefaultText['props'];
-export type ViewProps = ThemeProps & DefaultView['props'];
+export type ViewProps = ThemeProps & View['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -57,6 +57,12 @@ export function Hr() {
 export function Title(props: TextProps) {
   const { style, ...otherProps } = props;
   return (<Text style={[{fontSize: 20, fontFamily: "helvetica-bold"}, style]} {...otherProps} />);
+}
+
+export function CategoryLabel(props: DefaultText['props']) {
+  const { style, ...otherProps } = props;
+  const colors = Colors[useColorScheme()];
+  return (<DefaultText style={[{color: colors.tint, fontFamily: "helvetica-bold"}, style]} {...otherProps} />);
 }
 
 // TODO: replace w/ TouchableRipple Component for Android & iOS
