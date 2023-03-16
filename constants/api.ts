@@ -104,7 +104,7 @@ export async function* getAllPosts(request = wp.posts()) {
       title: decode(i.title.rendered),
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
       imgUrl: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
-      date: new Date(i.date),
+      date: i.date,
       body: i.content?.rendered,
       author: (i._embedded?.author[0] as WPTYPES.WP_REST_API_User),
       categories: arrayToObject(i._embedded?.["wp:term"]?.[0] as WPTYPES.WP_REST_API_Categories, "name", "id"),
