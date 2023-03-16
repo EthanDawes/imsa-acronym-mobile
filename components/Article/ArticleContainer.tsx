@@ -4,12 +4,9 @@ import {Pressable, StyleSheet, View} from "react-native";
 import {PropsWithChildren} from "react";
 import {useNavigation} from "@react-navigation/native";
 import BookmarkShare from "./BookmarkShare";
-import useColorScheme from "../../hooks/useColorScheme";
-import Colors from "../../constants/Colors";
 
 export default function ArticleContainer({data, children}: PropsWithChildren<ArticleProps>) {
   const navigation = useNavigation();
-  const colorScheme = Colors[useColorScheme()];
 
   return (
     <Pressable
@@ -19,7 +16,7 @@ export default function ArticleContainer({data, children}: PropsWithChildren<Art
     >
       {children}
       <View style={styles.footer}>
-        <Text style={{flexGrow: 10, color: colorScheme.text}}>{toRelativeDate(data.date)}</Text>
+        <Text style={{flexGrow: 10}}>{toRelativeDate(data.date)}</Text>
         <BookmarkShare {...data} />
       </View>
     </Pressable>
