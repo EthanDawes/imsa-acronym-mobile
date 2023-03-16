@@ -55,9 +55,7 @@ function RootNavigator() {
           <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} options={({navigation, route: {params}}: RootStackScreenProps<"Search">) => ({
-            headerTitle: props => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} initialDropdown={params.domain} />,
-          })} />
+          <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
             headerTitleAlign: 'center',
             // header: () => <SearchDetailsHeader {...route.params} />,
@@ -90,7 +88,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
         headerTitleAlign: 'center',
-        headerRight: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
+        headerRight: () => IconButton({icon: "bell", action: () => navigation.navigate("Settings")}),
         headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search", {query: "", domain: "All"})}),
       })}>
         <BottomTab.Screen
@@ -114,6 +112,14 @@ function BottomTabNavigator() {
           })}
         />
       </BottomTab.Group>
+      <BottomTab.Screen
+        name="SearchTab"
+        component={SearchScreen}
+        options={({ navigation }: RootTabScreenProps<'SearchTab'>) => ({
+          title: 'Search',
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+        })}
+      />
     </BottomTab.Navigator>
   );
 }

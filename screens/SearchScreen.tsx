@@ -1,15 +1,22 @@
-import {search} from "../constants/api";
-import {RootStackScreenProps} from "../types";
+import {search, searchDomains} from "../constants/api";
+import {RootStackScreenProps, RootTabScreenProps} from "../types";
 import SmallArticle from "../components/Article/SmallArticle";
 import React, {useEffect, useState} from "react";
 import useDebounce from "../hooks/useDebounce";
 import SearchItem from "../components/SearchItem";
 import InfiniteScroll from "../components/InfiniteScroll";
+import SegmentedSearch from "../components/SegmentedSearch";
 
-export default function SearchScreen({route}: RootStackScreenProps<"Search">) {
-  const {query, domain, addNotifications} = route.params;
+export default function SearchScreen({route, navigation}: RootStackScreenProps<"Search"> | RootTabScreenProps<"SearchTab">) {
+  const {query = "", domain = "All", addNotifications} = route.params ?? {};
   const debouncedQuery = useDebounce<string>(query, 500);
   const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noop);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => <SegmentedSearch dropdownItems={searchDomains} onInput={(query, domain) => navigation.setParams({query, domain})} initialDropdown={domain} />,
+    })
+  }, []);
 
   useEffect(() => {
     if (query.length === 0) return;

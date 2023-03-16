@@ -22,8 +22,10 @@ export type RootStackParamList = {
   Settings: undefined;
   Notifications: undefined;
   Search: {
-    query: string,
-    domain: SearchDomain,
+    // Defaults to ""
+    query?: string,
+    // Defaults to All
+    domain?: SearchDomain,
     // Defaults to false. When enabled, clicking on a result will add it to your notifications (subscriptions) instead of opening the page
     addNotifications?: boolean,
   };
@@ -40,7 +42,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 export type RootTabParamList = {
   FeedTab: undefined;
   SavedTab: undefined;
-  GamesTab: undefined;
+  // WARNING: different from root stack's search screen. Duplicated b/c I needed one for adding subscriptions, & another for searching
+  SearchTab: RootStackParamList["Search"];
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
