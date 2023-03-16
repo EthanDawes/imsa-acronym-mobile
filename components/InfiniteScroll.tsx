@@ -5,6 +5,7 @@ import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import constructInfiniteScrollHandler from "./constructInfiniteScrollHandler";
 import useCollapsibleHeaderMixin from "../mixins/useCollapsibleHeaderMixin";
 import WithAnimatedValue = Animated.WithAnimatedValue;
+import * as SplashScreen from "expo-splash-screen";
 
 // I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists (for now)
 // TODO: should I allow passing the full AnimatedProps<FlatListProps<ItemT>>?
@@ -25,8 +26,11 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
       console.log("I should fetch new stuff!");
       for (let i=0; i<9; i++) next();
       // don't hide loading until all are loaded (particularly an issue for SearchScreen, where category info appears before posts)
-      next().then(() => setRefreshing(false));
-      }
+      next().then(() => {
+        setRefreshing(false);
+        SplashScreen.hideAsync();
+      });
+    }
   }, [articles]);
 
   let onScroll = constructInfiniteScrollHandler(next);
