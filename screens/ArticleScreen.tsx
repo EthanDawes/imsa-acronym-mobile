@@ -23,7 +23,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
     tags: Object.values(article.tags),
   })))[0];
 
-  const pronouns = article.author.description.toLowerCase();
+  const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
   const isFemale = hasWord(pronouns, "she") || hasWord(pronouns, "hers") || hasWord(pronouns, "her") || pronouns.includes("girl") || pronouns.includes("02") || pronouns.includes("06");
   console.log(isFemale, isMale);
