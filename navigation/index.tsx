@@ -8,7 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {ColorSchemeName, Image} from 'react-native';
+import {ColorSchemeName, Image, Share} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -65,7 +65,7 @@ function RootNavigator() {
           <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
           <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
             title: "",
-            headerRight: () => BookmarkShare(route.params.body),
+            headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
           })} />
         </Stack.Navigator>
       </SubscriptionsContext.Provider>

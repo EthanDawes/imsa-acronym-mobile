@@ -7,6 +7,8 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import * as NavigationBar from "expo-navigation-bar";
 import Colors from "./constants/Colors";
+import {initNotifications} from "./Notify";
+import {initBackgroundSync} from "./Sync";
 
 // initNotifications();
 // initBackgroundSync();
