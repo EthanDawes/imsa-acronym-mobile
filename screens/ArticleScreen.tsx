@@ -2,12 +2,13 @@ import {Text, Title, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
-import {Image, Platform, Pressable, ScrollView, View} from "react-native";
+import {Image, Linking, Platform, Pressable, ScrollView, View} from "react-native";
 import {useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
 import wp, {getAllPosts} from "../constants/api";
+import * as WebBrowser from 'expo-web-browser';
 
 const padding = 10;
 
@@ -90,6 +91,15 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           }
         `}
         source={{html: article.body, baseUrl: '' }}
+        // Adapted from https://stackoverflow.com/a/54115883
+        onShouldStartLoadWithRequest={event => {
+          if (event.url.slice(0,4) === 'http') {
+            //Linking.openURL(event.url);
+            WebBrowser.openBrowserAsync(event.url);
+            return false;
+          }
+          return true;
+        }}
       />
       <View style={{paddingHorizontal: padding}}>
         {article.author.description &&
