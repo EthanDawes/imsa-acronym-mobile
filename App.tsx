@@ -10,8 +10,8 @@ import Colors from "./constants/Colors";
 import {initNotifications} from "./Notify";
 import {initBackgroundSync} from "./Sync";
 
-// initNotifications();
-// initBackgroundSync();
+initNotifications();
+initBackgroundSync();
 // @ts-ignore This has to exist so the collapsable header doesn't clip (see react-navigation-collapsable/lib/src/utils.js)
 global.Expo = true;
 
