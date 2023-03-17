@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useEffect, useState} from "react";
-import {Animated, FlatList, FlatListProps, RefreshControl} from "react-native";
+import {Animated, Dimensions, FlatList, FlatListProps, RefreshControl} from "react-native";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import {UseCollapsibleOptions} from "react-navigation-collapsible";
 import constructInfiniteScrollHandler from "./constructInfiniteScrollHandler";
@@ -56,6 +56,10 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
       ListHeaderComponent={<>{children}</>}
       ListEmptyComponent={refreshing ? undefined : ListEmptyComponent}
       data={articles as WithAnimatedValue<ItemT>[] /* complains without the cast. I don't use any of these types, so it shouldn't matter*/}
+      onContentSizeChange={(width, height) => {
+        if (height < Dimensions.get('window').height && !refreshing)
+          next();
+      }}
       {...flatListProps}
     />
   );
