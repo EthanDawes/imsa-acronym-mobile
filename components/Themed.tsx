@@ -45,6 +45,11 @@ export function Text(props: TextProps) {
   return <DefaultText style={[{ color, fontFamily: "helvetica" }, style]} {...otherProps} />;
 }
 
+export function Italics(props: TextProps) {
+  const {style, ...otherProps} = props;
+  return <Text style={[{ fontFamily: "helvetica", fontStyle: "italic" }, style]} {...otherProps} />
+}
+
 export function TextInput(props: DefaultTextInput['props']) {
   const { style, ...otherProps } = props;
   const colors = Colors[useColorScheme()];
