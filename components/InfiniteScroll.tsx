@@ -9,8 +9,9 @@ import * as SplashScreen from "expo-splash-screen";
 
 // I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists (for now)
 // TODO: should I allow passing the full AnimatedProps<FlatListProps<ItemT>>?
-export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsibleOptions={}, iterator, children, ...flatListProps}:
-                                              PropsWithChildren<{collapsibleHeader?: boolean, collapsibleOptions?: Partial<UseCollapsibleOptions>, iterator: AsyncIterator<ItemT>}> & Pick<FlatListProps<ItemT>, "keyExtractor" | "renderItem">) {
+export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsibleOptions={}, iterator, children, ListEmptyComponent, ...flatListProps}:
+                                              PropsWithChildren<{collapsibleHeader?: boolean, collapsibleOptions?: Partial<UseCollapsibleOptions>, iterator: AsyncIterator<ItemT>}>
+                                                & Omit<FlatListProps<ItemT>, "children" | "data" | "onScroll" | "refreshControl" | "ListHeaderComponent" | keyof ReturnType<typeof useCollapsibleHeaderMixin>>) {
   const ListImplementation = collapsibleHeader ? Animated.FlatList : FlatList;
   const [refreshing, setRefreshing] = React.useState(true);
 
@@ -53,6 +54,7 @@ export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsi
         <RefreshControl refreshing={refreshing} enabled={false} progressViewOffset={containerPaddingTop} />
       }
       ListHeaderComponent={<>{children}</>}
+      ListEmptyComponent={refreshing ? undefined : ListEmptyComponent}
       data={articles as WithAnimatedValue<ItemT>[] /* complains without the cast. I don't use any of these types, so it shouldn't matter*/}
       {...flatListProps}
     />

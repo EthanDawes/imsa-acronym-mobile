@@ -3,7 +3,14 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import {Pressable, PressableProps, Text as DefaultText, TextInput as DefaultTextInput, View} from 'react-native';
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  Text as DefaultText,
+  TextInput as DefaultTextInput,
+  View, ViewStyle
+} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -11,13 +18,13 @@ import {PropsWithChildren} from "react";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: keyof typeof Colors[keyof typeof Colors]
 ) {
   const theme = useColorScheme();
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
-    return ;
+    return colorFromProps;
   } else {
     return Colors[theme][colorName];
   }
@@ -46,13 +53,13 @@ export function TextInput(props: DefaultTextInput['props']) {
 }
 
 // TODO: eh color & margin might need to be fixed
-export function Hr() {
-  return (<View style={{
+export function Hr({style}: {style?: StyleProp<ViewStyle>}) {
+  return (<View style={[{
     marginVertical: 10,
     height: 1,
     width: '100%',
-    backgroundColor: useThemeColor({ light: "#eee", dark: "rgba(255,255,255,0.9)" }, 'background')
-  }} />)
+    backgroundColor: useThemeColor({ light: "#b4b4b4", dark: "rgba(255,255,255,0.9)" }, 'background'),
+  }, style]} />)
 }
 
 export function Title(props: TextProps) {

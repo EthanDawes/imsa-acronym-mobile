@@ -17,6 +17,7 @@ export default function SavedScreen() {
       renderItem={({item}) => <SmallArticle data={item} />}
       keyExtractor={item => "" + item.id}
       ListEmptyComponent={() => <Text style={{color: colors.shadow, textAlign: "center"}}>Bookmarked articles will appear here</Text>}
+      style={{paddingHorizontal: 10}}
     />
   );
 }

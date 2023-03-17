@@ -6,11 +6,15 @@ import useDebounce from "../hooks/useDebounce";
 import SearchItem from "../components/SearchItem";
 import InfiniteScroll from "../components/InfiniteScroll";
 import SegmentedSearch from "../components/SegmentedSearch";
+import {Text} from "../components/Themed";
+import useColorScheme from "../hooks/useColorScheme";
+import Colors from "../constants/Colors";
 
 export default function SearchScreen({route, navigation}: RootStackScreenProps<"Search"> | RootTabScreenProps<"SearchTab">) {
   const {query = "", domain = "All", addNotifications} = route.params ?? {};
   const debouncedQuery = useDebounce<string>(query, 500);
   const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noop);
+  const colors = Colors[useColorScheme()];
 
   useEffect(() => {
     navigation.setOptions({
@@ -42,6 +46,7 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
     <InfiniteScroll
       iterator={results}
       renderItem={({item}) => item}
+      ListEmptyComponent={() => <Text style={{color: colors.shadow, textAlign: "center"}}>No results... yet!</Text>}
     />
   );
 }

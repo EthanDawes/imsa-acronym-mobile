@@ -50,8 +50,8 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
     <ScrollView>
-      <View style={{paddingHorizontal: padding}}>
-        <View style={{flexDirection: "row"}}>
+      <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}}>
+        <View style={{flexDirection: "row", gap: 10}}>
           {Object.entries(article.categories).map(([category, id]) => (
             <RoundedButton
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
