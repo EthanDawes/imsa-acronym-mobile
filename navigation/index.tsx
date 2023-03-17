@@ -88,8 +88,8 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Group screenOptions={({ navigation }: RootTabScreenProps<keyof RootTabParamList>) => ({
         headerTitleAlign: 'center',
-        headerRight: () => IconButton({icon: "bell", action: () => navigation.navigate("Settings")}),
-        headerLeft: () => IconButton({icon: "search", action: () => navigation.navigate("Search", {query: "", domain: "All"})}),
+        headerRight: () => IconButton({icon: "bell", action: () => navigation.navigate("Notifications")}),
+        headerLeft: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
       })}>
         <BottomTab.Screen
           name="FeedTab"
