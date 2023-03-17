@@ -19,12 +19,11 @@ export default function NotificationsListings({children}: PropsWithChildren) {
     <>{
       sections.map(({title, data}) =>
         <>
-          {/*TODO: center the button with the text*/}
           <Hr />
-          <Title style={{marginBottom: 5}}>
-            {title}
+          <View style={{flexDirection: "row", alignItems: "center", marginBottom: 5}}>
+            <Title>{title}</Title>
             <IconButton icon="plus" action={() => navigation.navigate("Search", {domain: title, query: "", addNotifications: true})} />
-          </Title>
+          </View>
           {data.map(([id, subscription]) =>
             <View style={{flexDirection: "row", paddingVertical: 10}}>
               <Text style={{flexGrow: 100}}>{subscription.title}</Text>
