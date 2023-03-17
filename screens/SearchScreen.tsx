@@ -23,7 +23,15 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
   }, []);
 
   useEffect(() => {
-    if (query.length === 0) return;
+    // This shows all tags if query="" & domain=All
+    let domain = route.params?.domain ?? "All";
+    if (query.length === 0 && domain === "All")
+      domain = "Topics";
+
+    if (query.length === 0 && (domain === "All" || domain === "Posts")) {
+      setResults(noop())
+      return;
+    }
     console.log("Searching");
     const results = search(query, domain);
 
