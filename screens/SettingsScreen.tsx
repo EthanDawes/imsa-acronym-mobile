@@ -12,20 +12,26 @@ import {notifyTest} from "../Notify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
-  const colorScheme = useColorScheme();
-  const androidRipple = useAndroidRipple();
-
   return (
     <ScrollView style={styles.container}>
-      {/*<Title>General</Title>
-      <View style={{flexDirection: "row"}}>
+      <Title>General</Title>
+      {/*<View style={{flexDirection: "row"}}>
         <Text style={{flexGrow: 100}}>Default Page</Text>
-      </View>
-      <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()} />
-      <Button title={"Test notifications"} onPress={notifyTest} />
-      <Hr />*/}
-      {/*<Hr />
-      <Title>Stats</Title>*/}
+      </View>*/}
+      {/*TODO: acount info + sign in/out?*/}
+      {/*TODO: font size?*/}
+      {__DEV__ &&
+        <>
+          <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()}/>
+          <Button title={"Test notifications"} onPress={notifyTest} />
+        </>
+      }
+      <Hr />
+      <Title>Your Likes</Title>
+      <Hr />
+      <Title>Your Comments</Title>
+      <Hr />
+      <Title>Your Stats</Title>
     </ScrollView>
   );
 }
