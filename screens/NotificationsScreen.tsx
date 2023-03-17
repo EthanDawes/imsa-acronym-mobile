@@ -1,33 +1,30 @@
-import {Text, Title} from "../components/Themed";
-import {SectionList, View} from "react-native";
-import React, {useContext} from "react";
+import {Text} from "../components/Themed";
+import {ScrollView, Switch, View} from "react-native";
 import {RootStackScreenProps} from "../types";
-import {SubscriptionsContext} from "../constants/context";
-import IconButton from "../components/IconButton";
-import {ArticleFilter} from "../constants/api";
+import NotificationsListings from "../components/NotificationsListings";
+import useAsyncStorage from "../hooks/useAsyncStorage";
 
 export default function NotificationsScreen({route, navigation}: RootStackScreenProps<"Notifications">) {
-  const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
-  const sections = (["Authors", "Tags", "Topics"] as ArticleFilter[]).map(articleFilter => ({
-    title: articleFilter,
-    data: Object.entries(subscriptions).filter(([id, sub]) => sub.domain === articleFilter),
-  }));
+  const {item: allNotifs, setItem: setAllNotifs} = useAsyncStorage("allNotifs", false);
+  const toggleAllNotifs = () => setAllNotifs(previousState => !previousState);
 
   return (
-    <SectionList
-      sections={sections}
-      keyExtractor={([id, _]) => id}
-      renderItem={({item: [id, subscription]}) => (
-        <View style={{flexDirection: "row", paddingVertical: 10}}>
-          <Text style={{flexGrow: 100}}>{subscription.title}</Text>
-          <IconButton icon={id in subscriptions ? "bell" : "bell-o"} action={() => toggleSubscriptions(subscription)} />
-        </View>
-      )}
-      renderSectionHeader={({section: {title}}) => (
-        // TODO: center the button with the text
-        <Title style={{marginBottom: 5}}>{title}<IconButton icon="plus" action={() => navigation.navigate("Search", {domain: title, query: "", addNotifications: true})} /></Title>
-      )}
-      style={{paddingHorizontal: 10}}
-    />
+    <ScrollView style={{paddingHorizontal: 10}}>
+      {/*TODO: delivered notifications would appear here*/}
+      <View style={{flexDirection: "row", alignItems: "center"}}>
+        <Text style={{flexGrow: 100}}>All Notifications</Text>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          // thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleAllNotifs}
+          value={allNotifs}
+        />
+      </View>
+
+      {!allNotifs &&
+        <NotificationsListings />
+      }
+    </ScrollView>
   )
 }
