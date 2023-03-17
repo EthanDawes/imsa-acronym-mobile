@@ -16,6 +16,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   const {body: article} = route.params;
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
+  const [isLoading, setIsLoading] = useState(true);
 
   const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
@@ -94,26 +95,29 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           }
           return true;
         }}
+        onLoad={() => setIsLoading(false)}
       />
-      <View style={{paddingHorizontal: padding}}>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
-          <Hr style={{flexGrow: 1}} />
-          <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
-          <Hr style={{flexGrow: 1}} />
+      {!isLoading &&
+        <View style={{paddingHorizontal: padding}}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Hr style={{flexGrow: 1}} />
+            <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
+            <Hr style={{flexGrow: 1}} />
+          </View>
+          {article.author.description &&
+            <Pressable
+              style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
+              android_ripple={androidRipple}
+              onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
+            >
+              <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
+                     onError={() => getFakeFace(isFemale).then(setImg)}
+              />
+              <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
+            </Pressable>
+          }
         </View>
-        {article.author.description &&
-          <Pressable
-            style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
-            android_ripple={androidRipple}
-            onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
-          >
-            <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
-                   onError={() => getFakeFace(isFemale).then(setImg)}
-            />
-            <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
-          </Pressable>
-        }
-      </View>
+      }
     </ScrollView>
   );
 }
