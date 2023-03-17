@@ -16,13 +16,6 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   const {body: article} = route.params;
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
-  // TODO: when this re-renders, posts will be fetched again. Convert to bound function & pass? (UseAsyncIterator will only call once, on init)
-  const relatedPosts = useState(getAllPosts(wp.posts().embed().param({
-    exclude: article.id,
-    tax_relation: "OR",
-    categories: Object.values(article.categories),
-    tags: Object.values(article.tags),
-  })))[0];
 
   const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
