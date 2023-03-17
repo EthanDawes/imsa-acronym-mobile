@@ -8,7 +8,7 @@ import {
   PressableProps,
   StyleProp,
   Text as DefaultText,
-  TextInput as DefaultTextInput,
+  TextInput as DefaultTextInput, TextStyle,
   View, ViewStyle
 } from 'react-native';
 
@@ -55,6 +55,16 @@ export function TextInput(props: DefaultTextInput['props']) {
   const colors = Colors[useColorScheme()];
 
   return <DefaultTextInput style={[{ color: colors.text }, style]} placeholderTextColor={colors.shadow} {...otherProps} />;
+}
+
+export function LabeledTextInput(props: DefaultTextInput['props'] & TextProps & {textStyle?: StyleProp<TextStyle>, inputStyle?: StyleProp<TextStyle>}) {
+  const {children, style: _, textStyle, inputStyle, ...otherProps} = props;
+  return (
+    <View style={{flexDirection: "row", gap: 5, alignItems: "center"}}>
+      <Text style={textStyle} {...otherProps}>{children}</Text>
+      <TextInput style={inputStyle} {...otherProps} />
+    </View>
+  );
 }
 
 // TODO: eh color & margin might need to be fixed
