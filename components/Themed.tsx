@@ -3,10 +3,11 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import {Text as DefaultText, TextInput as DefaultTextInput, View} from 'react-native';
+import {Pressable, PressableProps, Text as DefaultText, TextInput as DefaultTextInput, View} from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import {PropsWithChildren} from "react";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -69,6 +70,25 @@ export function CategoryLabel(props: DefaultText['props']) {
 export function useAndroidRipple() {
   const colorScheme = useColorScheme();
   return {color: Colors[colorScheme].shadow, foreground: true};
+}
+
+export function RoundedButton(props: PressableProps & {color: keyof typeof Colors['light' | 'dark'], bold?: boolean}) {
+  let {style, color, bold=false, ...otherProps} = props;
+  const colors = Colors[useColorScheme()];
+  if (typeof style === "function") {
+    console.error("Why did you pass a style function? Don't do that");
+    style = {};
+  }
+  return (
+    <Pressable android_ripple={useAndroidRipple()} style={[{
+      borderColor: colors[color],
+      borderWidth: bold ? 2 : 1,
+      borderStyle: "solid",
+      borderRadius: 20,
+      padding: 5,
+      alignSelf: "flex-start",  // this style makes container fit to content (like display: inline-block)
+    }, style]} {...otherProps} />
+  );
 }
 
 export function ListItem(props: ViewProps) {

@@ -1,4 +1,4 @@
-import {Text, Title, useAndroidRipple} from "../components/Themed";
+import {CategoryLabel, RoundedButton, Text, Title, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
@@ -53,21 +53,22 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
       <View style={{paddingHorizontal: padding}}>
         <View style={{flexDirection: "row"}}>
           {Object.entries(article.categories).map(([category, id]) => (
-            <Pressable
-              android_ripple={androidRipple}
+            <RoundedButton
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
+              color={"tint"}
+              bold={true}
             >
-              <Text>{category}</Text>
-            </Pressable>
+              <CategoryLabel>{category}</CategoryLabel>
+            </RoundedButton>
           ))}
         </View>
         <Title>{article.title}</Title>
-        <Pressable
-          android_ripple={androidRipple}
+        <RoundedButton
           onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
+          color={"text"}
         >
           <Text>{article.author.name}</Text>
-        </Pressable>
+        </RoundedButton>
         <ArticleImage src={article.imgUrl} />
         <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       </View>
