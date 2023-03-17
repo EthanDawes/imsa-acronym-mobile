@@ -80,6 +80,8 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           }
           * {
            color: ${colorScheme.text};
+           max-width: 100%;
+           height: auto;
           }
           a {
             color: ${colorScheme.tint};
