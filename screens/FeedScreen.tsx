@@ -13,7 +13,7 @@ export default function FeedScreen({ navigation }: RootTabScreenProps<'FeedTab'>
       iterator={iterator}
       renderItem={({item}) => <LargeArticle data={item} />}
       keyExtractor={item => "" + item.id}
-      ItemSeparatorComponent={() => <Hr style={{paddingHorizontal: 10}} />}
+      ItemSeparatorComponent={() => <Hr style={{marginHorizontal: 10}} />}
     />
   );
 }

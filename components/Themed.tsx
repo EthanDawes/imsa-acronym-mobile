@@ -62,7 +62,7 @@ export function Hr({style}: {style?: StyleProp<ViewStyle>}) {
   return (<View style={[{
     marginVertical: 10,
     height: 1,
-    width: '100%',
+    // width: '100%',
     backgroundColor: useThemeColor({ light: "#b4b4b4", dark: "rgba(255,255,255,0.9)" }, 'background'),
   }, style]} />)
 }
