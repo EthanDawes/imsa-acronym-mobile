@@ -1,4 +1,4 @@
-import {CategoryLabel, RoundedButton, Text, Title, useAndroidRipple} from "../components/Themed";
+import {CategoryLabel, Hr, RoundedButton, Text, Title, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
@@ -103,6 +103,11 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         }}
       />
       <View style={{paddingHorizontal: padding}}>
+        <View style={{flexDirection: "row", alignItems: "center"}}>
+          <Hr style={{flexGrow: 1}} />
+          <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
+          <Hr style={{flexGrow: 1}} />
+        </View>
         {article.author.description &&
           <Pressable
             style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
