@@ -8,7 +8,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {ColorSchemeName, Image, Share} from 'react-native';
+import {ColorSchemeName, Image} from 'react-native';
+import {useNetInfo} from "@react-native-community/netinfo";
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -21,12 +22,10 @@ import SavedScreen from '../screens/SavedScreen';
 import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import IconButton from "../components/IconButton";
-import SegmentedSearch from "../components/SegmentedSearch";
 import {useBookmarks, useSubscriptions} from "../components/Article/logic";
 import {BookmarkContext, SubscriptionsContext} from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
-import {searchDomains} from "../constants/api";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -79,6 +78,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const netInfo = useNetInfo();
 
   return (
     <BottomTab.Navigator
@@ -91,18 +91,20 @@ function BottomTabNavigator() {
         headerRight: () => IconButton({icon: "bell", action: () => navigation.navigate("Notifications")}),
         headerLeft: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
       })}>
-        <BottomTab.Screen
-          name="FeedTab"
-          component={FeedScreen}
-          options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
-            title: 'Feed',
-            headerTitle: (props) => <Image
-              style={{ width: 250, height: "100%", resizeMode: "contain" }}
-              source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
-            />,
-            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          })}
-        />
+        { netInfo.isConnected &&
+          <BottomTab.Screen
+            name="FeedTab"
+            component={FeedScreen}
+            options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
+              title: 'Feed',
+              headerTitle: (props) => <Image
+                style={{ width: 250, height: "100%", resizeMode: "contain" }}
+                source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
+              />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+            })}
+          />
+        }
         <BottomTab.Screen
           name="SavedTab"
           component={SavedScreen}
@@ -112,14 +114,16 @@ function BottomTabNavigator() {
           })}
         />
       </BottomTab.Group>
-      <BottomTab.Screen
-        name="SearchTab"
-        component={SearchScreen}
-        options={({ navigation }: RootTabScreenProps<'SearchTab'>) => ({
-          title: 'Search',
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
-        })}
-      />
+      { netInfo.isConnected &&
+        <BottomTab.Screen
+          name="SearchTab"
+          component={SearchScreen}
+          options={({ navigation }: RootTabScreenProps<'SearchTab'>) => ({
+            title: 'Search',
+            tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          })}
+        />
+      }
     </BottomTab.Navigator>
   );
 }
