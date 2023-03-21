@@ -11,7 +11,7 @@ export default function LargeArticle(props: ArticleProps) {
   return (
     <ArticleContainer {...props}>
       <ArticleImage src={imgUrl} />
-      <CategoryLabel>{Object.keys(categories).join(", ")}</CategoryLabel>
+      <CategoryLabel style={{marginTop: 10}}>{Object.keys(categories).join(", ")}</CategoryLabel>
       <Title>{title}</Title>
       {/*TODO: add a little picture?*/}
       <Italics>{author.name}</Italics>
