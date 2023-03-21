@@ -98,9 +98,10 @@ function BottomTabNavigator() {
             options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
               title: 'Feed',
               headerTitle: (props) => <Image
-                style={{ width: 250, height: "100%", resizeMode: "contain" }}
+                style={{ width: "100%", height: "100%", resizeMode: "contain" }}
                 source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
               />,
+              headerTitleContainerStyle: { width: "100%" },
               tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
             })}
           />
