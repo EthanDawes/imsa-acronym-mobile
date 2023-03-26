@@ -91,7 +91,7 @@ function BottomTabNavigator() {
         headerRight: () => IconButton({icon: "bell", action: () => navigation.navigate("Notifications")}),
         headerLeft: () => IconButton({icon: "gear", action: () => navigation.navigate("Settings")}),
       })}>
-        { netInfo.isConnected &&
+        { (netInfo.isConnected == undefined || netInfo.isConnected) &&
           <BottomTab.Screen
             name="FeedTab"
             component={FeedScreen}
@@ -101,7 +101,7 @@ function BottomTabNavigator() {
                 style={{ width: "100%", height: "100%", resizeMode: "contain" }}
                 source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
               />,
-              headerTitleContainerStyle: { width: "100%" },
+              headerTitleContainerStyle: { width: "100%", paddingBottom: 3 },
               tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
             })}
           />

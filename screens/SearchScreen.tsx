@@ -54,7 +54,7 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
     <InfiniteScroll
       iterator={results}
       renderItem={({item}) => item}
-      ListEmptyComponent={() => <Text style={{color: colors.shadow, textAlign: "center"}}>No results... yet!</Text>}
+      ListEmptyComponent={() => <Text style={{color: colors.shadow, textAlign: "center", padding: 10}}>No results... yet!</Text>}
     />
   );
 }

@@ -9,7 +9,7 @@ export default function NotificationsScreen({route, navigation}: RootStackScreen
   const toggleAllNotifs = () => setAllNotifs(previousState => !previousState);
 
   return (
-    <ScrollView style={{paddingHorizontal: 10}}>
+    <ScrollView contentContainerStyle={{padding: 10}}>
       {/*TODO: delivered notifications would appear here*/}
       <View style={{flexDirection: "row", alignItems: "center"}}>
         <Text style={{flexGrow: 100}}>All Notifications</Text>
