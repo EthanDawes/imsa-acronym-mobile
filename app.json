@@ -14,7 +14,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/61b6f88f-10eb-4914-b462-4d77f6ad0cea"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -38,6 +39,9 @@
         "projectId": "61b6f88f-10eb-4914-b462-4d77f6ad0cea"
       }
     },
-    "owner": "funblaster22"
+    "owner": "funblaster22",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
