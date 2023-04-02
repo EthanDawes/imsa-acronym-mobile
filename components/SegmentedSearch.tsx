@@ -57,6 +57,8 @@ export default function SegmentedSearch<T extends readonly string[]>({dropdownIt
           paddingLeft: 5,
         }}
         onChangeText={setInputValue}
+        onKeyPress={setOpen.bind(null, false)}
+        onPressIn={setOpen.bind(null, false)}
         value={inputValue}
         placeholder={"Search " + dropdownValue.toLowerCase()}
       />
