@@ -37,14 +37,15 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
     const results = search(query, domain);
 
     setResults((async function*() {
+      // I think ids can be shared across taxonomies, but URLs cannot+
       yield* Object.entries(await results.topics).map(([topic, id]) => (
-        <SearchItem key={topic} title={topic} id={id} domain="Topics" addNotifications={addNotifications} />
+        <SearchItem key={id} title={topic} id={id} domain="Topics" addNotifications={addNotifications} />
       ));
       yield* Object.entries(await results.authors).map(([author, deets]) => (
-        <SearchItem key={author} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" addNotifications={addNotifications} />
+        <SearchItem key={deets.link} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" addNotifications={addNotifications} />
       ));
       yield* Object.entries(await results.tags).map(([tag, deets]) => (
-        <SearchItem key={tag} title={tag} id={deets.id} domain="Tags" addNotifications={addNotifications} />
+        <SearchItem key={deets.link} title={tag} id={deets.id} domain="Tags" addNotifications={addNotifications} />
       ));
       for await (const page of results.posts)
         yield <SmallArticle data={page} key={page.id} />;

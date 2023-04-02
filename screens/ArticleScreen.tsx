@@ -47,7 +47,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   // TODO: am I opening myself up to XSS attacks by embedding a WebView?
   return (
     <ScrollView>
-      <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}}>
+      <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}} key="header">
         <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
           {Object.entries(article.tags).map(([category, id]) => (
             <Pressable
@@ -74,6 +74,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       </View>
       <AutoHeightWebView
+        key="body"
         originWhitelist={['*']}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
         customStyle={`
@@ -107,7 +108,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         onLoad={() => setIsLoading(false)}
       />
       {!isLoading &&
-        <View style={{paddingHorizontal: padding}}>
+        <View style={{paddingHorizontal: padding}} key="footer">
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <Hr style={{flexGrow: 1}} />
             <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
