@@ -107,8 +107,10 @@ export function RoundedButton(props: PressableProps & {color: keyof typeof Color
       borderWidth: bold ? 2 : 1,
       borderStyle: "solid",
       borderRadius: 20,
-      padding: 5,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
       alignSelf: "flex-start",  // this style makes container fit to content (like display: inline-block)
+      flexDirection: "row",
     }, style]} {...otherProps} />
   );
 }

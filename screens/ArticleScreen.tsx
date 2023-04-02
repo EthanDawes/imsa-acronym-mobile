@@ -9,6 +9,9 @@ import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
 import wp, {getAllPosts} from "../constants/api";
 import * as WebBrowser from 'expo-web-browser';
+import {MaterialIcons} from "@expo/vector-icons";
+import * as React from "react";
+import {getDomainIcon} from "../components/SearchItem";
 
 const padding = 10;
 
@@ -45,14 +48,36 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   return (
     <ScrollView>
       <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}}>
-        <View style={{flexDirection: "row", gap: 10}}>
+        <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
           {Object.entries(article.categories).map(([category, id]) => (
             <RoundedButton
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
               color={"tint"}
               bold={true}
             >
+              <MaterialIcons
+                name={getDomainIcon("Topics")}
+                size={25}
+                color={colorScheme.tint}
+                style={{marginRight: 15}}
+              />
               <CategoryLabel>{category}</CategoryLabel>
+            </RoundedButton>
+          ))}
+        </View>
+        <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
+          {Object.entries(article.tags).map(([category, id]) => (
+            <RoundedButton
+              onPress={() => navigation.navigate("SearchDetails", {id, domain: "Tags", title: category})}
+              color={"text"}
+            >
+              <MaterialIcons
+                name={getDomainIcon("Tags")}
+                size={25}
+                color={colorScheme.text}
+                style={{marginRight: 15}}
+              />
+              <Text>{category}</Text>
             </RoundedButton>
           ))}
         </View>
@@ -61,6 +86,12 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
           color={"text"}
         >
+          <MaterialIcons
+            name={getDomainIcon("Authors")}
+            size={25}
+            color={colorScheme.text}
+            style={{marginRight: 15}}
+          />
           <Text>{article.author.name}</Text>
         </RoundedButton>
         <ArticleImage src={article.imgUrl} />
