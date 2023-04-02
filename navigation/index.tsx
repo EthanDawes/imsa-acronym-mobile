@@ -23,10 +23,11 @@ import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScree
 import LinkingConfiguration from './LinkingConfiguration';
 import IconButton from "../components/IconButton";
 import {useBookmarks, useSubscriptions} from "../components/Article/logic";
-import {BookmarkContext, SubscriptionsContext} from '../constants/context';
+import {BookmarkContext, SubscriptionsContext, TopicsContext} from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
+import wp, {getAllCategories} from "../constants/api";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -48,23 +49,25 @@ function RootNavigator() {
   return (
     <BookmarkContext.Provider value={useBookmarks()}>
       <SubscriptionsContext.Provider value={useSubscriptions()}>
-        <Stack.Navigator screenOptions={{
-          //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
-        }}>
-          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} />
-          <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
-            headerTitleAlign: 'center',
-            // header: () => <SearchDetailsHeader {...route.params} />,
-          })} />
-          <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
-          <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
-            title: "",
-            headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
-          })} />
-        </Stack.Navigator>
+        <TopicsContext.Provider value={getAllCategories(wp.categories().perPage(100))}>
+          <Stack.Navigator screenOptions={{
+            //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
+          }}>
+            <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
+            <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
+              headerTitleAlign: 'center',
+              // header: () => <SearchDetailsHeader {...route.params} />,
+            })} />
+            <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
+            <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+              title: "",
+              headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
+            })} />
+          </Stack.Navigator>
+        </TopicsContext.Provider>
       </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>
   );

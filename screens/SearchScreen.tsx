@@ -1,7 +1,7 @@
 import wp, {getAllCategories, search, searchDomains} from "../constants/api";
 import {RootStackScreenProps, RootTabScreenProps} from "../types";
 import SmallArticle from "../components/Article/SmallArticle";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import useDebounce from "../hooks/useDebounce";
 import SearchItem from "../components/SearchItem";
 import InfiniteScroll from "../components/InfiniteScroll";
@@ -14,6 +14,7 @@ import useAsync from "../hooks/useAsync";
 import {Dimensions, Pressable, View} from "react-native";
 import Layout from "../constants/Layout";
 import {useNavigation} from "@react-navigation/native";
+import {TopicsContext} from "../constants/context";
 
 export default function SearchScreen({route, navigation}: RootStackScreenProps<"Search"> | RootTabScreenProps<"SearchTab">) {
   const {query = "", domain = "All", addNotifications} = route.params ?? {};
@@ -60,13 +61,13 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
   );
 }
 
-function ListEmptyComponent(props: Parameters<typeof SearchScreen>[0]["route"]["params"]) {
+function ListEmptyComponent(props: Parameters<typeof SearchScreen>[0]["route"]["params"] & {topics: ReturnType<typeof getAllCategories>}) {
   const {query = "", domain = "All"} = props;
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme];
   const ripple = useAndroidRipple();
   const navigation = useNavigation();
-  const topics = useAsync(getAllCategories(wp.categories().perPage(100)), {});
+  const topics = useAsync(useContext(TopicsContext), {});
   const padding = 30;
 
   if (query.length === 0 && domain === "All") {
@@ -74,6 +75,7 @@ function ListEmptyComponent(props: Parameters<typeof SearchScreen>[0]["route"]["
       Object.entries(topics).map(([topic, id], index, entries) => (
         <Pressable
           android_ripple={ripple}
+          key={topic}
           style={{
             width: Math.min(360, Dimensions.get('window').width - padding),
             height: 100,
