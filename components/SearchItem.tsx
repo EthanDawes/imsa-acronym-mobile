@@ -29,11 +29,15 @@ export default function SearchItem(props: {domain: ArticleFilter, title: string,
           style={{marginRight: 15}}
         />
         <Text style={{flexGrow: 1}}>{title}</Text>
-        <MaterialIcons
-          name={id in subscriptions ? "notifications" : "notifications-none"}
-          size={25}
-          color={Colors[colorScheme].text}
-        />
+        <Pressable
+          onPress={toggleSubscriptions.bind(null, props)}
+        >
+          <MaterialIcons
+            name={id in subscriptions ? "notifications" : "notifications-none"}
+            size={25}
+            color={Colors[colorScheme].text}
+          />
+        </Pressable>
       </View>
     </Pressable>
   )
