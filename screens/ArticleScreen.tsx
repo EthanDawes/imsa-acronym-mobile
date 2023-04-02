@@ -49,36 +49,12 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
     <ScrollView>
       <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}}>
         <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
-          {Object.entries(article.categories).map(([category, id]) => (
-            <RoundedButton
-              onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: category})}
-              color={"tint"}
-              bold={true}
-            >
-              <MaterialIcons
-                name={getDomainIcon("Topics")}
-                size={25}
-                color={colorScheme.tint}
-                style={{marginRight: 15}}
-              />
-              <CategoryLabel>{category}</CategoryLabel>
-            </RoundedButton>
-          ))}
-        </View>
-        <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
           {Object.entries(article.tags).map(([category, id]) => (
-            <RoundedButton
+            <Pressable
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Tags", title: category})}
-              color={"text"}
             >
-              <MaterialIcons
-                name={getDomainIcon("Tags")}
-                size={25}
-                color={colorScheme.text}
-                style={{marginRight: 15}}
-              />
-              <Text>{category}</Text>
-            </RoundedButton>
+              <CategoryLabel style={{fontSize: 15}}>#{category}</CategoryLabel>
+            </Pressable>
           ))}
         </View>
         <Title>{article.title}</Title>
