@@ -1,24 +1,25 @@
 import {Button, Pressable, ScrollView, StyleSheet, Switch, View} from 'react-native';
 
 import {Hr, LabeledTextInput, Text, TextInput, Title, useAndroidRipple} from '../components/Themed';
-import Colors from "../constants/Colors";
-import {FontAwesome} from "@expo/vector-icons";
 import * as React from "react";
-import useColorScheme from "../hooks/useColorScheme";
 import {RootStackScreenProps} from "../types";
-import * as Notifications from 'expo-notifications';
 import useAsyncStorage from "../hooks/useAsyncStorage";
 import {notifyTest} from "../Notify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useAsync from "../hooks/useAsync";
+import Constants from "expo-constants";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
     <ScrollView style={styles.container}>
-      {__DEV__ &&
+      {(__DEV__ || true) &&
         <>
           <Title>Developer</Title>
           <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()}/>
           <Button title={"Test notifications"} onPress={notifyTest} />
+          <Button title={"Forget weeks's notifications"} onPress={async () => AsyncStorage.setItem("lastSyncDate", new Date((new Date(await AsyncStorage.getItem("lastSyncDate") ?? new Date()).getTime()) - 7 * 24 * 60 * 60 * 1000).toISOString())} />
+          {/*TODO: <Text>Version: {Constants.expoRuntimeVersion ?? "idk"}</Text>*/}
+          <Text>Last checked for new articles on {useAsync(AsyncStorage.getItem("lastSyncDate")) ?? "never"}</Text>
           <Hr />
         </>
       }

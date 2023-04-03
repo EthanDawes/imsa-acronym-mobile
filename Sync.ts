@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import wp, {getAllPosts} from "./constants/api";
 import {notify} from "./Notify";
 import {Subscription} from "./components/Article/logic";
+import * as Notifications from "expo-notifications";
 
 // Adapted from https://docs.expo.dev/versions/latest/sdk/background-fetch/#usage
 const BACKGROUND_FETCH_TASK = 'background-fetch';
@@ -38,8 +39,15 @@ export function initBackgroundSync() {
     if (newPosts.length > 0) {
       notify(newPosts);
       return BackgroundFetch.BackgroundFetchResult.NewData;
+    } else if (__DEV__ || true) {
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Nothing new',
+          body: "Checked for new articles, but there were none",
+        },
+        trigger: null,
+      });
     }
-    // Be sure to return the successful result type!
     return BackgroundFetch.BackgroundFetchResult.NoData;
   });
 
@@ -51,7 +59,7 @@ export function initBackgroundSync() {
 // Note: This does NOT need to be in the global scope and CAN be used in your React components!
 export async function registerBackgroundFetchAsync() {
   return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: 60 * 60 * 24, // 1 day
+    minimumInterval: __DEV__ ? 60 : 60 * 60 * 24, // 1 day
     stopOnTerminate: false, // android only,
     startOnBoot: true, // android only
   });

@@ -18,7 +18,7 @@ export function notify(articles: FullArticle[]) {
     content: {
       title: 'New Acronym articles!',
       body: articles.length > 1 ?
-        `Tap to see the ${articles.length} new articles:\n` + articles.map(a => a.title).join("\n")
+        `Tap to see these ${articles.length} new articles:\n` + articles.map(a => a.title).join("\n")
         : `Tap to read ${articles[0].title}`,
     },
     trigger: null,
