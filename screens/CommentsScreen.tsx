@@ -18,6 +18,7 @@ export default function CommentsScreen({route, navigation}: RootStackScreenProps
     route.params.comments ?? getPostComments(articleId!)
   )
 
+  // TODO: I noticed an issue where if the comments fill exactly one screen, the loading indicator doesn't hide
   return (
     <View style={{flex: 1}}>
       <InfiniteScroll
