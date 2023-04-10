@@ -28,6 +28,7 @@ import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
 import wp, {getAllCategories} from "../constants/api";
+import CommentsScreen from "../screens/CommentsScreen";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -71,6 +72,7 @@ function RootNavigator() {
               title: "",
               headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
             })} />
+            <Stack.Screen name="Comments" component={CommentsScreen} />
           </Stack.Navigator>
         </TopicsContext.Provider>
       </SubscriptionsContext.Provider>

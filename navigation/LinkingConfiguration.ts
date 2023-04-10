@@ -58,6 +58,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           ArticleScreen: 'article',
         },
       },
+      Comments: {
+        screens: {
+          CommentsScreen: 'comments',
+        },
+      },
       NotFound: '*',
     },
   },

@@ -120,7 +120,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
             <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
             <Hr style={{flexGrow: 1}} />
           </View>
-          <Comments articleId={article.id} />
+          <Comments articleId={article.id} navigation={navigation} />
           {article.author.description &&
             <Pressable
               style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
@@ -139,15 +139,16 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   );
 }
 
-function Comments({articleId}: {articleId: number}) {
+function Comments({articleId, navigation}: {articleId: number, navigation: RootStackScreenProps<"Article">["navigation"]}) {
   const colorScheme = Colors[useColorScheme()];
-  const commentGenerator = useAsyncIterator(useState(getPostComments.bind(null, articleId))[0]);
-  const [comments, next] = commentGenerator;
+  const commentGenerator = useState(getPostComments.bind(null, articleId))[0];
+  const [comments, next] = useAsyncIterator(commentGenerator);
   useEffect(() => void next(), []);
   return (
     <Pressable
       style={{height: 100, borderRadius: 10, padding, backgroundColor: colorScheme.header}}
       android_ripple={useAndroidRipple()}
+      onPress={() => navigation.navigate("Comments", {comments: commentGenerator, articleId})}
     >
       <Title>Comments</Title>
         <View style={{flex: 1, flexDirection: "row", alignItems: "center"}}>
