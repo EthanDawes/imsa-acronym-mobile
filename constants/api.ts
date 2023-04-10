@@ -33,11 +33,10 @@ export const searchDomains = [
   "Topics",
   "Authors",
   "Posts",
-  "Tags",
 ] as const;
 
 export type SearchDomain = UnionType<typeof searchDomains>;
-export type ArticleFilter = Exclude<SearchDomain, "All" | "Posts">
+export type ArticleFilter = Exclude<SearchDomain, "All" | "Posts"> | "Tags";
 
 const wp = new WPAPI({ endpoint: 'https://sites.imsa.edu/acronym/wp-json' });
 export default wp;
@@ -134,9 +133,6 @@ export function search(query: string, domain: SearchDomain = "All") {
   }
   if (all || domain === "Authors") {
     results.authors = getAllAuthors(wp.users().perPage(all ? 2 : 100).search(query));
-  }
-  if (all || domain === "Tags") {
-    results.tags = getAllTags(wp.tags().perPage(all ? 2 : 100).search(query));
   }
   return results;
 }

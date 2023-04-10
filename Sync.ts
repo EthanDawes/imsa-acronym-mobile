@@ -31,7 +31,6 @@ export function initBackgroundSync() {
         allNotifs
         || (subscription.domain === "Topics" && subscription.title in post.categories)
         || (subscription.domain === "Authors" && subscription.id === post.author.id)
-        || (subscription.domain === "Tags" && subscription.title in post.tags)
       ))
     );
     AsyncStorage.setItem("lastSyncDate", nowISO);
