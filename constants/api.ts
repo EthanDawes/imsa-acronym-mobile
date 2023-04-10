@@ -118,6 +118,7 @@ export async function* getAllPosts(request = wp.posts()) {
 }
 
 export async function* getPostComments(postId: number) {
+  // https://sites.imsa.edu/acronym/wp-json/wp/v2/comments?post=30904
   let nextPage: WPAPI.WPRequest | undefined = wp.comments().perPage(100).param("post", postId);
   while (nextPage) {
     const commentData = await nextPage.get() as WPTYPES.WP_REST_API_Comments & WPResponse;
