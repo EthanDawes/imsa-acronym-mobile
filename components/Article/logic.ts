@@ -3,12 +3,12 @@ import * as WPTYPES from "wp-types";
 import {ArticleFilter} from "../../constants/api";
 
 export interface FullArticle {
-  _raw: WPTYPES.WP_REST_API_Post;
   id: number,
   url: string,
-  date: string;  // This should be string, not Date type b/c 1: it can't be serialized for bookmark storage 2: react navigation linking complains
-  imgUrl: string;
-  title: string;
+  date: string,  // This should be string, not Date type b/c 1: it can't be serialized for bookmark storage 2: react navigation linking complains
+  imgUrl: string,
+  imgCaption: string,
+  title: string,
   body: string,
   author: WPTYPES.WP_REST_API_User,
   categories: Record<string, number>,

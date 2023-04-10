@@ -95,14 +95,13 @@ export async function* getAllPosts(request = wp.posts()) {
     // Unfortunately, .next.perPage here doesn't seem to do anything :/
     nextPage = pageData._paging?.next;
     yield* pageData.map<FullArticle>((i) => ({
-      /// Try to avoid using this
-      _raw: i,
       id: i.id,
       url: i.link,
       /// Title with all HTML characters decoded
       title: decode(i.title.rendered),
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
       imgUrl: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
+      imgCaption: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.caption?.rendered?.trim()?.replace(/<\/?[^>]+(>|$)/g, "") || "",
       date: i.date,
       body: i.content?.rendered,
       author: (i._embedded?.author[0] as WPTYPES.WP_REST_API_User),

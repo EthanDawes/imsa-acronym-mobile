@@ -71,7 +71,8 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           <Text>{article.author.name}</Text>
         </RoundedButton>
         <ArticleImage src={article.imgUrl} />
-        <Text>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
+        <Text style={{color: colorScheme.shadow}}>{article.imgCaption}</Text>
+        <Text style={{marginTop: -15}}>{new Date(article.date).toLocaleDateString(undefined, {dateStyle: "medium"})}</Text>
       </View>
       <AutoHeightWebView
         key="body"
