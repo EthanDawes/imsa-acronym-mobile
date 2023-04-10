@@ -10,6 +10,9 @@ import useAsync from "../hooks/useAsync";
 import Constants from "expo-constants";
 import IconButton from "../components/IconButton";
 import {getUserComments} from "../constants/api";
+import {MaterialIcons} from "@expo/vector-icons";
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
@@ -41,6 +44,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 
 function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settings">["navigation"]}) {
   const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
+  const colorScheme = Colors[useColorScheme()];
 
   return (
     <View>
@@ -52,9 +56,16 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
         <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
         <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
       </View>
-      <Button title={"View your comments"} onPress={async () =>
-        navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})}
-      />
+      <Pressable
+        style={{flexDirection: "row", height: 36, alignItems: "center"}}
+        android_ripple={useAndroidRipple()}
+        onPress={async () =>
+          navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})
+        }
+      >
+        <Text style={{flexGrow: 100}}>View your comments</Text>
+        <MaterialIcons name={"chevron-right"} size={24} color={colorScheme.text} />
+      </Pressable>
     </View>
   );
 }
