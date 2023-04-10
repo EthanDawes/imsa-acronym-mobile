@@ -9,6 +9,9 @@ export default {
     height,
   },
   isSmallDevice: width < 375,
+  units: {
+    REM: 16,
+  },
   styles: StyleSheet.create({
     scrollView: {
       flex: 1,
