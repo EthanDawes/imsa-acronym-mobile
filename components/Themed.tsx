@@ -77,9 +77,14 @@ export function Hr({style}: {style?: StyleProp<ViewStyle>}) {
   }, style]} />)
 }
 
+export function Bold(props: TextProps) {
+  const { style, ...otherProps } = props;
+  return (<Text style={[{fontFamily: "helvetica-bold"}, style]} {...otherProps} />);
+}
+
 export function Title(props: TextProps) {
   const { style, ...otherProps } = props;
-  return (<Text style={[{fontSize: 20, fontFamily: "helvetica-bold"}, style]} {...otherProps} />);
+  return (<Bold style={[{fontSize: 20}, style]} {...otherProps} />);
 }
 
 export function CategoryLabel(props: DefaultText['props']) {
