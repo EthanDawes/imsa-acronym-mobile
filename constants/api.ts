@@ -127,7 +127,7 @@ export async function* getPostComments(postId: number) {
     nextPage = commentData._paging?.next;
     yield* commentData.map<UserComment>((i) => ({
       id: i.id,
-      date: new Date(),
+      date: new Date(i.date),
       imgUrl: i.author_avatar_urls?.["24"] ?? "",
       body: sanitize(decode(i.content.rendered) ?? ""),
       authorName: i.author_name,
