@@ -130,7 +130,7 @@ export function search(query: string, domain: SearchDomain = "All") {
     results.topics = getAllCategories(wp.categories().perPage(all ? 2 : 100).search(query));
   }
   if (all || domain === "Posts") {
-    results.posts = getAllPosts(wp.posts().perPage(11).embed().search(query));
+    results.posts = getAllPosts(wp.posts().perPage(11).embed().search(query).orderby("relevance"));
   }
   if (all || domain === "Authors") {
     results.authors = getAllAuthors(wp.users().perPage(all ? 2 : 100).search(query));
