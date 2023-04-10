@@ -5,7 +5,7 @@ import {Image, ListRenderItemInfo, View} from "react-native";
 import {UserComment} from "../components/Article/logic";
 import CommentForm from "../components/CommentForm";
 import * as React from "react";
-import {noopAsyncGenerator, toRelativeDate} from "../constants/lib";
+import {toRelativeDate} from "../constants/lib";
 import {useState} from "react";
 import {getPostComments} from "../constants/api";
 import useAsyncIterator from "../hooks/useAsyncIterator";
@@ -36,12 +36,12 @@ function Comment({item: comment}: ListRenderItemInfo<UserComment>) {
   return (
     <View style={{flex: 1, flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10}}>
       <Image style={{width: 35, height: 35, borderRadius: 1000}} source={{uri: comment.imgUrl}} />
-      <View>
+      <View style={{flexShrink: 1}}>
         <View style={{flexDirection: "row", gap: 8}}>
           <Bold>{comment.authorName}</Bold>
           <Italics>{toRelativeDate(comment.date)}</Italics>
         </View>
-        <Text style={{flex: 1}}>{comment.body}</Text>
+        <Text>{comment.body}</Text>
       </View>
     </View>
   )
