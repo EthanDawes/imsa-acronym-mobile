@@ -7,6 +7,8 @@ import WPAPI from 'wpapi';
 import * as WPTYPES from "wp-types";
 import {decode} from 'html-entities';
 import {FullArticle, UserComment} from "../components/Article/logic";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Alert} from "react-native";
 
 // TODO: if I was feeling nice, I would contribute this to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wpapi/index.d.ts
 // Documentation http://wp-api.org/node-wpapi/collection-pagination/
@@ -127,10 +129,63 @@ export async function* getPostComments(postId: number) {
       id: i.id,
       date: new Date(),
       imgUrl: i.author_avatar_urls?.["24"] ?? "",
-      body: sanitize(i.content.rendered ?? ""),
+      body: sanitize(decode(i.content.rendered) ?? ""),
       authorName: i.author_name,
     }));
   }
+}
+
+/** Again, RN doesn't support URLSearchParams, so I'm polyfilling with https://stackoverflow.com/a/37562814 */
+function constructSearchParams(details: Record<any, any>) {
+  const formBody: string[] = [];
+  for (const property in details) {
+    const encodedKey = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(details[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  return formBody.join("&");
+}
+
+/**
+ * @returns boolean indicating whether the post was successful (might fail if not authenticated)
+ */
+export async function submitComment(articleId: number, content: string, navigation: any) {
+  const email = JSON.parse(await AsyncStorage.getItem("email") ?? "");
+  const name = JSON.parse(await AsyncStorage.getItem("name") ?? "");
+  if (!email || !name) {
+    Alert.alert('Action failed', 'You need to be signed in to comment or like', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Sign in', onPress: () => navigation.navigate("Settings")},
+    ]);
+    return false;
+  }
+  await fetch('https://sites.imsa.edu/acronym/wp-comments-post.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body: constructSearchParams({
+      comment: content,
+      author: name,
+      email,
+      comment_post_ID: articleId,
+    })
+  });
+  /* Results in unauthenticated error :/
+  // See https://www.tetchi.ca/how-to-post-comments-using-the-wordpress-rest-api
+  await wp.comments().create({
+    // No typescript, so reference https://developer.wordpress.org/rest-api/reference/comments/#arguments-2
+    author_email: email,
+    author_name: name,
+    post: articleId,
+    content: {
+      // Which one?
+      raw: content,
+      rendered: content + "!",
+    },
+    author_user_agent: "app",
+  });*/
+  return true;
 }
 
 async function* noopAsyncGenerator() {}
