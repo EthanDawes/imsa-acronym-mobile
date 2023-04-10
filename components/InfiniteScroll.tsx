@@ -10,12 +10,12 @@ import * as SplashScreen from "expo-splash-screen";
 // I'm using this instead of the mixin strategy because all CollapsableHeaderLists are also InfiniteScrollLists (for now)
 // TODO: should I allow passing the full AnimatedProps<FlatListProps<ItemT>>?
 export default function InfiniteScroll<ItemT>({collapsibleHeader=false, collapsibleOptions={}, iterator, children, ListEmptyComponent, ...flatListProps}:
-                                              PropsWithChildren<{collapsibleHeader?: boolean, collapsibleOptions?: Partial<UseCollapsibleOptions>, iterator: AsyncIterator<ItemT>}>
+                                              PropsWithChildren<{collapsibleHeader?: boolean, collapsibleOptions?: Partial<UseCollapsibleOptions>, iterator: ReturnType<typeof useAsyncIterator<ItemT>> | AsyncIterator<ItemT>}>
                                                 & Omit<FlatListProps<ItemT>, "children" | "data" | "onScroll" | "refreshControl" | "ListHeaderComponent" | keyof ReturnType<typeof useCollapsibleHeaderMixin>>) {
   const ListImplementation = collapsibleHeader ? Animated.FlatList : FlatList;
   const [refreshing, setRefreshing] = React.useState(true);
 
-  const [articles, next] = useAsyncIterator(iterator);
+  const [articles, next] = iterator instanceof Array ? iterator : useAsyncIterator(iterator);
   const [iterState, setIterState] = useState(iterator);
   if (iterState != iterator) {
     setIterState(iterator);
