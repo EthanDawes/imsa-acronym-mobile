@@ -8,6 +8,7 @@ import {notifyTest} from "../Notify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAsync from "../hooks/useAsync";
 import Constants from "expo-constants";
+import IconButton from "../components/IconButton";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
@@ -24,20 +25,35 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
         </>
       }
       <Title>General</Title>
-      {/*<View style={{flexDirection: "row"}}>
-        <Text style={{flexGrow: 100}}>Default Page</Text>
-      </View>*/}
-      {/*TODO: font size?*/}
+      <GeneralSettings />
       <Hr />
       <Title>Account</Title>
       <AccountSettings />
       <Hr />
+      {/*
       <Title>Your Likes</Title>
       <Hr />
       <Title>Your Comments</Title>
       <Hr />
+      */}
       <Title>Your Stats</Title>
+      <Stats />
     </ScrollView>
+  );
+}
+
+function GeneralSettings() {
+  const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
+
+  return (
+    <View style={{flexDirection: "row"}}>
+      {/*<View style={{flexDirection: "row"}}>
+        <Text style={{flexGrow: 100}}>Default Page</Text>
+      </View>*/}
+      <Text style={{flexGrow: 100}}>Font size: {fontSize}pt</Text>
+      <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
+      <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
+    </View>
   );
 }
 
@@ -64,6 +80,13 @@ function AccountSettings() {
         Email:
       </LabeledTextInput>
     </>
+  );
+}
+
+function Stats() {
+  return (
+    <View>
+    </View>
   );
 }
 

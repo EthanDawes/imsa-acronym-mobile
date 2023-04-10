@@ -12,6 +12,7 @@ import * as WebBrowser from 'expo-web-browser';
 import {MaterialIcons} from "@expo/vector-icons";
 import * as React from "react";
 import {getDomainIcon} from "../components/SearchItem";
+import useAsyncStorage from "../hooks/useAsyncStorage";
 
 const padding = 10;
 
@@ -20,6 +21,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
   const [isLoading, setIsLoading] = useState(true);
+  const {item: fontSize} = useAsyncStorage("fontSize", 12);
 
   const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
@@ -86,6 +88,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           p {
             padding: 0 ${padding}px;
             font-family: helvetica;
+            font-size: ${fontSize}pt;
           }
           * {
            color: ${colorScheme.text};
