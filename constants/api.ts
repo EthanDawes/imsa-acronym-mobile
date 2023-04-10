@@ -6,7 +6,7 @@
 import WPAPI from 'wpapi';
 import * as WPTYPES from "wp-types";
 import {decode} from 'html-entities';
-import {FullArticle} from "../components/Article/logic";
+import {FullArticle, UserComment} from "../components/Article/logic";
 
 // TODO: if I was feeling nice, I would contribute this to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wpapi/index.d.ts
 // Documentation http://wp-api.org/node-wpapi/collection-pagination/
@@ -40,6 +40,10 @@ export type ArticleFilter = Exclude<SearchDomain, "All" | "Posts"> | "Tags";
 
 const wp = new WPAPI({ endpoint: 'https://sites.imsa.edu/acronym/wp-json' });
 export default wp;
+
+function sanitize(html: string) {
+  return html.replace(/<\/?[^>]+(>|$)/g, "").trim();
+}
 
 /**
  * @return promise resolving to a mapping of category names to their ids
@@ -101,14 +105,29 @@ export async function* getAllPosts(request = wp.posts()) {
       title: decode(i.title.rendered),
       // This is correct. "wp:featuredmedia" is typed as `unknown[]`, so I have no clue where it's getting {}
       imgUrl: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.source_url || "https://sites.imsa.edu/acronym/files/2022/09/frontCover-copy-1-1-777x437.png",
-      imgCaption: (i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.caption?.rendered?.trim()?.replace(/<\/?[^>]+(>|$)/g, "") || "",
+      imgCaption: sanitize((i._embedded?.["wp:featuredmedia"]?.[0] as WPTYPES.WP_REST_API_Attachment)?.caption?.rendered ?? ""),
       date: i.date,
       body: i.content?.rendered,
       author: (i._embedded?.author[0] as WPTYPES.WP_REST_API_User),
       categories: arrayToObject(i._embedded?.["wp:term"]?.[0] as WPTYPES.WP_REST_API_Categories, "name", "id"),
       tags: arrayToObject(i._embedded?.["wp:term"]?.[1] as WPTYPES.WP_REST_API_Tags, "name", "id"),
       // Regex can miss some cases, but I'm trusting WordPress to format HTML correctly, and worse case scenario, the user sees some wierd HTML tags. If insufficient, try `sanitize-html`
-      excerpt: decode(i.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")),
+      excerpt: sanitize(decode(i.excerpt.rendered)),
+    }));
+  }
+}
+
+export async function* getPostComments(postId: number) {
+  let nextPage: WPAPI.WPRequest | undefined = wp.comments().perPage(100).param("post", postId);
+  while (nextPage) {
+    const commentData = await nextPage.get() as WPTYPES.WP_REST_API_Comments & WPResponse;
+    nextPage = commentData._paging?.next;
+    yield* commentData.map<UserComment>((i) => ({
+      id: i.id,
+      date: new Date(),
+      imgUrl: i.author_avatar_urls?.["24"] ?? "",
+      body: sanitize(i.content.rendered ?? ""),
+      authorName: i.author_name,
     }));
   }
 }

@@ -9,6 +9,7 @@ export default function useAsyncIterator<T>(newGenerator: AsyncIterator<T[] | T,
   const [response, setResponse] = useState<T[]>([]);
   // This prevents generator from starting from beginning every time re-called
   const [generator, setGenerator] = useState(newGenerator);
+  // TODO: I'm not sure if this is a good or bad idea, it can be confusing (as I found after forgetting about this and getting a recursive render error) (although if I scrolled & read the error, I could have diagnosed quicker)
   if (newGenerator != generator) {
     console.log("GENERATOR EQUIVALENCY", newGenerator == generator, "(resetting async iterator state with new generator)");
     setGenerator(newGenerator);

@@ -3,16 +3,17 @@ import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import {Image, Linking, Platform, Pressable, ScrollView, View} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
-import wp, {getAllPosts} from "../constants/api";
+import wp, {getAllPosts, getPostComments} from "../constants/api";
 import * as WebBrowser from 'expo-web-browser';
 import {MaterialIcons} from "@expo/vector-icons";
 import * as React from "react";
 import {getDomainIcon} from "../components/SearchItem";
 import useAsyncStorage from "../hooks/useAsyncStorage";
+import useAsyncIterator from "../hooks/useAsyncIterator";
 
 const padding = 10;
 
@@ -112,12 +113,13 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         onLoad={() => setIsLoading(false)}
       />
       {!isLoading &&
-        <View style={{paddingHorizontal: padding}} key="footer">
+        <View style={{paddingHorizontal: padding, marginBottom: padding}} key="footer">
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <Hr style={{flexGrow: 1}} />
             <Image style={{margin: 20}} source={require('../assets/images/favicon.png')} />
             <Hr style={{flexGrow: 1}} />
           </View>
+          <Comments articleId={article.id} />
           {article.author.description &&
             <Pressable
               style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
@@ -133,6 +135,30 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         </View>
       }
     </ScrollView>
+  );
+}
+
+function Comments({articleId}: {articleId: number}) {
+  const colorScheme = Colors[useColorScheme()];
+  const commentGenerator = useAsyncIterator(useState(getPostComments.bind(null, articleId))[0]);
+  const [comments, next] = commentGenerator;
+  useEffect(() => void next(), []);
+  return (
+    <Pressable
+      style={{height: 100, borderRadius: 10, padding, backgroundColor: colorScheme.header}}
+      android_ripple={useAndroidRipple()}
+    >
+      <Title>Comments</Title>
+        <View style={{flex: 1, flexDirection: "row", alignItems: "center"}}>
+          {comments.length > 0 &&
+            <>
+              <Image source={{uri: comments[0].imgUrl}} />
+              <Text style={{flex: 1}}>{comments[0].body}</Text>
+            </>
+          }
+          <MaterialIcons name={"keyboard-arrow-down"} size={24} color={colorScheme.text} />
+        </View>
+    </Pressable>
   );
 }
 

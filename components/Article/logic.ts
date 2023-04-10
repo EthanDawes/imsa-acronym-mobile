@@ -18,6 +18,14 @@ export interface FullArticle {
   // comments: Promise<WPTYPES.WP_REST_API_COMMENTS>
 }
 
+export interface UserComment {
+  id: number,
+  imgUrl: string,
+  authorName: string,
+  body: string,
+  date: Date,
+}
+
 export interface Subscription { id: number, title: string, img?: string, domain: ArticleFilter }
 
 export interface ArticleProps {
