@@ -1,4 +1,4 @@
-import {CategoryLabel, Hr, RoundedButton, Text, Title, useAndroidRipple} from "../components/Themed";
+import {CategoryLabel, Hr, RoundedButton, Text, TextInput, Title, useAndroidRipple} from "../components/Themed";
 import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
@@ -14,6 +14,7 @@ import * as React from "react";
 import {getDomainIcon} from "../components/SearchItem";
 import useAsyncStorage from "../hooks/useAsyncStorage";
 import useAsyncIterator from "../hooks/useAsyncIterator";
+import IconButton from "../components/IconButton";
 
 const padding = 10;
 
@@ -156,7 +157,12 @@ function Comments({articleId}: {articleId: number}) {
               <Text style={{flex: 1}}>{comments[0].body}</Text>
             </>
           }
-          <MaterialIcons name={"keyboard-arrow-down"} size={24} color={colorScheme.text} />
+          {comments.length === 0 &&
+            <View style={{flex: 1}}>
+              <TextInput placeholder="No comments yet. Be the first!" />
+            </View>
+          }
+          <MaterialIcons name={comments.length > 0 ? "keyboard-arrow-down" : "send"} size={24} color={colorScheme.text} />
         </View>
     </Pressable>
   );
