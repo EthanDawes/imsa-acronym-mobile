@@ -49,7 +49,12 @@ function RootNavigator() {
   return (
     <BookmarkContext.Provider value={useBookmarks()}>
       <SubscriptionsContext.Provider value={useSubscriptions()}>
-        <TopicsContext.Provider value={getAllCategories(wp.categories().perPage(100))}>
+        {/* I'm not a fan of hard-coding this, but Acronym asked for it.
+        Showing only top-level categories won't work because it excludes humor & includes Titan 411 */}
+        <TopicsContext.Provider value={Promise.resolve({
+          "Arts & Entertainment": 1020, Humor: 2490, "Letters to the Editor": 2927, Lifestyle: 1021,
+          News: 1019, Opinions: 12, "Special Editions": 2723,
+        })}>
           <Stack.Navigator screenOptions={{
             //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
           }}>
