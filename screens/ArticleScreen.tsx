@@ -53,6 +53,13 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
     <ScrollView>
       <View style={{paddingHorizontal: padding, paddingVertical: 17, gap: 17}} key="header">
         <View style={{flexDirection: "row", gap: 10, flexWrap: "wrap"}}>
+          {Object.entries(article.categories).map(([topic, id]) => (
+            <Pressable
+              onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: topic})}
+            >
+              <CategoryLabel style={{fontSize: 15}}>{topic}</CategoryLabel>
+            </Pressable>
+          ))}
           {Object.entries(article.tags).map(([category, id]) => (
             <Pressable
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Tags", title: category})}
