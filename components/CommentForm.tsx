@@ -5,7 +5,7 @@ import {StyleProp, View, ViewStyle} from "react-native";
 import {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 
-export default function CommentForm({articleId, containerStyle}: {articleId: number, containerStyle?: StyleProp<ViewStyle>}) {
+export default function CommentForm({articleId, containerStyle, onSubmit}: {articleId: number, containerStyle?: StyleProp<ViewStyle>, onSubmit?: () => void}) {
   const [comment, setComment] = useState("");
   const navigation = useNavigation();
 
@@ -17,7 +17,13 @@ export default function CommentForm({articleId, containerStyle}: {articleId: num
         onChangeText={setComment}
         value={comment}
       />
-      <IconButton icon={"send"} action={() => submitComment(articleId, comment, navigation).then(success => success && setComment(""))} />
+      <IconButton icon={"send"} action={() => submitComment(articleId, comment, navigation)
+        .then(success => {
+          if (success) {
+            setComment("");
+            onSubmit?.();
+          }
+        })} />
     </View>
   );
 }

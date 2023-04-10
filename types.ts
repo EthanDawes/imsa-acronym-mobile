@@ -31,7 +31,7 @@ export type RootStackParamList = {
   };
   SearchDetails: Subscription,
   Article: { body: FullArticle };
-  Comments: {comments: AsyncGenerator<UserComment, void, undefined>, articleId?: number};
+  Comments: {comments?: AsyncGenerator<UserComment, void, undefined>, articleId?: number};
   NotFound: undefined;
 };
 

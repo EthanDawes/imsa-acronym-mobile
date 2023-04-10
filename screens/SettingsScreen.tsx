@@ -20,7 +20,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
           <Button title={"Test notifications"} onPress={notifyTest} />
           <Button title={"Forget weeks's notifications"} onPress={async () => AsyncStorage.setItem("lastSyncDate", new Date((new Date(await AsyncStorage.getItem("lastSyncDate") ?? new Date()).getTime()) - 7 * 24 * 60 * 60 * 1000).toISOString())} />
           {/*TODO: <Text>Version: {Constants.expoRuntimeVersion ?? "idk"}</Text>*/}
-          <Text>Last checked for new articles on {useAsync(AsyncStorage.getItem("lastSyncDate")) ?? "never"}</Text>
+          <Text>Last checked for new articles on {useAsync(() => AsyncStorage.getItem("lastSyncDate")) ?? "never"}</Text>
           <Hr />
         </>
       }

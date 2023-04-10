@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
-import wp, {getAllPosts, getPostComments, submitComment} from "../constants/api";
+import wp, {formatComment, getAllPosts, getPostComments, submitComment} from "../constants/api";
 import * as WebBrowser from 'expo-web-browser';
 import {MaterialIcons} from "@expo/vector-icons";
 import * as React from "react";
@@ -15,6 +15,8 @@ import {getDomainIcon} from "../components/SearchItem";
 import useAsyncStorage from "../hooks/useAsyncStorage";
 import useAsyncIterator from "../hooks/useAsyncIterator";
 import IconButton from "../components/IconButton";
+import useAsync from "../hooks/useAsync";
+import * as WPTYPES from "wp-types";
 
 const padding = 10;
 
@@ -149,26 +151,27 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
 function Comments({articleId, navigation}: {articleId: number, navigation: RootStackScreenProps<"Article">["navigation"]}) {
   const colorScheme = Colors[useColorScheme()];
   const [comment, setComment] = useState("");
-  const commentGenerator = useState(getPostComments.bind(null, articleId))[0];
-  const [comments, next] = useAsyncIterator(commentGenerator);
-  useEffect(() => void next(), []);
+  const defaultComment = useAsync(() =>
+    (wp.comments().perPage(1).param("post", articleId).get() as Promise<WPTYPES.WP_REST_API_Comments>)
+      .then(comments => comments.length > 0 && formatComment(comments[0])),
+    false);
 
   return (
     <Pressable
       style={{height: 100, borderRadius: 10, padding, backgroundColor: colorScheme.header}}
       android_ripple={useAndroidRipple()}
-      onPress={() => navigation.navigate("Comments", {comments: commentGenerator, articleId})}
-      disabled={comments.length === 0}
+      onPress={() => navigation.navigate("Comments", {articleId})}
+      disabled={!defaultComment}
     >
       <Title>Comments</Title>
         <View style={{flex: 1, flexDirection: "row", alignItems: "center", gap: 10}}>
-          {comments.length > 0 &&
+          {defaultComment &&
             <>
-              <Image style={{width: 35, height: 35, borderRadius: 1000}} source={{uri: comments[0].imgUrl}} />
-              <Text style={{flex: 1}}>{comments[0].body}</Text>
+              <Image style={{width: 35, height: 35, borderRadius: 1000}} source={{uri: defaultComment.imgUrl}} />
+              <Text style={{flex: 1}}>{defaultComment.body}</Text>
             </>
           }
-          {comments.length === 0 &&
+          {!defaultComment &&
             <View style={{flex: 1}}>
               <TextInput
                 placeholder="No comments yet. Be the first!"
@@ -178,9 +181,9 @@ function Comments({articleId, navigation}: {articleId: number, navigation: RootS
             </View>
           }
           <IconButton
-            icon={comments.length > 0 ? "angle-down" : "send"}
+            icon={defaultComment ? "angle-down" : "send"}
             size={24}
-            disabled={comments.length > 0}
+            disabled={!!defaultComment}
             action={() => submitComment(articleId, comment, navigation).then(success => success && setComment(""))}
           />
         </View>

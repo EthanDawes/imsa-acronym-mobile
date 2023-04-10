@@ -9,6 +9,7 @@ import {decode} from 'html-entities';
 import {FullArticle, UserComment} from "../components/Article/logic";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Alert} from "react-native";
+import {noopAsyncGenerator} from "./lib";
 
 // TODO: if I was feeling nice, I would contribute this to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wpapi/index.d.ts
 // Documentation http://wp-api.org/node-wpapi/collection-pagination/
@@ -119,19 +120,23 @@ export async function* getAllPosts(request = wp.posts()) {
   }
 }
 
+export function formatComment(rawComment: WPTYPES.WP_REST_API_Comment): UserComment {
+  return {
+    id: rawComment.id,
+    date: new Date(rawComment.date),
+    imgUrl: rawComment.author_avatar_urls?.["24"] ?? "",
+    body: sanitize(decode(rawComment.content.rendered) ?? ""),
+    authorName: rawComment.author_name,
+  }
+}
+
 export async function* getPostComments(postId: number) {
   // https://sites.imsa.edu/acronym/wp-json/wp/v2/comments?post=30904
   let nextPage: WPAPI.WPRequest | undefined = wp.comments().perPage(100).param("post", postId);
   while (nextPage) {
     const commentData = await nextPage.get() as WPTYPES.WP_REST_API_Comments & WPResponse;
     nextPage = commentData._paging?.next;
-    yield* commentData.map<UserComment>((i) => ({
-      id: i.id,
-      date: new Date(i.date),
-      imgUrl: i.author_avatar_urls?.["24"] ?? "",
-      body: sanitize(decode(i.content.rendered) ?? ""),
-      authorName: i.author_name,
-    }));
+    yield* commentData.map(formatComment);
   }
 }
 
@@ -187,8 +192,6 @@ export async function submitComment(articleId: number, content: string, navigati
   });*/
   return true;
 }
-
-async function* noopAsyncGenerator() {}
 
 export function search(query: string, domain: SearchDomain = "All") {
   const all = domain === "All";

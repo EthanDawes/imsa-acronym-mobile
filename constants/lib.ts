@@ -15,3 +15,5 @@ export function toRelativeDate(date: Date | number | string): string {
     return monthsAgo + " months ago";
   return yearsAgo + " years ago";
 }
+
+export async function* noopAsyncGenerator<ItemT=never>(): AsyncGenerator<ItemT, void, undefined> {}

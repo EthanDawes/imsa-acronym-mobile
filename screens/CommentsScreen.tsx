@@ -5,20 +5,28 @@ import {Image, ListRenderItemInfo, View} from "react-native";
 import {UserComment} from "../components/Article/logic";
 import CommentForm from "../components/CommentForm";
 import * as React from "react";
-import {toRelativeDate} from "../constants/lib";
+import {noopAsyncGenerator, toRelativeDate} from "../constants/lib";
+import {useState} from "react";
+import {getPostComments} from "../constants/api";
+import useAsyncIterator from "../hooks/useAsyncIterator";
 
 export default function CommentsScreen({route, navigation}: RootStackScreenProps<"Comments">) {
-  const {comments, articleId} = route.params;
+  let {articleId} = route.params;
+  if (!route.params.comments && !articleId)
+    throw new Error("You need to provide CommentsScreen either 'comments' or 'articleId'");
+  const [comments, setComments] = useState(() =>
+    route.params.comments ?? getPostComments(articleId!)
+  )
 
   return (
     <View style={{flex: 1}}>
       <InfiniteScroll
-        iterator={comments}
+        iterator={useAsyncIterator(comments)}
         renderItem={Comment}
         style={{padding: 10}}
       />
       {articleId &&
-        <CommentForm articleId={articleId} containerStyle={{margin: 10}} />
+        <CommentForm articleId={articleId} containerStyle={{margin: 10}} onSubmit={() => setComments(getPostComments(articleId!))} />
       }
     </View>
   );
