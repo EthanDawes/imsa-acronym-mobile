@@ -140,6 +140,15 @@ export async function* getPostComments(postId: number) {
   }
 }
 
+export async function* getUserComments(userName: string) {
+  let nextPage: WPAPI.WPRequest | undefined = wp.comments().perPage(100).search(userName);
+  while (nextPage) {
+    const commentData = await nextPage.get() as WPTYPES.WP_REST_API_Comments & WPResponse;
+    nextPage = commentData._paging?.next;
+    yield* commentData.map(formatComment);
+  }
+}
+
 /** Again, RN doesn't support URLSearchParams, so I'm polyfilling with https://stackoverflow.com/a/37562814 */
 function constructSearchParams(details: Record<any, any>) {
   const formBody: string[] = [];

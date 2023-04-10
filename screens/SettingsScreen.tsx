@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAsync from "../hooks/useAsync";
 import Constants from "expo-constants";
 import IconButton from "../components/IconButton";
+import {getUserComments} from "../constants/api";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
@@ -25,34 +26,35 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
         </>
       }
       <Title>General</Title>
-      <GeneralSettings />
+      <GeneralSettings navigation={navigation} />
       <Hr />
       <Title>Account</Title>
       <AccountSettings />
-      <Hr />
       {/*
-      <Title>Your Likes</Title>
       <Hr />
-      <Title>Your Comments</Title>
-      <Hr />
-      */}
       <Title>Your Stats</Title>
       <Stats />
+      */}
     </ScrollView>
   );
 }
 
-function GeneralSettings() {
+function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settings">["navigation"]}) {
   const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
 
   return (
-    <View style={{flexDirection: "row"}}>
-      {/*<View style={{flexDirection: "row"}}>
-        <Text style={{flexGrow: 100}}>Default Page</Text>
-      </View>*/}
-      <Text style={{flexGrow: 100}}>Font size: {fontSize}pt</Text>
-      <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
-      <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
+    <View>
+      <View style={{flexDirection: "row"}}>
+        {/*<View style={{flexDirection: "row"}}>
+          <Text style={{flexGrow: 100}}>Default Page</Text>
+        </View>*/}
+        <Text style={{flexGrow: 100}}>Font size: {fontSize}pt</Text>
+        <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
+        <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
+      </View>
+      <Button title={"View your comments"} onPress={async () =>
+        navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})}
+      />
     </View>
   );
 }
