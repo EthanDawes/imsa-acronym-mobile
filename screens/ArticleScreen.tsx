@@ -59,7 +59,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
             </Pressable>
           ))}
         </View>
-        <Title>{article.title}</Title>
+        <Title>{article.title + (__DEV__ ? ` (${article.id})` : "")}</Title>
         <RoundedButton
           onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
           color={"text"}
