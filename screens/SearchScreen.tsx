@@ -20,7 +20,7 @@ import {noopAsyncGenerator} from "../constants/lib";
 export default function SearchScreen({route, navigation}: RootStackScreenProps<"Search"> | RootTabScreenProps<"SearchTab">) {
   const {query = "", domain = "All", addNotifications} = route.params ?? {};
   const debouncedQuery = useDebounce<string>(query, 500);
-  const [results, setResults] = useState<AsyncIterator<JSX.Element>>(noopAsyncGenerator);
+  const [results, setResults] = useState(noopAsyncGenerator<JSX.Element>());
 
   useEffect(() => {
     navigation.setOptions({
@@ -66,7 +66,7 @@ function ListEmptyComponent(props: Parameters<typeof SearchScreen>[0]["route"]["
   const colors = Colors[colorScheme];
   const ripple = useAndroidRipple();
   const navigation = useNavigation();
-  const topics = useAsync(() => useContext(TopicsContext), {});
+  const topics = useAsync(useContext(TopicsContext), {});
   const padding = 30;
 
   if (query.length === 0 && domain === "All") {
