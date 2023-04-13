@@ -61,18 +61,22 @@ function RootNavigator() {
           }}>
             <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-            <Stack.Screen name="Settings" component={SettingsScreen} />
-            <Stack.Screen name="Search" component={SearchScreen} />
-            <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
-              headerTitleAlign: 'center',
-              // header: () => <SearchDetailsHeader {...route.params} />,
-            })} />
-            <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
-            <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
-              title: "",
-              headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
-            })} />
-            <Stack.Screen name="Comments" component={CommentsScreen} />
+            <Stack.Group screenOptions={({ navigation }: RootStackScreenProps<keyof RootStackParamList>) => ({
+              headerLeft: () => IconButton({icon: "arrow-left", action: () => navigation.goBack()}),
+            })}>
+              <Stack.Screen name="Settings" component={SettingsScreen} />
+              <Stack.Screen name="Search" component={SearchScreen} />
+              <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
+                headerTitleAlign: 'center',
+                // header: () => <SearchDetailsHeader {...route.params} />,
+              })} />
+              <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
+              <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+                title: "",
+                headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
+              })} />
+              <Stack.Screen name="Comments" component={CommentsScreen} />
+            </Stack.Group>
           </Stack.Navigator>
         </TopicsContext.Provider>
       </SubscriptionsContext.Provider>
