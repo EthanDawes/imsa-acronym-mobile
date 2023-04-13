@@ -3,7 +3,7 @@ import {Button, Pressable, ScrollView, StyleSheet, Switch, View} from 'react-nat
 import {Hr, LabeledTextInput, Text, TextInput, Title, useAndroidRipple} from '../components/Themed';
 import * as React from "react";
 import {RootStackScreenProps} from "../types";
-import useAsyncStorage from "../hooks/useAsyncStorage";
+import useAsyncStorage, {ObservableStorage} from "../hooks/useAsyncStorage";
 import {notifyTest} from "../Notify";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAsync from "../hooks/useAsync";
@@ -16,6 +16,8 @@ import useColorScheme from "../hooks/useColorScheme";
 import {isProd} from "../constants/lib";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
+  const nameStorage = useAsyncStorage("name", "");
+
   return (
     <ScrollView style={styles.container}>
       {!isProd &&
@@ -30,10 +32,10 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
         </>
       }
       <Title>General</Title>
-      <GeneralSettings navigation={navigation} />
+      <GeneralSettings navigation={navigation} username={nameStorage.item} />
       <Hr />
       <Title>Account</Title>
-      <AccountSettings />
+      <AccountSettings {...nameStorage} />
       {/*
       <Hr />
       <Title>Your Stats</Title>
@@ -43,9 +45,8 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
   );
 }
 
-function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settings">["navigation"]}) {
+function GeneralSettings({navigation, username}: {navigation: RootStackScreenProps<"Settings">["navigation"], username: string | boolean}) {
   const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
-  const {item: name} = useAsyncStorage("name", "");
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
 
@@ -59,7 +60,7 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
         <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
         <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
       </View>
-      {name &&
+      {username &&
         <Pressable
           style={{flexDirection: "row", height: 48, alignItems: "center"}}
           android_ripple={androidRipple}
@@ -75,9 +76,9 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
   );
 }
 
-function AccountSettings() {
+function AccountSettings(nameStorage: ObservableStorage<string>) {
   const {item: email, setItem: setEmail} = useAsyncStorage("email", "");
-  const {item: name, setItem: setName} = useAsyncStorage("name", "");
+  const {item: name, setItem: setName} = nameStorage;
 
   return (
     <>

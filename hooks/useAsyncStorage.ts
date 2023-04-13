@@ -2,8 +2,9 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type commonReturn<S> = {item: S, mergeItem: (newState: S) => void, removeItem: () => void};
-export default function useAsyncStorage<S>(key: string, initialState: S): commonReturn<S> & {setItem: Dispatch<SetStateAction<S>>};
-export default function useAsyncStorage<S = undefined>(key: string): commonReturn<S> & {setItem: Dispatch<SetStateAction<S | undefined>>};
+export type ObservableStorage<S> = commonReturn<S> & {setItem: Dispatch<SetStateAction<S>>};
+export default function useAsyncStorage<S>(key: string, initialState: S): ObservableStorage<S>;
+export default function useAsyncStorage<S = undefined>(key: string): ObservableStorage<S | undefined>;
 export default function useAsyncStorage<S>(key: string, initialState?: S) {
   const [state, setState] = useState(initialState);
 
