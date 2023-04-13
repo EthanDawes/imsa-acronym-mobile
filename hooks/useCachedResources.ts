@@ -29,8 +29,7 @@ export default function useCachedResources() {
         console.warn(e);
       } finally {
         setLoadingComplete(true);
-        if (__DEV__)
-          SplashScreen.hideAsync();
+        SplashScreen.hideAsync();
       }
     }
 
