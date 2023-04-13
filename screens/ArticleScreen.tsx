@@ -58,6 +58,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           {Object.entries(article.categories).map(([topic, id]) => (
             <Pressable
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: topic})}
+              key={id}
             >
               <CategoryLabel style={{fontSize: 15}}>{topic}</CategoryLabel>
             </Pressable>
@@ -65,6 +66,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           {Object.entries(article.tags).map(([category, id]) => (
             <Pressable
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Tags", title: category})}
+              key={id}
             >
               <CategoryLabel style={{fontSize: 15}}>#{category}</CategoryLabel>
             </Pressable>
