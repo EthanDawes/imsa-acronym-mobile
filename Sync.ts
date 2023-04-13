@@ -5,6 +5,7 @@ import wp, {getAllPosts} from "./constants/api";
 import {notify} from "./Notify";
 import {Subscription} from "./components/Article/logic";
 import * as Notifications from "expo-notifications";
+import {isProd} from "./constants/lib";
 
 // Adapted from https://docs.expo.dev/versions/latest/sdk/background-fetch/#usage
 const BACKGROUND_FETCH_TASK = 'background-fetch';
@@ -38,7 +39,7 @@ export function initBackgroundSync() {
     if (newPosts.length > 0) {
       notify(newPosts);
       return BackgroundFetch.BackgroundFetchResult.NewData;
-    } else if (__DEV__ || true) {
+    } else if (!isProd) {
       Notifications.scheduleNotificationAsync({
         content: {
           title: 'Nothing new',
