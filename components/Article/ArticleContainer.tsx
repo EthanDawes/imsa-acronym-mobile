@@ -29,5 +29,6 @@ const styles = StyleSheet.create({
     //flex: 1, Oddly, adding this makes container not show (only android, web works fine). Flex-grow works w/o this
     flexDirection: "row",
     marginVertical: 5,
+    alignItems: "center",
   }
 });

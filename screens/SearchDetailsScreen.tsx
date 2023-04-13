@@ -22,7 +22,7 @@ export function SearchDetailsScreen({route}: RootStackScreenProps<"SearchDetails
   const options: UseCollapsibleOptions = {
     navigationOptions: {
       headerTitle: () => <SearchDetailsHeader {...route.params} />,
-      headerStyle: { height: 170 },
+      headerStyle: { height: 180 },
     } as NativeStackNavigationOptions,
   };
 
@@ -74,10 +74,10 @@ function SearchDetailsHeader(props: Subscription) {
           />
         }
       </View>
-      <View style={{flexDirection: "row"}}>
+      <View style={{flexDirection: "row", alignItems: "center", marginTop: -10}}>
         <IconButton icon={id in subscriptions ? "bell" : "bell-o"} action={toggleSubscriptions.bind(null, props)} />
         {/* for the text to be perfectly centered, padding should be 55, but I think this looks better*/}
-        <Title style={{paddingRight: 45}}>{title}</Title>
+        <Title style={{paddingRight: 33}}>{title}</Title>
       </View>
     </View>
   );

@@ -38,7 +38,7 @@ export default function BookmarkShare(data: FullArticle & {enableHeart?: boolean
   }
 
   return (
-    <View style={{flexDirection: "row"}}>
+    <View style={{flexDirection: "row", gap: 8}}>
       {enableHeart &&
         <IconButton icon={isLiked ? "thumbs-up" : "thumbs-o-up"} action={likePost} />
       }

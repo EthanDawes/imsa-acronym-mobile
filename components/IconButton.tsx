@@ -17,7 +17,8 @@ export default function IconButton({icon, action, size=25, disabled=false}: {ico
         name={icon}
         size={size}
         color={Colors[colorScheme].text}
-        style={{marginRight: 15, marginLeft: 15}}
+        // Make sure at least 48dp touch target
+        style={{margin: Math.max(0, (48-size) / 2)}}
       />
     </Pressable>
   )

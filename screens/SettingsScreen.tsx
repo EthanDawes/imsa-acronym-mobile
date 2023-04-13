@@ -51,17 +51,17 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
 
   return (
     <View>
-      <View style={{flexDirection: "row"}}>
-        {/*<View style={{flexDirection: "row"}}>
-          <Text style={{flexGrow: 100}}>Default Page</Text>
-        </View>*/}
+      {/*<View style={{flexDirection: "row"}}>
+        <Text style={{flexGrow: 100}}>Default Page</Text>
+      </View>*/}
+      <View style={{flexDirection: "row", alignItems: "center", gap: 8}}>
         <Text style={{flexGrow: 100}}>Font size: {fontSize}pt</Text>
         <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
         <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
       </View>
       {name &&
         <Pressable
-          style={{flexDirection: "row", height: 36, alignItems: "center"}}
+          style={{flexDirection: "row", height: 48, alignItems: "center"}}
           android_ripple={androidRipple}
           onPress={async () =>
             navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})
