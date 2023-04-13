@@ -45,7 +45,9 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 
 function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settings">["navigation"]}) {
   const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
+  const {item: name} = useAsyncStorage("name", "");
   const colorScheme = Colors[useColorScheme()];
+  const androidRipple = useAndroidRipple();
 
   return (
     <View>
@@ -57,16 +59,18 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
         <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
         <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
       </View>
-      <Pressable
-        style={{flexDirection: "row", height: 36, alignItems: "center"}}
-        android_ripple={useAndroidRipple()}
-        onPress={async () =>
-          navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})
-        }
-      >
-        <Text style={{flexGrow: 100}}>View your comments</Text>
-        <MaterialIcons name={"chevron-right"} size={24} color={colorScheme.text} />
-      </Pressable>
+      {name &&
+        <Pressable
+          style={{flexDirection: "row", height: 36, alignItems: "center"}}
+          android_ripple={androidRipple}
+          onPress={async () =>
+            navigation.navigate("Comments", {comments: getUserComments(JSON.parse(await AsyncStorage.getItem("name") ?? '""'))})
+          }
+        >
+          <Text style={{flexGrow: 100}}>View your comments</Text>
+          <MaterialIcons name={"chevron-right"} size={24} color={colorScheme.text} />
+        </Pressable>
+      }
     </View>
   );
 }
