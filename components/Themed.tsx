@@ -54,13 +54,25 @@ export function TextInput(props: DefaultTextInput['props']) {
   const { style, ...otherProps } = props;
   const colors = Colors[useColorScheme()];
 
-  return <DefaultTextInput style={[{ color: colors.text }, style]} placeholderTextColor={colors.shadow} {...otherProps} />;
+  return <DefaultTextInput style={[{
+    color: colors.text,
+    borderColor: colors.text,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 5,
+    height: 48,
+    flexGrow: 100,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    alignSelf: "flex-start",  // this style makes container fit to content (like display: inline-block)
+    alignItems: "center",
+    flexDirection: "row", }, style]} placeholderTextColor={colors.shadow} {...otherProps} />;
 }
 
 export function LabeledTextInput(props: DefaultTextInput['props'] & TextProps & {textStyle?: StyleProp<TextStyle>, inputStyle?: StyleProp<TextStyle>}) {
-  const {children, style: _, textStyle, inputStyle, ...otherProps} = props;
+  const {children, style, textStyle, inputStyle, ...otherProps} = props;
   return (
-    <View style={{flexDirection: "row", gap: 5, alignItems: "center"}}>
+    <View style={[{flexDirection: "row", gap: 5, alignItems: "center"}, style]}>
       <Text style={textStyle} {...otherProps}>{children}</Text>
       <TextInput style={inputStyle} {...otherProps} />
     </View>

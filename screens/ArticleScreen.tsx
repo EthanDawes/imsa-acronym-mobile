@@ -174,11 +174,13 @@ function Comments({articleId, navigation}: {articleId: number, navigation: RootS
             </>
           }
           {!defaultComment &&
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, marginTop: 8}}>
               <TextInput
                 placeholder="No comments yet. Be the first!"
                 onChangeText={setComment}
                 value={comment}
+                multiline={true}
+                style={{width: "100%"}}
               />
             </View>
           }

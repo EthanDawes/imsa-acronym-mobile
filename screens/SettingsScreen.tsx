@@ -18,7 +18,7 @@ import {isProd} from "../constants/lib";
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
     <ScrollView style={styles.container}>
-      {!isProd &&
+      {true &&
         <>
           <Title>Developer</Title>
           <Button title={"Clear app data"} onPress={() => AsyncStorage.clear()}/>
@@ -26,7 +26,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
           <Button title={"Forget weeks's notifications"} onPress={async () => AsyncStorage.setItem("lastSyncDate", new Date((new Date(await AsyncStorage.getItem("lastSyncDate") ?? new Date()).getTime()) - 7 * 24 * 60 * 60 * 1000).toISOString())} />
           {/*TODO: <Text>Version: {Constants.expoRuntimeVersion ?? "idk"}</Text>*/}
           <Text>Last checked for new articles on {useAsync(() => AsyncStorage.getItem("lastSyncDate")) ?? "never"}</Text>
-          <Text>You are on the {Constants.manifest?.releaseChannel ?? "unknown"} channel</Text>
+          <Text>You are on the {Constants.manifest?.releaseChannel ?? "unknown"} {(Constants.manifest2?.metadata as any)?.branchName} channel</Text>
           <Text>Manifest: {JSON.stringify(Constants.manifest, null, 2)}</Text>
           <Text>Manifest 2: {JSON.stringify(Constants.manifest2, null, 2)}</Text>
           <Hr />
@@ -90,6 +90,8 @@ function AccountSettings() {
         onChangeText={setName}
         value={name}
         placeholder={"Your Name"}
+        // marginBottom is not as extendable as gap, but using because space after Text looks wierd
+        style={{marginBottom: 8}}
       >
         Name:
       </LabeledTextInput>
@@ -97,6 +99,7 @@ function AccountSettings() {
         onChangeText={setEmail}
         value={email}
         placeholder={"Your Email"}
+        style={{marginBottom: 20}}  // Needed so bottom doesn't clip while scrolling
       >
         Email:
       </LabeledTextInput>
