@@ -26,4 +26,5 @@ type Metadata = {
 }
 
 // ngl the documentation is awful https://docs.expo.dev/versions/latest/sdk/constants/#manifest
-export const isProd = (Constants.manifest2?.metadata as Metadata)?.branchName === "production";
+// I suspect that metadata is undefined in production
+export const isProd = !!(Constants.manifest2?.metadata as Metadata | undefined)?.branchName;
