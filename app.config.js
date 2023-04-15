@@ -1,4 +1,4 @@
-{
+module.exports = {
   "expo": {
     "jsEngine": "hermes",
     "name": "The Acronym",
@@ -46,7 +46,8 @@
     "extra": {
       "eas": {
         "projectId": "61b6f88f-10eb-4914-b462-4d77f6ad0cea"
-      }
+      },
+      "buildProfile": process.env.EAS_BUILD_PROFILE ?? "development",
     },
     "owner": "funblaster22",
     "runtimeVersion": {
