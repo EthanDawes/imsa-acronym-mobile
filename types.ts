@@ -8,6 +8,7 @@ import {CompositeScreenProps, NavigatorScreenParams} from '@react-navigation/nat
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FullArticle, Subscription, UserComment} from "./components/Article/logic";
 import {ArticleFilter, SearchDomain} from "./constants/api";
+import Constants from "expo-constants";
 
 declare global {
   namespace ReactNavigation {
@@ -51,3 +52,9 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+
+// Better typing for Constants.manifest2.metadata
+export interface Metadata {
+  updateGroup: string,  // As uuid
+  branchName: "development" | "preview" | "production",
+}

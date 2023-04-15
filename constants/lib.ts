@@ -20,11 +20,7 @@ export function toRelativeDate(date: Date | number | string): string {
 
 export async function* noopAsyncGenerator<ItemT=never>(): AsyncGenerator<ItemT, void, undefined> {}
 
-type Metadata = {
-  updateGroup: string,  // As uuid
-  branchName: "development" | "preview" | "production",
-}
-
 // ngl the documentation is awful https://docs.expo.dev/versions/latest/sdk/constants/#manifest
-// I suspect that metadata is undefined in production
-export const isProd = (Constants.manifest2?.metadata as Metadata)?.branchName === "production";
+// manifest is defined 1st run, but no profile info. manifest2 is defined after eas update & does contain profile info
+// Actual solution: https://docs.expo.dev/build-reference/variables/#built-in-environment-variables
+export const isProd = process.env.EAS_BUILD_PROFILE === "production";
