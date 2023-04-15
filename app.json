@@ -38,7 +38,7 @@
         "backgroundColor": "#ae0400"
       },
       "package": "edu.imsa.theacronym",
-      "versionCode": 10
+      "versionCode": 12
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
