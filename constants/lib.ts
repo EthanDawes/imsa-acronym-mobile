@@ -22,5 +22,6 @@ export async function* noopAsyncGenerator<ItemT=never>(): AsyncGenerator<ItemT, 
 
 // ngl the documentation is awful https://docs.expo.dev/versions/latest/sdk/constants/#manifest
 // manifest is defined 1st run, but no profile info. manifest2 is defined after eas update & does contain profile info
-// Actual solution: https://docs.expo.dev/build-reference/variables/#built-in-environment-variables
+// Actual solution: https://docs.expo.dev/build-reference/variables/#built-in-environment-variables (gets reset on eas update)
+// Persist on eas update: https://docs.expo.dev/eas-update/environment-variables/#setting-and-getting-environment-variables-when-publishing-an-update
 export const isProd = process.env.EAS_BUILD_PROFILE === "production";

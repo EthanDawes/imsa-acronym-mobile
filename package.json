@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "build": "eas build -p all --profile production",
     "test": "jest --watchAll",
-    "update": "eas update --branch preview",
-    "update:production": "eas update --branch production"
+    "update": "cross-env EAS_BUILD_PROFILE=preview eas update --branch preview",
+    "update:production": "cross-env EAS_BUILD_PROFILE=production eas update --branch production"
   },
   "jest": {
     "preset": "jest-expo"
