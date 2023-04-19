@@ -81,15 +81,13 @@ function AccountSettings() {
   const {item: name, setItem: setName} = useAsyncStorage("name", "");
 
   return (
-    <>
+    <View style={{gap: 8}}>
       {/*TODO: acount info + sign in/out?*/}
       <Text>Needed for leaving comments and liking articles</Text>
       <LabeledTextInput
         onChangeText={setName}
         value={name}
         placeholder={"Your Name"}
-        // marginBottom is not as extendable as gap, but using because space after Text looks wierd
-        style={{marginBottom: 8}}
       >
         Name:
       </LabeledTextInput>
@@ -101,7 +99,7 @@ function AccountSettings() {
       >
         Email:
       </LabeledTextInput>
-    </>
+    </View>
   );
 }
 
