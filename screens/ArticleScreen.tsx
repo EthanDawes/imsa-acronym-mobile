@@ -93,6 +93,8 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
         key="body"
         scrollEnabled={false}
         originWhitelist={['*']}
+        // This should fix crash on Android https://github.com/react-native-webview/react-native-webview/issues/811
+        style={{opacity: 0.99}}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
         customStyle={`
           @font-face {
