@@ -3,7 +3,7 @@ import {RootStackScreenProps} from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 import {Image, Linking, Platform, Pressable, ScrollView, View} from "react-native";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import ArticleImage from "../components/Article/ArticleImage";
 import {decode} from "html-entities";
 import AutoHeightWebView from "react-native-autoheight-webview";
@@ -17,6 +17,8 @@ import useAsyncIterator from "../hooks/useAsyncIterator";
 import IconButton from "../components/IconButton";
 import useAsync from "../hooks/useAsync";
 import * as WPTYPES from "wp-types";
+import {SizeContext} from "../constants/context";
+import Layout from "../constants/Layout";
 
 const padding = 10;
 
@@ -25,7 +27,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
   const [isLoading, setIsLoading] = useState(true);
-  const {item: fontSize} = useAsyncStorage("fontSize", 12);
+  const {item: fontSize} = useContext(SizeContext);
 
   const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
   const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
@@ -60,7 +62,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Topics", title: topic})}
               key={id}
             >
-              <CategoryLabel style={{fontSize: 15}}>{topic}</CategoryLabel>
+              <CategoryLabel style={{fontSize: 15 + fontSize}}>{topic}</CategoryLabel>
             </Pressable>
           ))}
           {Object.entries(article.tags).map(([category, id]) => (
@@ -68,7 +70,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
               onPress={() => navigation.navigate("SearchDetails", {id, domain: "Tags", title: category})}
               key={id}
             >
-              <CategoryLabel style={{fontSize: 15}}>#{category}</CategoryLabel>
+              <CategoryLabel style={{fontSize: 15 + fontSize}}>#{category}</CategoryLabel>
             </Pressable>
           ))}
         </View>
@@ -102,7 +104,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
             src: local('helvetica') url('${fontUrl}') format('truetype');
           }
           p {
-            font-size: ${fontSize}pt;
+            font-size: ${12 + fontSize}pt;
           }
           h1, h2, h3, h4, h5, h6, p {
             /* This can't be applied to :root b/c it will cause collapse */

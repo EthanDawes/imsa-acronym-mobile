@@ -23,12 +23,13 @@ import {RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScree
 import LinkingConfiguration from './LinkingConfiguration';
 import IconButton from "../components/IconButton";
 import {useBookmarks, useSubscriptions} from "../components/Article/logic";
-import {BookmarkContext, SubscriptionsContext, TopicsContext} from '../constants/context';
+import {BookmarkContext, SubscriptionsContext, TopicsContext, SizeContext} from '../constants/context';
 import ArticleScreen from "../screens/ArticleScreen";
 import BookmarkShare from "../components/Article/BookmarkShare";
 import {SearchDetailsScreen} from "../screens/SearchDetailsScreen";
 import wp, {getAllCategories} from "../constants/api";
 import CommentsScreen from "../screens/CommentsScreen";
+import useAsyncStorage from "../hooks/useAsyncStorage";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -56,28 +57,30 @@ function RootNavigator() {
           "Arts & Entertainment": 1020, Humor: 2490, "Letters to the Editor": 2927, Lifestyle: 1021,
           News: 1019, Opinions: 12, "Special Editions": 2723,
         })}>
-          <Stack.Navigator screenOptions={{
-            //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
-          }}>
-            <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-            <Stack.Group screenOptions={({ navigation }: RootStackScreenProps<keyof RootStackParamList>) => ({
-              headerLeft: () => IconButton({icon: "arrow-left", action: () => navigation.goBack()}),
-            })}>
-              <Stack.Screen name="Settings" component={SettingsScreen} />
-              <Stack.Screen name="Search" component={SearchScreen} />
-              <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
-                headerTitleAlign: 'center',
-                // header: () => <SearchDetailsHeader {...route.params} />,
-              })} />
-              <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
-              <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
-                title: "",
-                headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
-              })} />
-              <Stack.Screen name="Comments" component={CommentsScreen} />
-            </Stack.Group>
-          </Stack.Navigator>
+          <SizeContext.Provider value={useAsyncStorage("fontSize", 0)}>
+            <Stack.Navigator screenOptions={{
+              //cardStyle: { backgroundColor: 'red' } This changes the background-color app-wide
+            }}>
+              <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+              <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+              <Stack.Group screenOptions={({ navigation }: RootStackScreenProps<keyof RootStackParamList>) => ({
+                headerLeft: () => IconButton({icon: "arrow-left", action: () => navigation.goBack()}),
+              })}>
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="Search" component={SearchScreen} />
+                <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
+                  headerTitleAlign: 'center',
+                  // header: () => <SearchDetailsHeader {...route.params} />,
+                })} />
+                <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ title: 'Notifications' }} />
+                <Stack.Screen name="Article" component={ArticleScreen} options={({route}: RootStackScreenProps<"Article">) => ({
+                  title: "",
+                  headerRight: () => <BookmarkShare {...route.params.body} enableHeart={true} />,
+                })} />
+                <Stack.Screen name="Comments" component={CommentsScreen} />
+              </Stack.Group>
+            </Stack.Navigator>
+          </SizeContext.Provider>
         </TopicsContext.Provider>
       </SubscriptionsContext.Provider>
     </BookmarkContext.Provider>

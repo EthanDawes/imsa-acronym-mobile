@@ -14,6 +14,9 @@ import {MaterialIcons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import {isProd} from "../constants/lib";
+import Layout from "../constants/Layout";
+import {useContext} from "react";
+import {SizeContext} from "../constants/context";
 
 export default function SettingsScreen({navigation}: RootStackScreenProps<"Settings">) {
   return (
@@ -45,7 +48,7 @@ export default function SettingsScreen({navigation}: RootStackScreenProps<"Setti
 }
 
 function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settings">["navigation"]}) {
-  const {setItem: setFontSize, item: fontSize} = useAsyncStorage("fontSize", 12);
+  const {setItem: setFontSize, item: fontSize} = useContext(SizeContext);
   const {item: name} = useAsyncStorage("name", "");
   const colorScheme = Colors[useColorScheme()];
   const androidRipple = useAndroidRipple();
@@ -56,9 +59,9 @@ function GeneralSettings({navigation}: {navigation: RootStackScreenProps<"Settin
         <Text style={{flexGrow: 100}}>Default Page</Text>
       </View>*/}
       <View style={{flexDirection: "row", alignItems: "center", gap: 8}}>
-        <Text style={{flexGrow: 100}}>Font size: {fontSize}pt</Text>
-        <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
+        <Text style={{flexGrow: 100}}>Font size: {Layout.defaultTextSize + fontSize}pt</Text>
         <IconButton icon={"minus-circle"} action={() => setFontSize(prevState => prevState - 1)} />
+        <IconButton icon={"plus-circle"} action={() => setFontSize(prevState => prevState + 1)} />
       </View>
       {name &&
         <Pressable

@@ -14,7 +14,9 @@ import {
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, useContext} from "react";
+import Layout from "../constants/Layout";
+import {SizeContext} from "../constants/context";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -41,8 +43,8 @@ export type ViewProps = ThemeProps & View['props'];
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
-
-  return <DefaultText style={[{ color, fontFamily: "helvetica" }, style]} {...otherProps} />;
+  const {item: size} = useContext(SizeContext);
+  return <DefaultText style={[{ color, fontFamily: "helvetica", fontSize: Layout.defaultTextSize + size }, style]} {...otherProps} />;
 }
 
 export function Italics(props: TextProps) {
@@ -96,13 +98,14 @@ export function Bold(props: TextProps) {
 
 export function Title(props: TextProps) {
   const { style, ...otherProps } = props;
-  return (<Bold style={[{fontSize: 20}, style]} {...otherProps} />);
+  const {item: size} = useContext(SizeContext);
+  return (<Bold style={[{fontSize: Layout.defaultTitleSize + size}, style]} {...otherProps} />);
 }
 
 export function CategoryLabel(props: DefaultText['props']) {
   const { style, ...otherProps } = props;
   const colors = Colors[useColorScheme()];
-  return (<DefaultText style={[{color: colors.tint, fontFamily: "helvetica-bold"}, style]} {...otherProps} />);
+  return (<Bold style={[{color: colors.tint}, style]} {...otherProps} />);
 }
 
 // TODO: replace w/ TouchableRipple Component for Android & iOS

@@ -12,6 +12,8 @@ export default {
   units: {
     REM: 16,
   },
+  defaultTextSize: 14,
+  defaultTitleSize: 20,
   styles: StyleSheet.create({
     scrollView: {
       flex: 1,
