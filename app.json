@@ -30,7 +30,8 @@
           "fetch"
         ]
       },
-      "bundleIdentifier": "edu.imsa.theacronym"
+      "bundleIdentifier": "edu.imsa.theacronym",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
