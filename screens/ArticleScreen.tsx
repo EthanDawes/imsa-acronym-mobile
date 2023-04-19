@@ -205,9 +205,10 @@ function Comments({articleId, navigation}: {articleId: number, navigation: RootS
  * @return URL of the fake face
  */
 function getFakeFace(isFemale: boolean) {
-  return fetch(`https://fakeface.rest/face/json?gender=${isFemale ? "female" : "male"}&minimum_age=17&maximum_age=21`)
+  // If this ever goes down, try https://www.unrealperson.com/
+  return fetch(`https://this-person-does-not-exist.com/new?time=${new Date().getTime()}&gender=${isFemale ? "female" : "male"}&age=17-21&etnic=all`)
     .then(res => res.json().catch(() => res.text().then(console.log)))
-    .then(res => res.image_url as string)
+    .then(res => new URL(res.src, "https://this-person-does-not-exist.com/").href);
 }
 
 /**
