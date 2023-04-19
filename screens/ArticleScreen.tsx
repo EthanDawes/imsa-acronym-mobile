@@ -91,6 +91,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
       </View>
       <AutoHeightWebView
         key="body"
+        scrollEnabled={false}
         originWhitelist={['*']}
         viewportContent="width=device-width, initial-scale=1, user-scalable=no"
         customStyle={`
