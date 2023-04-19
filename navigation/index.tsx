@@ -112,7 +112,7 @@ function BottomTabNavigator() {
             options={({ navigation }: RootTabScreenProps<'FeedTab'>) => ({
               title: 'Feed',
               headerTitle: (props) => <Image
-                style={{ width: "100%", height: "100%", resizeMode: "contain" }}
+                style={{ aspectRatio: 5.0957, height: "100%", resizeMode: "contain", alignSelf: "center" }}
                 source={useColorScheme() === "light" ? require('../assets/images/acronym_title.png') : require('../assets/images/acronym_title_dark.png')}
               />,
               headerTitleContainerStyle: { width: "100%", paddingBottom: 3 },
