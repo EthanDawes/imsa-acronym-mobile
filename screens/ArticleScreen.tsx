@@ -102,11 +102,14 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
             src: local('helvetica') url('${fontUrl}') format('truetype');
           }
           p {
-            padding: 0 ${padding}px;
-            font-family: helvetica;
             font-size: ${fontSize}pt;
           }
+          h1, h2, h3, h4, h5, h6, p {
+            /* This can't be applied to :root b/c it will cause collapse */
+            padding: 0 ${padding}px;
+          }
           * {
+           font-family: helvetica;
            color: ${colorScheme.text};
            max-width: 100%;
            height: auto;
