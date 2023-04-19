@@ -3,7 +3,6 @@
     "jsEngine": "hermes",
     "name": "The Acronym",
     "slug": "the-acronym",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "imsacronym",
@@ -31,7 +30,7 @@
         ]
       },
       "bundleIdentifier": "edu.imsa.theacronym",
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
@@ -39,7 +38,7 @@
         "backgroundColor": "#ae0400"
       },
       "package": "edu.imsa.theacronym",
-      "versionCode": 12
+      "versionCode": 13
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
