@@ -164,8 +164,8 @@ function constructSearchParams(details: Record<any, any>) {
  * @returns boolean indicating whether the post was successful (might fail if not authenticated)
  */
 export async function submitComment(articleId: number, content: string, navigation: any) {
-  const email = JSON.parse(await AsyncStorage.getItem("email") ?? "");
-  const name = JSON.parse(await AsyncStorage.getItem("name") ?? "");
+  const email = JSON.parse(await AsyncStorage.getItem("email") ?? "null") as string | null;
+  const name = JSON.parse(await AsyncStorage.getItem("name") ?? "null") as string | null;
   if (!email || !name) {
     Alert.alert('Action failed', 'You need to be signed in to comment or like', [
       {text: 'Cancel', style: 'cancel'},
