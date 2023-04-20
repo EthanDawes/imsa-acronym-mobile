@@ -37,7 +37,7 @@ Ask yourself, did you change something significant (Apple policy) or modify the 
    - See ["IMSA-specific" section](#imsa-specific) if you have issues
 
 **If no**, publish an update:
-1. `npm run update`. This will push an update over the air to all installed users without having to wait for Apple or Google's approval. In order for changes to be reflected, the app has to be opened, fully closed (swipe away), and opened again.
+1. `npm run update:production`. This will push an update over the air to all installed users without having to wait for Apple or Google's approval. In order for changes to be reflected, the app has to be opened, fully closed (swipe away), and opened again.
 
 ## IMSA-specific
 - Ask the Acronym staff sponsor to add you as an "App Manager" to the Apple developer team and to the Google play console
