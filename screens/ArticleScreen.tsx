@@ -29,22 +29,8 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
   const [isLoading, setIsLoading] = useState(true);
   const {item: fontSize} = useContext(SizeContext);
 
-  const pronouns = article.author.description?.toLowerCase() ?? "";  // Author.description can be undefined, despite documentation's assurance
-  const isMale = hasWord(pronouns, "he") || hasWord(pronouns, "his") || hasWord(pronouns, "him") || pronouns.includes("boy") || pronouns.includes("04") || pronouns.includes("05");
-  const isFemale = hasWord(pronouns, "she") || hasWord(pronouns, "hers") || hasWord(pronouns, "her") || pronouns.includes("girl") || pronouns.includes("02") || pronouns.includes("06");
-  console.log(isFemale, isMale);
-  const [img, setImg] = useState(() => {
-    /* Unfortunately, React Native doesn't support URLSearchParams.set so I must use janky RegEx solution :/
-    const url = new URL(article.author.avatar_urls?.["96"]);
-    url.searchParams.set("d", "404");
-    return url.href;*/
-    // Make Gravitar return 404 instead of default so I can detect & replace with fake person
-    // Docs: https://en.gravatar.com/site/implement/images/
-    const img = article.author.avatar_urls?.["96"];
-    if (isFemale === isMale)  // Could not reliably determine author's gender
-      return img;
-    return img?.replace(/(?:d|default)=[^&]+/, "d=404");
-  });
+  // Gravitar documentation: https://en.gravatar.com/site/implement/images/
+  const img = article.author.avatar_urls?.["96"]?.replace(/(?:d|default)=[^&]+/, "d=mp");
 
   // Adapted from https://stackoverflow.com/a/67409099 TODO: I don't think it's working
   const fontUrl = Platform.select({
@@ -146,9 +132,7 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
               android_ripple={androidRipple}
               onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
             >
-              <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }}
-                     onError={() => getFakeFace(isFemale).then(setImg)}
-              />
+              <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }} />
               <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
             </Pressable>
           }
@@ -201,21 +185,4 @@ function Comments({articleId, navigation}: {articleId: number, navigation: RootS
         </View>
     </Pressable>
   );
-}
-
-/**
- * @return URL of the fake face
- */
-function getFakeFace(isFemale: boolean) {
-  // If this ever goes down, try https://www.unrealperson.com/
-  return fetch(`https://this-person-does-not-exist.com/new?time=${new Date().getTime()}&gender=${isFemale ? "female" : "male"}&age=17-21&etnic=all`)
-    .then(res => res.json().catch(() => res.text().then(console.log)))
-    .then(res => new URL(res.src, "https://this-person-does-not-exist.com/").href);
-}
-
-/**
- * Check if a sentence contains a word, applying extra logic to ensure that the search term isn't part of a larger word
- */
-function hasWord(sentence: string, word: string) {
-  return new RegExp(`(?<!\\w)${word}(?!\\w)`).test(sentence);
 }
