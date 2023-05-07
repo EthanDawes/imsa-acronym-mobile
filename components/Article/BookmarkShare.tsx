@@ -33,7 +33,7 @@ export default function BookmarkShare(data: FullArticle & {enableHeart?: boolean
 
   function likePost() {
     if (!isLiked)
-      submitComment(article.id, encouragements[Math.floor(Math.random() * encouragements.length)], navigation)
+      fetch("https://acronym-likes.glitch.me/like?name=" + article.title)
         .then(success => success && setIsLiked(true));
   }
 
