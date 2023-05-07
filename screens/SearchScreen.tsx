@@ -82,7 +82,7 @@ function ListEmptyComponent(props: Parameters<typeof SearchScreen>[0]["route"]["
             marginBottom: padding,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: `hsl(${index * 360 / entries.length}, 80%, ${colorScheme === "dark" ? 50 : 60}%)`,
+            backgroundColor: `hsl(358, 100%, ${50 + 5 * index}%)`,
           }}
           onPress={() => navigation.navigate("SearchDetails", {domain: "Topics", id, title: topic})}
         >
