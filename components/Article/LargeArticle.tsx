@@ -11,13 +11,12 @@ export default function LargeArticle(props: ArticleProps) {
   const {imgUrl, title, excerpt, categories, author} = props.data;
   return (
     <ArticleContainer {...props}>
-      <View style={{gap: 7}}>
+      <View style={{gap: 15}}>
         <ArticleImage src={imgUrl} />
         <CategoryLabel style={{marginTop: 10}}>{Object.keys(categories).join(", ")}</CategoryLabel>
         <Title>{title}</Title>
-        {/*TODO: add a little picture?*/}
-        <Italics>{author.name}</Italics>
         <Text>{excerpt}</Text>
+        <Italics>{author.name}</Italics>
       </View>
     </ArticleContainer>
   );
