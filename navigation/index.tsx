@@ -73,7 +73,6 @@ function RootNavigator() {
                 <Stack.Screen name="Search" component={SearchScreen} />
                 <Stack.Screen name="SearchDetails" component={SearchDetailsScreen} options={({navigation, route}: RootStackScreenProps<"SearchDetails">) => ({
                   headerTitleAlign: 'center',
-                  title: route.params.title,
                   headerRight: () => <IconButton icon={route.params.id in subscriptions ? "bell" : "bell-o"} action={toggleSubscriptions.bind(null, route.params)} />,
                   // header: () => <SearchDetailsHeader {...route.params} />,
                 })} />
