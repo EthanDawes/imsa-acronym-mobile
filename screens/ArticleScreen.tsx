@@ -128,12 +128,12 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           <Comments articleId={article.id} navigation={navigation} />
           {article.author.description &&
             <Pressable
-              style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}
+              style={{flexDirection: "row", alignItems: "center", marginVertical: 10, gap: 10}}
               android_ripple={androidRipple}
               onPress={() => navigation.navigate("SearchDetails", {id: article.author.id, domain: "Authors", title: article.author.name, img})}
             >
               <Image style={{borderRadius: 1000, width: 96, height: 96}} source={{ uri: img }} />
-              <Text style={{flexShrink: 1, marginLeft: 5}}>{decode(article.author.description)}</Text>
+              <Text style={{flexShrink: 1}}>{decode(article.author.description)}</Text>
             </Pressable>
           }
         </View>
