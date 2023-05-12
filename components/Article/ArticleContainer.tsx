@@ -11,7 +11,7 @@ export default function ArticleContainer({data, children}: PropsWithChildren<Art
 
   return (
     <Pressable
-      style={{ width: '100%', paddingHorizontal: 20, marginVertical: 10 }}
+      style={{ width: '100%', paddingHorizontal: 10, marginVertical: 10 }}
       android_ripple={useAndroidRipple()}
       onPress={() => navigation.navigate("Article", {body: data})}
     >

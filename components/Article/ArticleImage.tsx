@@ -1,11 +1,10 @@
 import {Image, StyleSheet} from "react-native";
-import Layout from "../../constants/Layout";
 
 // TODO: wrap in shared element for aesthetic transitions
 export default function ArticleImage({src}: {src: string}) {
   return (
     <Image
-      style={[styles.bigImg, {marginHorizontal: -20, width: Layout.window.width, borderRadius: 0}]}
+      style={styles.bigImg}
       source={{
         uri: src,
       }}
