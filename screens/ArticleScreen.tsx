@@ -105,6 +105,11 @@ export default function ArticleScreen({route, navigation}: RootStackScreenProps<
           a {
             color: ${colorScheme.tint};
           }
+          img {
+            /* This would be ideal, but it no work width: 100vw; */
+            margin-left: 50vw;
+            transform: translateX(-50%);
+          }
         `}
         source={{html: article.body, baseUrl: '' }}
         // Adapted from https://stackoverflow.com/a/54115883
