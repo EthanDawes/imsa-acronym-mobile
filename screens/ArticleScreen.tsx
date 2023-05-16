@@ -20,7 +20,7 @@ import * as WPTYPES from "wp-types";
 import {SizeContext} from "../constants/context";
 import Layout from "../constants/Layout";
 
-const padding = 10;
+const padding = 20;
 
 export default function ArticleScreen({route, navigation}: RootStackScreenProps<"Article">) {
   const {body: article} = route.params;
