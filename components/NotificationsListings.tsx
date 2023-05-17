@@ -3,13 +3,13 @@ import {View} from "react-native";
 import React, {PropsWithChildren, useContext} from "react";
 import {SubscriptionsContext} from "../constants/context";
 import IconButton from "../components/IconButton";
-import {ArticleFilter, SearchDomain} from "../constants/api";
+import {ArticleFilter} from "../constants/api";
 import {useNavigation} from "@react-navigation/native";
 
 export default function NotificationsListings({children}: PropsWithChildren) {
   const navigation = useNavigation();
   const [subscriptions, toggleSubscriptions] = useContext(SubscriptionsContext);
-  const sections = (["Authors", "Topics"] as ArticleFilter[]).map(articleFilter => ({
+  const sections = (["Authors", "Tags", "Topics"] as ArticleFilter[]).map(articleFilter => ({
     title: articleFilter,
     data: Object.entries(subscriptions).filter(([id, sub]) => sub.domain === articleFilter),
   }));
@@ -22,7 +22,7 @@ export default function NotificationsListings({children}: PropsWithChildren) {
           <Hr />
           <View style={{flexDirection: "row", alignItems: "center", marginBottom: 4}}>
             <Title>{title}</Title>
-            <IconButton icon="plus" action={() => navigation.navigate("Search", {domain: title as SearchDomain, query: "", addNotifications: true})} />
+            <IconButton icon="plus" action={() => navigation.navigate("Search", {domain: title, query: "", addNotifications: true})} />
           </View>
           {data.map(([id, subscription]) =>
             <View style={{flexDirection: "row", paddingVertical: 4, alignItems: "center"}} key={id}>

@@ -45,6 +45,9 @@ export default function SearchScreen({route, navigation}: RootStackScreenProps<"
       yield* Object.entries(await results.authors).map(([author, deets]) => (
         <SearchItem key={deets.link} title={author} id={deets.id} img={deets.avatar_urls?.["96"]} domain="Authors" addNotifications={addNotifications} />
       ));
+      yield* Object.entries(await results.tags).map(([tag, deets]) => (
+        <SearchItem key={deets.link} title={tag} id={deets.id} domain="Tags" addNotifications={addNotifications} />
+      ));
       for await (const page of results.posts)
         yield <SmallArticle data={page} key={page.id} />;
     })());
