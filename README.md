@@ -10,7 +10,7 @@ The Acronym is IMSA’s (the Illinois Mathematics and Science Academy's) officia
 ## Available on all platforms!
 - 🌐 [Website](https://sites.imsa.edu/acronym/)
 - 🤖 [Android](https://play.google.com/store/apps/details?id=edu.imsa.theacronym)
-- 🍎 [iOS]()
+- 🍎 [iOS](https://apps.apple.com/app/the-acronym/id6448006404)
 
 ## Contributing
 [Contributing.md](CONTRIBUTING.md)
