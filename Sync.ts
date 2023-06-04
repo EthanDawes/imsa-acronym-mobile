@@ -60,7 +60,7 @@ export function initBackgroundSync() {
 // Note: This does NOT need to be in the global scope and CAN be used in your React components!
 export async function registerBackgroundFetchAsync() {
   return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: __DEV__ ? 60 : 60 * 60 * 24, // 1 day
+    minimumInterval: __DEV__ ? 60 : 60 * 60 * 1, // 1 hour
     stopOnTerminate: false, // android only,
     startOnBoot: true, // android only
   });
