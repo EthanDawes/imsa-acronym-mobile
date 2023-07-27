@@ -12,7 +12,7 @@
 ## File structure
 ```
 Acronym/
-├ .expo/  [Cached files]
+├.expo/  [Cached files]
 ├ .github/  [Automated workflows and promotional images]
 ├ assets/  [In-app images and fonts]
 ├ components/  [React files that aren't specific to any screen]
