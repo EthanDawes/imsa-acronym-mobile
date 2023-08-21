@@ -33,7 +33,9 @@ Ask yourself, did you change something significant (Apple policy) or modify the 
 1. `npm run build`
 2. Publish to Android: download the `.aab` file from [Expo](https://expo.dev) and upload to [Google Play Console](https://play.google.com/console/u/0/developers)
    - Upload new build under the "Internal testing" tab
+   - Wait a ~2 days for approval, then promote build to release
 3. Publish to apple: `eas submit --platform ios`
+   - Build should automaticly be uploaded to App Store Connect, wait for approval
    - See ["IMSA-specific" section](#imsa-specific) if you have issues
 
 **If no**, publish an update:
