@@ -1,9 +1,9 @@
-import {FlatList} from 'react-native';
-import {Text} from "../components/Themed";
+import { FlatList } from "react-native";
+import { Text } from "../components/Themed";
 
 import SmallArticle from "../components/Article/SmallArticle";
-import React, {useContext} from "react";
-import {BookmarkContext} from "../constants/context";
+import React, { useContext } from "react";
+import { BookmarkContext } from "../constants/context";
 import useColorScheme from "../hooks/useColorScheme";
 import Colors from "../constants/Colors";
 
@@ -14,10 +14,16 @@ export default function SavedScreen() {
   return (
     <FlatList
       data={Object.values(bookmarks)}
-      renderItem={({item}) => <SmallArticle data={item} />}
-      keyExtractor={item => "" + item.id}
-      ListEmptyComponent={() => <Text style={{color: colors.shadow, textAlign: "center", padding: 10}}>Bookmarked articles will appear here</Text>}
-      style={{paddingHorizontal: 10}}
+      renderItem={({ item }) => <SmallArticle data={item} />}
+      keyExtractor={(item) => "" + item.id}
+      ListEmptyComponent={() => (
+        <Text
+          style={{ color: colors.shadow, textAlign: "center", padding: 10 }}
+        >
+          Bookmarked articles will appear here
+        </Text>
+      )}
+      style={{ paddingHorizontal: 10 }}
     />
   );
 }

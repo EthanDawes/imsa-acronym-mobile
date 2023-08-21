@@ -1,5 +1,5 @@
 import * as Notifications from "expo-notifications";
-import {FullArticle} from "./components/Article/logic";
+import { FullArticle } from "./components/Article/logic";
 
 // This should be called at the top-level
 export function initNotifications() {
@@ -16,10 +16,12 @@ export function initNotifications() {
 export function notify(articles: FullArticle[]) {
   Notifications.scheduleNotificationAsync({
     content: {
-      title: 'New Acronym articles!',
-      body: articles.length > 1 ?
-        `Tap to see these ${articles.length} new articles:\n` + articles.map(a => a.title).join("\n")
-        : `Tap to read ${articles[0].title}`,
+      title: "New Acronym articles!",
+      body:
+        articles.length > 1
+          ? `Tap to see these ${articles.length} new articles:\n` +
+            articles.map((a) => a.title).join("\n")
+          : `Tap to read ${articles[0].title}`,
     },
     trigger: null,
   });
@@ -28,7 +30,7 @@ export function notify(articles: FullArticle[]) {
 export function notifyTest() {
   Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Look at that notification',
+      title: "Look at that notification",
       body: "I'm so proud of myself!",
     },
     trigger: null,
