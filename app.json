@@ -50,6 +50,9 @@
     "owner": "imsacronym",
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
