@@ -14,3 +14,15 @@ The Acronym is IMSA’s (the Illinois Mathematics and Science Academy's) officia
 
 ## Contributing
 [Contributing.md](CONTRIBUTING.md)
+
+## Demo
+![homepage](docs/home.png)
+![](docs/article-head.png)
+![](docs/article-foot.png)
+![](docs/author.png)
+![](docs/topic.png)
+![](docs/search.png)
+![](docs/notifications.png)
+![](docs/notifications-people.png)
+![](docs/settings.png)
+![](docs/comments.png)
